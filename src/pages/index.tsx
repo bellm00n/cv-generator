@@ -3,10 +3,14 @@ import Button from "@mui/material/Button";
 import { Inter } from "next/font/google";
 import { MainLayout } from "@/components/layouts/Mainlayout";
 import { EditCvForm } from "@/components/editCvForm/editCvForm";
+import { CvFormData } from "@/types/cvFormData";
+import { useState } from "react";
+import { CvView } from "@/components/cvView/CvView";
 
 const inter = Inter({ subsets: ["latin"] });
 
 export default function Home() {
+  const [cvData, setCvData] = useState<CvFormData>();
   return (
     <>
       <Head>
@@ -16,7 +20,10 @@ export default function Home() {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <main>
-        <MainLayout editCvForm={<EditCvForm />} cvView={<>CvView</>} />
+        <MainLayout
+          editCvForm={<EditCvForm onSave={setCvData} />}
+          cvView={cvData ? <CvView cvData={cvData} /> : "Fill cv please"}
+        />
       </main>
     </>
   );

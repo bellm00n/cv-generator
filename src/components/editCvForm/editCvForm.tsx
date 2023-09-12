@@ -1,19 +1,35 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Button, FormControl, Grid, Typography } from "@mui/material";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { TextFieldElement } from "react-hook-form-mui";
 import { CvFormData } from "@/types/cvFormData";
 
 type EditCvFormProps = {
-  onSave: (data: CvFormData) => void;
+  onSave: (data: CvFormData | undefined) => void;
+};
+
+export const CV_DATA_KEY = "cvData";
+
+export const getInitialCvData = (): CvFormData | undefined => {
+  const cvDataString = localStorage.getItem(CV_DATA_KEY);
+  const parsedCvData = cvDataString ? JSON.parse(cvDataString) : undefined;
+
+  return parsedCvData;
 };
 
 export const EditCvForm = ({ onSave }: EditCvFormProps) => {
-  const { control, handleSubmit } = useForm<CvFormData>();
+  const { control, handleSubmit, reset } = useForm<CvFormData>();
 
-  const onSubmit: SubmitHandler<CvFormData> = (data) => {
-    onSave(data);
+  const onSubmit: SubmitHandler<CvFormData> = (newCvData) => {
+    onSave(newCvData);
+    localStorage.setItem(CV_DATA_KEY, JSON.stringify(newCvData));
   };
+
+  useEffect(() => {
+    const cvDataFromStorage = getInitialCvData();
+    onSave(cvDataFromStorage);
+    reset(cvDataFromStorage || {});
+  }, [onSave, reset]);
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
@@ -124,7 +140,7 @@ export const EditCvForm = ({ onSave }: EditCvFormProps) => {
         <Grid item xs={12}>
           <FormControl sx={{ paddingTop: "20px" }}>
             <Button type="submit" variant="outlined">
-              Outlined
+              Save
             </Button>
           </FormControl>
         </Grid>

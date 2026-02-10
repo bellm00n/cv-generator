@@ -1,0 +1,3 @@
+- The tasks are located in ./docs/tasks.md. Use it when use asked to implement a task 
+- Don't run dev server, use `npm run build` instead
+- After task implementation update the checkboxes in the plan

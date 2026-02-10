@@ -27,12 +27,12 @@ Initialize the MVP foundation with Next.js and required libraries, and create a 
 - Ensure no backend dependency is introduced (local-only app architecture).
 
 ## Testable Outcodes
-- [ ] `npm run build` starts without setup errors.
-- [ ] Tailwind styles are applied correctly in the app.
-- [ ] Project includes all required MVP libraries in `package.json`.
-- [ ] Desktop viewport shows two panes side-by-side.
-- [ ] Mobile/tablet viewport prioritizes editor area and hides preview by default.
-- [ ] No actual editor form or PDF rendering logic is implemented in this task.
+- [x] `npm run build` starts without setup errors.
+- [x] Tailwind styles are applied correctly in the app.
+- [x] Project includes all required MVP libraries in `package.json`.
+- [x] Desktop viewport shows two panes side-by-side.
+- [x] Mobile/tablet viewport prioritizes editor area and hides preview by default.
+- [x] No actual editor form or PDF rendering logic is implemented in this task.
 
 ---
 

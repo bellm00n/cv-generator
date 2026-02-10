@@ -1,31 +1,27 @@
-import { forwardRef, type InputHTMLAttributes } from "react";
+import { forwardRef, type TextareaHTMLAttributes } from "react";
 import { cn } from "@/lib/cn";
 
-type InputProps = InputHTMLAttributes<HTMLInputElement> & {
+type TextareaProps = TextareaHTMLAttributes<HTMLTextAreaElement> & {
   id: string;
   label: string;
-  hideLabel?: boolean;
   helperText?: string;
   helperTone?: "muted" | "warning";
 };
 
-export const Input = forwardRef<HTMLInputElement, InputProps>(function Input(
-  { id, label, hideLabel = false, helperText, helperTone = "muted", className, ...props },
+export const Textarea = forwardRef<HTMLTextAreaElement, TextareaProps>(function Textarea(
+  { id, label, helperText, helperTone = "muted", className, ...props },
   ref
 ) {
   return (
     <div className="flex flex-col gap-2">
-      <label
-        htmlFor={id}
-        className={cn("text-sm font-medium text-app-text", hideLabel ? "sr-only" : undefined)}
-      >
+      <label htmlFor={id} className="text-sm font-medium text-app-text">
         {label}
       </label>
-      <input
+      <textarea
         ref={ref}
         id={id}
         className={cn(
-          "h-11 rounded-md border border-app-border bg-white px-3 text-sm text-app-text placeholder:text-app-muted/90",
+          "min-h-[6.5rem] rounded-md border border-app-border bg-white px-3 py-2.5 text-sm text-app-text placeholder:text-app-muted/90",
           "transition-shadow focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-app-accent/40",
           className
         )}

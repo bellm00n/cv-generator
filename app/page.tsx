@@ -1,41 +1,105 @@
+"use client";
+
+import { useState } from "react";
+import dynamic from "next/dynamic";
 import { EditorPanel } from "@/components/EditorPanel";
 import { PreviewPanel } from "@/components/PreviewPanel";
 import { Button } from "@/components/ui/Button";
+import { EMPTY_CV_DOCUMENT } from "@/constants";
+import { cn } from "@/lib/cn";
+import { CV_FORM_STORAGE_KEY } from "@/lib/cvForm";
+import type { CvDocument } from "@/types/cv";
+
+const DOWNLOAD_BUTTON_CLASS =
+  "inline-flex min-h-10 items-center justify-center rounded-md border border-app-accent bg-app-accent px-4 py-2 text-sm font-medium text-white transition-colors hover:brightness-95";
+
+const DownloadPdfButton = dynamic(
+  () =>
+    import("@/components/pdf/DownloadPdfButton").then(
+      (module) => module.DownloadPdfButton
+    ),
+  {
+    ssr: false,
+    loading: () => (
+      <span className={DOWNLOAD_BUTTON_CLASS} aria-live="polite">
+        Preparing PDF...
+      </span>
+    )
+  }
+);
+
+const getFileName = (fullName: string) => {
+  const slug = fullName
+    .trim()
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, "-")
+    .replace(/(^-|-$)/g, "");
+
+  return `${slug || "cv"}.pdf`;
+};
 
 export default function HomePage() {
+  const [isMobilePreviewOpen, setIsMobilePreviewOpen] = useState(false);
+  const [cvDocument, setCvDocument] = useState<CvDocument>(EMPTY_CV_DOCUMENT);
+  const [isEditorDirty, setIsEditorDirty] = useState(false);
+  const [editorResetKey, setEditorResetKey] = useState(0);
+  const fileName = getFileName(cvDocument.fullName);
+
+  const handleReset = () => {
+    if (typeof window !== "undefined") {
+      window.localStorage.removeItem(CV_FORM_STORAGE_KEY);
+    }
+
+    setCvDocument(EMPTY_CV_DOCUMENT);
+    setIsEditorDirty(false);
+    setEditorResetKey((current) => current + 1);
+  };
+
   return (
     <main className="min-h-screen bg-app-bg py-6">
       <div className="mx-auto flex w-full max-w-7xl flex-col gap-rhythm px-4 sm:px-6 lg:px-8">
-        <header className="space-y-2 rounded-lg border border-app-border bg-app-surface p-rhythm">
-          <h1 className="text-2xl sm:text-3xl">CV Generator MVP</h1>
+        <header className="flex flex-wrap items-center justify-between gap-3 rounded-lg border border-app-border bg-app-surface px-4 py-3">
+          <h1 className="text-xl sm:text-2xl">CV Generator MVP</h1>
+          <DownloadPdfButton
+            cvData={cvDocument}
+            fileName={fileName}
+            className={DOWNLOAD_BUTTON_CLASS}
+          />
         </header>
 
+        <section className="rounded-lg border border-app-border bg-app-surface p-rhythm lg:hidden">
+          <Button
+            variant="secondary"
+            onClick={() => setIsMobilePreviewOpen(true)}
+            disabled={isMobilePreviewOpen}
+          >
+            Open Preview
+          </Button>
+        </section>
+
         <section className="grid grid-cols-1 gap-rhythm lg:grid-cols-2">
-          <EditorPanel />
-          <div className="flex flex-col gap-rhythm">
-            <section className="flex flex-wrap items-center gap-3 rounded-lg border border-app-border bg-app-surface p-rhythm">
-              <Button disabled>Download PDF</Button>
-              <Button variant="secondary" disabled className="lg:hidden">
-                Open Preview
-              </Button>
-              <Button variant="ghost" disabled>
-                Reset
-              </Button>
-              <p className="text-xs text-app-muted">
-                Action controls are intentionally disabled placeholders in Task
-                1.
-              </p>
-            </section>
+          <div className={cn("flex flex-col gap-3", isMobilePreviewOpen && "hidden lg:flex")}>
+            <EditorPanel
+              key={editorResetKey}
+              onCvDataChange={setCvDocument}
+              onDirtyChange={setIsEditorDirty}
+            />
+            <Button variant="destructive" onClick={handleReset} disabled={!isEditorDirty}>
+              Reset
+            </Button>
+          </div>
 
-            <PreviewPanel className="hidden lg:block" />
-
-            <section className="rounded-lg border border-dashed border-app-border bg-app-surface p-rhythm lg:hidden">
-              <h2 className="text-base">Mobile / Tablet Mode</h2>
-              <p className="mt-2 text-sm text-app-muted">
-                Preview is hidden by default on small screens and will be opened
-                via dedicated flow in Task 3.
-              </p>
-            </section>
+          <div
+            className={cn(
+              "flex flex-col gap-rhythm",
+              !isMobilePreviewOpen && "hidden lg:flex"
+            )}
+          >
+            <PreviewPanel
+              cvData={cvDocument}
+              showCloseAction={isMobilePreviewOpen}
+              onClose={() => setIsMobilePreviewOpen(false)}
+            />
           </div>
         </section>
       </div>

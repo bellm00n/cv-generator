@@ -10,7 +10,7 @@ export interface CvEmploymentEntry {
   company: string;
   startDate: string;
   endDate?: string;
-  bullets: string[];
+  description: string;
 }
 
 export interface CvEducationEntry {

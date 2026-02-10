@@ -1,10 +1,43 @@
+"use client";
+
+import dynamic from "next/dynamic";
 import { cn } from "@/lib/cn";
+import type { CvDocument } from "@/types/cv";
+import { Button } from "@/components/ui/Button";
+
+const PREVIEW_SURFACE_STYLE = { backgroundColor: "var(--color-surface)" } as const;
+
+const PdfPreviewFrame = dynamic(
+  () =>
+    import("@/components/pdf/PdfPreviewFrame").then(
+      (module) => module.PdfPreviewFrame
+    ),
+  {
+    ssr: false,
+    loading: () => (
+      <div
+        className="flex h-full items-center justify-center text-sm text-app-muted"
+        style={PREVIEW_SURFACE_STYLE}
+      >
+        Loading preview...
+      </div>
+    )
+  }
+);
 
 type PreviewPanelProps = {
   className?: string;
+  cvData: CvDocument;
+  showCloseAction?: boolean;
+  onClose?: () => void;
 };
 
-export function PreviewPanel({ className }: PreviewPanelProps) {
+export function PreviewPanel({
+  className,
+  cvData,
+  showCloseAction = false,
+  onClose
+}: PreviewPanelProps) {
   return (
     <section
       className={cn(
@@ -13,27 +46,25 @@ export function PreviewPanel({ className }: PreviewPanelProps) {
       )}
       aria-labelledby="preview-panel-title"
     >
-      <div className="space-y-2">
-        <h2 id="preview-panel-title" className="text-xl">
-          Preview Panel
-        </h2>
-        <p className="text-sm text-app-muted">
-          Placeholder area for the live PDF preview that will be implemented in
-          Task 3.
-        </p>
+      <div className="flex items-center justify-between gap-3">
+        <div className="space-y-2">
+          <h2 id="preview-panel-title" className="text-xl">
+            Preview Panel
+          </h2>
+        </div>
+        {showCloseAction ? (
+          <Button variant="secondary" onClick={onClose}>
+            Back to editor
+          </Button>
+        ) : null}
       </div>
 
-      <div className="mt-rhythm flex min-h-[24rem] flex-1 items-center justify-center rounded-md border border-dashed border-app-border bg-slate-50 p-4">
-        <div className="aspect-[1/1.414] w-full max-w-[22rem] rounded-sm border border-app-border bg-white p-5 shadow-sm">
-          <div className="space-y-2">
-            <div className="h-5 w-2/3 rounded bg-slate-200" />
-            <div className="h-3 w-1/2 rounded bg-slate-200" />
-          </div>
-          <div className="mt-6 space-y-2">
-            <div className="h-3 w-full rounded bg-slate-100" />
-            <div className="h-3 w-5/6 rounded bg-slate-100" />
-            <div className="h-3 w-4/5 rounded bg-slate-100" />
-          </div>
+      <div className="mt-rhythm rounded-md" style={PREVIEW_SURFACE_STYLE}>
+        <div
+          className="mx-auto aspect-[595.28/841.89] w-full max-w-[35rem] overflow-hidden rounded-sm border border-app-border shadow-sm"
+          style={PREVIEW_SURFACE_STYLE}
+        >
+          <PdfPreviewFrame cvData={cvData} />
         </div>
       </div>
     </section>

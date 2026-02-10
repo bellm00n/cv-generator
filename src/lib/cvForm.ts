@@ -1,0 +1,313 @@
+import { z } from "zod";
+import type { CvDocument } from "@/types/cv";
+
+type UnknownRecord = Record<string, unknown>;
+
+const REQUIRED_WARNING = "This field is recommended.";
+
+export const CV_FORM_STORAGE_KEY = "cv-generator:editor-form:v1";
+
+export const cvListItemSchema = z.object({
+  value: z.string().trim().min(1, "Add a value or remove this row.")
+});
+
+const employmentItemSchema = z.object({
+  title: z.string().trim().min(1, REQUIRED_WARNING),
+  company: z.string().trim().min(1, REQUIRED_WARNING),
+  startDate: z.string().trim().min(1, REQUIRED_WARNING),
+  endDate: z.string().trim(),
+  description: z.string().trim().min(1, REQUIRED_WARNING)
+});
+
+const educationItemSchema = z.object({
+  degree: z.string().trim().min(1, REQUIRED_WARNING),
+  university: z.string().trim().min(1, REQUIRED_WARNING),
+  startDate: z.string().trim().min(1, REQUIRED_WARNING),
+  endDate: z.string().trim().min(1, REQUIRED_WARNING)
+});
+
+export const cvFormSchema = z.object({
+  name: z.string().trim().min(1, REQUIRED_WARNING),
+  surname: z.string().trim().min(1, REQUIRED_WARNING),
+  title: z.string().trim().min(1, REQUIRED_WARNING),
+  city: z.string().trim().min(1, REQUIRED_WARNING),
+  phone: z.string().trim().min(1, REQUIRED_WARNING),
+  email: z
+    .string()
+    .trim()
+    .min(1, REQUIRED_WARNING)
+    .email("Use a valid email format, for example name@example.com."),
+  summary: z.string().trim().min(1, REQUIRED_WARNING),
+  skills: z.array(cvListItemSchema).min(1, "Add at least one skill."),
+  languages: z.array(cvListItemSchema).min(1, "Add at least one language."),
+  employmentHistory: z
+    .array(employmentItemSchema)
+    .min(1, "Add at least one employment item."),
+  education: z.array(educationItemSchema).min(1, "Add at least one education item.")
+});
+
+export type CvFormValues = z.infer<typeof cvFormSchema>;
+
+export function createEmptyListItem(): CvFormValues["skills"][number] {
+  return { value: "" };
+}
+
+export function createEmptyEmploymentItem(): CvFormValues["employmentHistory"][number] {
+  return {
+    title: "",
+    company: "",
+    startDate: "",
+    endDate: "",
+    description: ""
+  };
+}
+
+export function createEmptyEducationItem(): CvFormValues["education"][number] {
+  return {
+    degree: "",
+    university: "",
+    startDate: "",
+    endDate: ""
+  };
+}
+
+export function createDefaultCvFormValues(): CvFormValues {
+  return {
+    name: "",
+    surname: "",
+    title: "",
+    city: "",
+    phone: "",
+    email: "",
+    summary: "",
+    skills: [createEmptyListItem()],
+    languages: [createEmptyListItem()],
+    employmentHistory: [createEmptyEmploymentItem()],
+    education: [createEmptyEducationItem()]
+  };
+}
+
+const asRecord = (value: unknown): UnknownRecord | null =>
+  typeof value === "object" && value !== null ? (value as UnknownRecord) : null;
+
+const readString = (value: unknown): string => (typeof value === "string" ? value : "");
+
+const splitFullName = (
+  fullName: string
+): Pick<CvFormValues, "name" | "surname"> => {
+  const normalized = fullName.trim().replace(/\s+/g, " ");
+  if (!normalized) {
+    return { name: "", surname: "" };
+  }
+
+  const parts = normalized.split(" ");
+  if (parts.length === 1) {
+    return { name: parts[0], surname: "" };
+  }
+
+  return {
+    name: parts.slice(0, -1).join(" "),
+    surname: parts.at(-1) ?? ""
+  };
+};
+
+const normalizeListItems = (value: unknown): CvFormValues["skills"] => {
+  if (!Array.isArray(value)) {
+    return [];
+  }
+
+  return value
+    .map((item) => {
+      if (typeof item === "string") {
+        return { value: item };
+      }
+
+      const record = asRecord(item);
+      if (record && typeof record.value === "string") {
+        return { value: record.value };
+      }
+
+      return null;
+    })
+    .filter((item): item is CvFormValues["skills"][number] => item !== null);
+};
+
+const normalizeEmploymentHistory = (
+  value: unknown
+): CvFormValues["employmentHistory"] => {
+  if (!Array.isArray(value)) {
+    return [];
+  }
+
+  return value
+    .map((item) => {
+      const record = asRecord(item);
+      if (!record) {
+        return null;
+      }
+
+      const description = (() => {
+        const singleDescription = readString(record.description);
+        if (singleDescription) {
+          return singleDescription;
+        }
+
+        const normalizedBullets = normalizeListItems(record.bullets)
+          .map((item) => item.value.trim())
+          .filter(Boolean);
+
+        return normalizedBullets.join("\n");
+      })();
+
+      return {
+        title: readString(record.title),
+        company: readString(record.company ?? record.companyName),
+        startDate: readString(record.startDate),
+        endDate: readString(record.endDate),
+        description
+      };
+    })
+    .filter((item): item is CvFormValues["employmentHistory"][number] => item !== null);
+};
+
+const normalizeEducation = (value: unknown): CvFormValues["education"] => {
+  if (!Array.isArray(value)) {
+    return [];
+  }
+
+  return value
+    .map((item) => {
+      const record = asRecord(item);
+      if (!record) {
+        return null;
+      }
+
+      return {
+        degree: readString(record.degree),
+        university: readString(record.university),
+        startDate: readString(record.startDate),
+        endDate: readString(record.endDate)
+      };
+    })
+    .filter((item): item is CvFormValues["education"][number] => item !== null);
+};
+
+export function normalizePersistedCvForm(raw: unknown): CvFormValues | null {
+  const source = asRecord(raw);
+  if (!source) {
+    return null;
+  }
+
+  const defaults = createDefaultCvFormValues();
+  const contact = asRecord(source.contact);
+  const fullNameFallback = splitFullName(readString(source.fullName));
+
+  return {
+    name: readString(source.name) || fullNameFallback.name,
+    surname: readString(source.surname) || fullNameFallback.surname,
+    title: readString(source.title),
+    city: readString(source.city ?? contact?.city),
+    phone: readString(source.phone ?? source.number ?? contact?.phone ?? contact?.number),
+    email: readString(source.email ?? contact?.email),
+    summary: readString(source.summary),
+    skills:
+      source.skills === undefined ? defaults.skills : normalizeListItems(source.skills),
+    languages:
+      source.languages === undefined
+        ? defaults.languages
+        : normalizeListItems(source.languages),
+    employmentHistory:
+      source.employmentHistory === undefined
+        ? defaults.employmentHistory
+        : normalizeEmploymentHistory(source.employmentHistory),
+    education:
+      source.education === undefined
+        ? defaults.education
+        : normalizeEducation(source.education)
+  };
+}
+
+const hasContent = (value: string): boolean => value.trim().length > 0;
+
+export function mapCvFormValuesToDocument(values: CvFormValues): CvDocument {
+  const normalizedSkills = values.skills
+    .map((item) => item.value.trim())
+    .filter(Boolean);
+  const normalizedLanguages = values.languages
+    .map((item) => item.value.trim())
+    .filter(Boolean);
+
+  const normalizedEmploymentHistory: CvDocument["employmentHistory"] =
+    values.employmentHistory.flatMap((item, index) => {
+      const title = item.title.trim();
+      const company = item.company.trim();
+      const startDate = item.startDate.trim();
+      const endDate = item.endDate.trim();
+      const description = item.description.trim();
+
+      if (
+        !hasContent(title) &&
+        !hasContent(company) &&
+        !hasContent(startDate) &&
+        !hasContent(endDate) &&
+        !hasContent(description)
+      ) {
+        return [];
+      }
+
+      const entry: CvDocument["employmentHistory"][number] = {
+        id: `employment-${index + 1}`,
+        title,
+        company,
+        startDate,
+        description
+      };
+
+      if (endDate) {
+        entry.endDate = endDate;
+      }
+
+      return [entry];
+    });
+
+  const normalizedEducation = values.education
+    .map((item, index) => {
+      const degree = item.degree.trim();
+      const university = item.university.trim();
+      const startDate = item.startDate.trim();
+      const endDate = item.endDate.trim();
+
+      if (
+        !hasContent(degree) &&
+        !hasContent(university) &&
+        !hasContent(startDate) &&
+        !hasContent(endDate)
+      ) {
+        return null;
+      }
+
+      return {
+        id: `education-${index + 1}`,
+        degree,
+        university,
+        startDate,
+        endDate
+      };
+    })
+    .filter((item): item is CvDocument["education"][number] => item !== null);
+
+  return {
+    fullName: `${values.name.trim()} ${values.surname.trim()}`.trim(),
+    title: values.title.trim(),
+    contact: {
+      city: values.city.trim(),
+      phone: values.phone.trim(),
+      email: values.email.trim()
+    },
+    summary: values.summary.trim(),
+    skills: normalizedSkills,
+    languages: normalizedLanguages,
+    employmentHistory: normalizedEmploymentHistory,
+    education: normalizedEducation
+  };
+}

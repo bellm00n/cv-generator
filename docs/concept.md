@@ -56,11 +56,46 @@ CV Generator is a lightweight web application for creating an ATS-friendly CV in
 
 ## PDF styling reference
 
-- The PDF layout should follow the provided example screenshot:
-  - Reference: `docs/cv-example.pdf`
+- Reference: `docs/cv-example.pdf`
 
-- MVP template should match this reference closely in:
-  - section order
-  - typography hierarchy
-  - spacing and alignment
-  - overall “clean ATS-friendly” look
+- Main design tokens (measured from the PDF content stream and rendered preview):
+
+### Page and layout tokens
+
+- `page.size`: A4 (`595.28pt x 841.89pt`)
+- `page.margin.x`: `41pt`
+- `page.contentWidth`: `513.28pt` (`595.28 - 41*2`)
+- `page.topOffset`: `30pt` (container offset before header block)
+- `layout.headerStartX`: `41pt`
+- `layout.mainColumnStartX`: `58pt`
+- `layout.sidebarStartX`: `413pt`
+- `layout.sidebarWidth`: `141.28pt` (`595.28 - 413 - 41`)
+- `layout.sectionIconIndent`: `17pt` (difference between `41pt` and `58pt`)
+
+### Color tokens
+
+- `color.text.primary`: `#262B33` (RGB `38, 43, 51`)
+- `color.text.muted`: `#98A1B2` (RGB `152, 161, 178`) for dates/subtitle
+- `color.icon.primary`: `#0F141F` (RGB `15, 20, 31`) for section icons
+- `color.link`: `#2196F3` (RGB `33, 150, 243`)
+- `color.background.page`: `#FFFFFF`
+
+### Typography tokens
+
+- `font.family.base`: `"Source Sans Pro", sans-serif`
+- `font.weight.regular`: `400` (from `SourceSansPro-Regular`)
+- `font.weight.semibold`: `600` (from `SourceSansPro-SemiBold`)
+- `font.size.name`: `23pt`
+- `font.size.sectionHeading`: `14pt`
+- `font.size.subsectionHeading`: `11pt`
+- `font.size.body`: `10.6pt`
+- `font.size.sidebarItem`: `10pt`
+- `font.size.meta`: `9pt`
+
+### Spacing and rhythm tokens
+
+- `lineHeight.body`: `15.37pt` (most body lines)
+- `space.block`: `21.37pt` (recurring block/list gap)
+- `space.sectionGap`: `~36.8pt` (major section jump)
+
+- MVP PDF template should match this reference in section order, hierarchy, spacing, and overall ATS-friendly clarity.

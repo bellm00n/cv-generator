@@ -63,15 +63,15 @@ function EmploymentItemCard({
   )?.[index];
 
   return (
-    <article className="rounded-md border border-app-border/90 bg-white/70 p-4">
-      <div className="flex flex-wrap items-center justify-between gap-3">
-        <h4 className="text-base">Employment item {index + 1}</h4>
+    <article className="rounded-md border-l-2 border-app-accent/30 bg-gray-50/50 p-3">
+      <div className="flex flex-wrap items-center justify-between gap-2">
+        <h4 className="text-sm font-medium">Employment item {index + 1}</h4>
         <Button variant="destructive" onClick={onRemove}>
           Remove item
         </Button>
       </div>
 
-      <div className="mt-4 grid gap-4 sm:grid-cols-2">
+      <div className="mt-3 grid gap-3 sm:grid-cols-2">
         <Input
           id={`employment-title-${index}`}
           label="Title"
@@ -121,7 +121,7 @@ function EmploymentItemCard({
         />
       </div>
 
-      <div className="mt-4">
+      <div className="mt-3">
         <Textarea
           id={`employment-description-${index}`}
           label="Description"
@@ -258,25 +258,25 @@ export function EditorPanel({
   return (
     <section
       className={cn(
-        "rounded-lg border border-app-border bg-app-surface p-rhythm",
+        "rounded-lg bg-app-surface p-rhythm",
         className
       )}
       aria-labelledby="editor-panel-title"
     >
-      <div className="space-y-2">
+      <div className="space-y-1">
         <h2 id="editor-panel-title" className="text-xl">
           Editor Panel
         </h2>
       </div>
 
-      <form className="mt-rhythm space-y-rhythm" noValidate onSubmit={(event) => event.preventDefault()}>
-        <section className="p-4">
-          <div className="space-y-1">
-            <h3 className="text-base">Personal details</h3>
-            <p className="text-sm text-app-muted">Contact and headline information.</p>
+      <form className="mt-rhythm divide-y divide-app-border/50" noValidate onSubmit={(event) => event.preventDefault()}>
+        <section className="pb-4">
+          <div className="space-y-0.5">
+            <h3 className="text-sm font-semibold">Personal details</h3>
+            <p className="text-xs text-app-muted">Contact and headline information.</p>
           </div>
 
-          <div className="mt-4 grid gap-4 sm:grid-cols-2">
+          <div className="mt-3 grid gap-3 sm:grid-cols-2">
             <Input
               id="name"
               label="Name"
@@ -347,15 +347,15 @@ export function EditorPanel({
           </div>
         </section>
 
-        <section className="p-4">
-          <div className="space-y-1">
-            <h3 className="text-base">Summary</h3>
-            <p className="text-sm text-app-muted">
+        <section className="py-4">
+          <div className="space-y-0.5">
+            <h3 className="text-sm font-semibold">Summary</h3>
+            <p className="text-xs text-app-muted">
               Briefly describe your profile and key strengths.
             </p>
           </div>
 
-          <div className="mt-4 space-y-2">
+          <div className="mt-3 space-y-2">
             <Textarea
               id="summary"
               label="Summary"
@@ -371,18 +371,18 @@ export function EditorPanel({
           </div>
         </section>
 
-        <section className="p-4">
-          <div className="flex flex-wrap items-center justify-between gap-3">
-            <div className="space-y-1">
-              <h3 className="text-base">Skills</h3>
-              <p className="text-sm text-app-muted">Add one skill per row.</p>
+        <section className="py-4">
+          <div className="flex flex-wrap items-center justify-between gap-2">
+            <div className="space-y-0.5">
+              <h3 className="text-sm font-semibold">Skills</h3>
+              <p className="text-xs text-app-muted">Add one skill per row.</p>
             </div>
             <Button variant="secondary" onClick={() => skillsArray.append(createEmptyListItem())}>
               Add skill
             </Button>
           </div>
 
-          <div className="mt-4 space-y-3">
+          <div className="mt-3 space-y-2">
             {skillsArray.fields.map((skill, index) => {
               const skillWarning = getWarningMessage(
                 (
@@ -393,7 +393,7 @@ export function EditorPanel({
               );
 
               return (
-                <div key={skill.id} className="flex flex-wrap items-start gap-3">
+                <div key={skill.id} className="flex flex-wrap items-start gap-2">
                   <div className="min-w-[14rem] flex-1">
                     <Input
                       id={`skill-${index}`}
@@ -409,7 +409,7 @@ export function EditorPanel({
                   </div>
                   <Button
                     variant="destructive"
-                    className="h-11 px-4"
+                    className="h-9 px-3"
                     onClick={() => skillsArray.remove(index)}
                   >
                     Delete
@@ -428,11 +428,11 @@ export function EditorPanel({
           </div>
         </section>
 
-        <section className="p-4">
-          <div className="flex flex-wrap items-center justify-between gap-3">
-            <div className="space-y-1">
-              <h3 className="text-base">Languages</h3>
-              <p className="text-sm text-app-muted">Add one language per row.</p>
+        <section className="py-4">
+          <div className="flex flex-wrap items-center justify-between gap-2">
+            <div className="space-y-0.5">
+              <h3 className="text-sm font-semibold">Languages</h3>
+              <p className="text-xs text-app-muted">Add one language per row.</p>
             </div>
             <Button
               variant="secondary"
@@ -442,7 +442,7 @@ export function EditorPanel({
             </Button>
           </div>
 
-          <div className="mt-4 space-y-3">
+          <div className="mt-3 space-y-2">
             {languagesArray.fields.map((language, index) => {
               const languageWarning = getWarningMessage(
                 (
@@ -453,7 +453,7 @@ export function EditorPanel({
               );
 
               return (
-                <div key={language.id} className="flex flex-wrap items-start gap-3">
+                <div key={language.id} className="flex flex-wrap items-start gap-2">
                   <div className="min-w-[14rem] flex-1">
                     <Input
                       id={`language-${index}`}
@@ -469,7 +469,7 @@ export function EditorPanel({
                   </div>
                   <Button
                     variant="destructive"
-                    className="h-11 px-4"
+                    className="h-9 px-3"
                     onClick={() => languagesArray.remove(index)}
                   >
                     Delete
@@ -488,11 +488,11 @@ export function EditorPanel({
           </div>
         </section>
 
-        <section className="p-4">
-          <div className="flex flex-wrap items-center justify-between gap-3">
-            <div className="space-y-1">
-              <h3 className="text-base">Employment history</h3>
-              <p className="text-sm text-app-muted">Add your roles from most relevant to least relevant.</p>
+        <section className="py-4">
+          <div className="flex flex-wrap items-center justify-between gap-2">
+            <div className="space-y-0.5">
+              <h3 className="text-sm font-semibold">Employment history</h3>
+              <p className="text-xs text-app-muted">Add your roles from most relevant to least relevant.</p>
             </div>
             <Button
               variant="secondary"
@@ -502,7 +502,7 @@ export function EditorPanel({
             </Button>
           </div>
 
-          <div className="mt-4 space-y-4">
+          <div className="mt-3 space-y-3">
             {employmentArray.fields.map((item, index) => (
               <EmploymentItemCard
                 key={item.id}
@@ -525,11 +525,11 @@ export function EditorPanel({
           </div>
         </section>
 
-        <section className="p-4">
-          <div className="flex flex-wrap items-center justify-between gap-3">
-            <div className="space-y-1">
-              <h3 className="text-base">Education</h3>
-              <p className="text-sm text-app-muted">Add your education history.</p>
+        <section className="py-4">
+          <div className="flex flex-wrap items-center justify-between gap-2">
+            <div className="space-y-0.5">
+              <h3 className="text-sm font-semibold">Education</h3>
+              <p className="text-xs text-app-muted">Add your education history.</p>
             </div>
             <Button
               variant="secondary"
@@ -539,7 +539,7 @@ export function EditorPanel({
             </Button>
           </div>
 
-          <div className="mt-4 space-y-4">
+          <div className="mt-3 space-y-3">
             {educationArray.fields.map((item, index) => {
               const educationErrors = (
                 errors.education as FieldErrors<CvFormValues["education"][number]>[] | undefined
@@ -548,10 +548,10 @@ export function EditorPanel({
               return (
                 <article
                   key={item.id}
-                  className="rounded-md border border-app-border/90 bg-white/70 p-4"
+                  className="rounded-md border-l-2 border-app-accent/30 bg-gray-50/50 p-3"
                 >
-                  <div className="flex flex-wrap items-center justify-between gap-3">
-                    <h4 className="text-base">Education item {index + 1}</h4>
+                  <div className="flex flex-wrap items-center justify-between gap-2">
+                    <h4 className="text-sm font-medium">Education item {index + 1}</h4>
                     <Button
                       variant="destructive"
                       onClick={() => educationArray.remove(index)}
@@ -560,7 +560,7 @@ export function EditorPanel({
                     </Button>
                   </div>
 
-                  <div className="mt-4 grid gap-4 sm:grid-cols-2">
+                  <div className="mt-3 grid gap-3 sm:grid-cols-2">
                     <Input
                       id={`education-degree-${index}`}
                       label="Degree"

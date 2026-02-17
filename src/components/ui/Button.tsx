@@ -28,7 +28,7 @@ export function Button({
       type={type}
       disabled={disabled}
       className={cn(
-        "inline-flex min-h-10 items-center justify-center rounded-md border px-4 py-2 text-sm font-medium transition-colors",
+        "inline-flex min-h-9 items-center justify-center rounded-md border px-3 py-1.5 text-sm font-medium transition-colors",
         "disabled:cursor-not-allowed disabled:opacity-60",
         VARIANT_STYLES[variant],
         className

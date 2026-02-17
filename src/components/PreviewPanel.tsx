@@ -41,13 +41,13 @@ export function PreviewPanel({
   return (
     <section
       className={cn(
-        "rounded-lg border border-app-border bg-app-surface p-rhythm",
+        "rounded-lg bg-app-surface p-rhythm",
         className
       )}
       aria-labelledby="preview-panel-title"
     >
       <div className="flex items-center justify-between gap-3">
-        <div className="space-y-2">
+        <div className="space-y-1">
           <h2 id="preview-panel-title" className="text-xl">
             Preview Panel
           </h2>

@@ -1,6 +1,7 @@
 "use client";
 
 import dynamic from "next/dynamic";
+import type { ReactNode } from "react";
 import { cn } from "@/lib/cn";
 import type { CvDocument } from "@/types/cv";
 import { Button } from "@/components/ui/Button";
@@ -28,6 +29,7 @@ const PdfPreviewFrame = dynamic(
 type PreviewPanelProps = {
   className?: string;
   cvData: CvDocument;
+  headerAction?: ReactNode;
   showCloseAction?: boolean;
   onClose?: () => void;
 };
@@ -35,6 +37,7 @@ type PreviewPanelProps = {
 export function PreviewPanel({
   className,
   cvData,
+  headerAction,
   showCloseAction = false,
   onClose
 }: PreviewPanelProps) {
@@ -46,17 +49,20 @@ export function PreviewPanel({
       )}
       aria-labelledby="preview-panel-title"
     >
-      <div className="flex items-center justify-between gap-3">
+      <div className="flex flex-wrap items-center justify-between gap-3">
         <div className="space-y-1">
           <h2 id="preview-panel-title" className="text-xl">
             Preview Panel
           </h2>
         </div>
-        {showCloseAction ? (
-          <Button variant="secondary" onClick={onClose}>
-            Back to editor
-          </Button>
-        ) : null}
+        <div className="flex flex-wrap items-center justify-end gap-2">
+          {showCloseAction ? (
+            <Button variant="secondary" onClick={onClose}>
+              Back to editor
+            </Button>
+          ) : null}
+          {headerAction}
+        </div>
       </div>
 
       <div className="mt-rhythm rounded-md" style={PREVIEW_SURFACE_STYLE}>

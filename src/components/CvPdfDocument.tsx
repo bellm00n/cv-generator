@@ -5,14 +5,14 @@ import {
   Page,
   StyleSheet,
   Text,
-  View
+  View,
 } from "@react-pdf/renderer";
 import type { ReactNode } from "react";
 import type { CvDocument } from "@/types/cv";
 
 const PAGE_SIZE = {
   width: 595.28,
-  height: 841.89
+  height: 841.89,
 };
 
 const MAIN_COLUMN_START = 58;
@@ -25,8 +25,8 @@ Font.register({
   family: "Source Sans Pro",
   fonts: [
     { src: "/fonts/SourceSansPro-Regular.ttf", fontWeight: 400 },
-    { src: "/fonts/SourceSansPro-SemiBold.ttf", fontWeight: 600 }
-  ]
+    { src: "/fonts/SourceSansPro-SemiBold.ttf", fontWeight: 600 },
+  ],
 });
 
 const styles = StyleSheet.create({
@@ -39,15 +39,15 @@ const styles = StyleSheet.create({
   },
   layout: {
     marginLeft: MAIN_COLUMN_START,
-    marginRight: 41
+    marginRight: 41,
   },
   header: {
-    marginBottom: 36.8
+    marginBottom: 36.8,
   },
   name: {
     fontSize: 23,
     fontWeight: 600,
-    lineHeight: 1.1
+    lineHeight: 1.1,
   },
   title: {
     marginTop: 4,
@@ -55,68 +55,68 @@ const styles = StyleSheet.create({
   contactRow: {
     marginTop: 10,
     flexDirection: "row",
-    flexWrap: "wrap"
+    flexWrap: "wrap",
   },
   metaText: {
     color: "#98A1B2",
-    fontSize: 9
+    fontSize: 9,
   },
   contactLink: {
     color: "#2196F3",
     fontSize: 9,
-    textDecoration: "none"
+    textDecoration: "none",
   },
   columns: {
-    flexDirection: "row"
+    flexDirection: "row",
   },
   mainColumn: {
     width: MAIN_COLUMN_WIDTH,
-    marginRight: COLUMN_GAP
+    marginRight: COLUMN_GAP,
   },
   sideColumn: {
-    width: SIDEBAR_WIDTH
+    width: SIDEBAR_WIDTH,
   },
   section: {
-    marginTop: 36.8
+    marginTop: 36.8,
   },
   sectionTitle: {
     color: "#262B33",
     fontSize: 14,
     fontWeight: 600,
-    letterSpacing: 0.4
+    letterSpacing: 0.4,
   },
   sectionBody: {
-    marginTop: 9
+    marginTop: 9,
   },
   paragraph: {
     fontSize: 10.6,
-    lineHeight: 1.45
+    lineHeight: 1.45,
   },
   block: {
-    marginTop: 21.37
+    marginTop: 21.37,
   },
   entryTitle: {
     fontSize: 10.6,
     fontWeight: 600,
-    lineHeight: 1.45
+    lineHeight: 1.45,
   },
   entryMeta: {
     marginTop: 2,
     color: "#98A1B2",
-    fontSize: 9
+    fontSize: 9,
   },
   entryDescription: {
-    marginTop: 7
+    marginTop: 7,
   },
   entryDescriptionText: {
     fontSize: 10.6,
-    lineHeight: 1.45
+    lineHeight: 1.45,
   },
   sideListItem: {
     marginTop: 4,
     fontSize: 10.6,
-    lineHeight: 1.45
-  }
+    lineHeight: 1.45,
+  },
 });
 
 const normalizeList = (items: string[]) =>
@@ -129,7 +129,11 @@ const sectionData = (title: string, children: ReactNode) => (
   </View>
 );
 
-const formatDateRange = (startDate: string, endDate: string, emptyEndLabel = "") => {
+const formatDateRange = (
+  startDate: string,
+  endDate: string,
+  emptyEndLabel = "",
+) => {
   const start = startDate.trim();
   const end = endDate.trim() || emptyEndLabel;
 
@@ -159,26 +163,13 @@ export function CvPdfDocument({ cvData }: { cvData: CvDocument }) {
           <View style={styles.header}>
             <Text style={styles.name}>{cvData.fullName || " "}</Text>
             <Text style={styles.title}>{cvData.title || " "}</Text>
-            <View style={styles.contactRow}>
-              {cvData.contact.city ? (
-                <Text style={styles.metaText}>{cvData.contact.city}</Text>
-              ) : null}
-              {cvData.contact.phone ? (
-                <Text style={styles.metaText}>{cvData.contact.phone}</Text>
-              ) : null}
-              {cvData.contact.email ? (
-                <Link style={styles.contactLink} src={`mailto:${cvData.contact.email}`}>
-                  {cvData.contact.email}
-                </Link>
-              ) : null}
-            </View>
           </View>
 
           <View style={styles.columns}>
             <View style={styles.mainColumn}>
               {sectionData(
                 "SUMMARY",
-                <Text style={styles.paragraph}>{cvData.summary || " "}</Text>
+                <Text style={styles.paragraph}>{cvData.summary || " "}</Text>,
               )}
 
               {sectionData(
@@ -190,20 +181,27 @@ export function CvPdfDocument({ cvData }: { cvData: CvDocument }) {
                     return (
                       <View key={entry.id} style={styles.block}>
                         <Text style={styles.entryTitle}>
-                          {entry.title || " "} {entry.company ? `- ${entry.company}` : ""}
+                          {entry.title || " "}{" "}
+                          {entry.company ? `- ${entry.company}` : ""}
                         </Text>
                         <Text style={styles.entryMeta}>
-                          {formatDateRange(entry.startDate, entry.endDate ?? "", "Present")}
+                          {formatDateRange(
+                            entry.startDate,
+                            entry.endDate ?? "",
+                            "Present",
+                          )}
                         </Text>
                         {description ? (
                           <View style={styles.entryDescription}>
-                            <Text style={styles.entryDescriptionText}>{description}</Text>
+                            <Text style={styles.entryDescriptionText}>
+                              {description}
+                            </Text>
                           </View>
                         ) : null}
                       </View>
                     );
                   })}
-                </View>
+                </View>,
               )}
 
               {sectionData(
@@ -220,20 +218,37 @@ export function CvPdfDocument({ cvData }: { cvData: CvDocument }) {
                       </Text>
                     </View>
                   ))}
-                </View>
+                </View>,
               )}
             </View>
 
             <View style={styles.sideColumn}>
               {sectionData(
-                "SKILLS",
+                "Details",
+                <View>
+                  <Text style={styles.sideListItem}>{cvData.contact.city}</Text>
+                  {/* TODO: Add country */}
+                  {/* <Text style={styles.sideListItem}>
+                    {cvData.contact.country}
+                    </Text> */}
+                  <Text style={styles.sideListItem}>
+                    {cvData.contact.phone}
+                  </Text>
+                  <Text style={styles.sideListItem}>
+                    {cvData.contact.email}
+                  </Text>
+                </View>,
+              )}
+
+              {sectionData(
+                "Skills",
                 <View>
                   {skills.map((skill, index) => (
                     <Text key={`skill-${index}`} style={styles.sideListItem}>
                       {skill}
                     </Text>
                   ))}
-                </View>
+                </View>,
               )}
 
               {sectionData(
@@ -244,7 +259,7 @@ export function CvPdfDocument({ cvData }: { cvData: CvDocument }) {
                       {language}
                     </Text>
                   ))}
-                </View>
+                </View>,
               )}
             </View>
           </View>

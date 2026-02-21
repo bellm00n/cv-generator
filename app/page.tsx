@@ -2,8 +2,8 @@
 
 import { useState } from "react";
 import dynamic from "next/dynamic";
-import { EditorPanel } from "@/components/EditorPanel";
-import { PreviewPanel } from "@/components/PreviewPanel";
+import { EditorPanel } from "@/components/editor/EditorPanel";
+import { PreviewPanel } from "@/components/preview/PreviewPanel";
 import { Button } from "@/components/ui/Button";
 import { EMPTY_CV_DOCUMENT } from "@/constants";
 import { cn } from "@/lib/cn";
@@ -15,8 +15,8 @@ const DOWNLOAD_BUTTON_CLASS =
 
 const DownloadPdfButton = dynamic(
   () =>
-    import("@/components/pdf/DownloadPdfButton").then(
-      (module) => module.DownloadPdfButton
+    import("@/components/preview/DownloadPdfButton").then(
+      (module) => module.DownloadPdfButton,
     ),
   {
     ssr: false,
@@ -24,8 +24,8 @@ const DownloadPdfButton = dynamic(
       <span className={DOWNLOAD_BUTTON_CLASS} aria-live="polite">
         Preparing PDF...
       </span>
-    )
-  }
+    ),
+  },
 );
 
 const getFileName = (fullName: string) => {
@@ -69,13 +69,22 @@ export default function HomePage() {
         </section>
 
         <section className="grid grid-cols-1 gap-rhythm lg:grid-cols-2">
-          <div className={cn("flex flex-col gap-3", isMobilePreviewOpen && "hidden lg:flex")}>
+          <div
+            className={cn(
+              "flex flex-col gap-3",
+              isMobilePreviewOpen && "hidden lg:flex",
+            )}
+          >
             <EditorPanel
               key={editorResetKey}
               onCvDataChange={setCvDocument}
               onDirtyChange={setIsEditorDirty}
             />
-            <Button variant="destructive" onClick={handleReset} disabled={!isEditorDirty}>
+            <Button
+              variant="destructive"
+              onClick={handleReset}
+              disabled={!isEditorDirty}
+            >
               Reset
             </Button>
           </div>
@@ -83,7 +92,7 @@ export default function HomePage() {
           <div
             className={cn(
               "flex flex-col gap-rhythm",
-              !isMobilePreviewOpen && "hidden lg:flex"
+              !isMobilePreviewOpen && "hidden lg:flex",
             )}
           >
             <PreviewPanel

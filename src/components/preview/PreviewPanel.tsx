@@ -6,12 +6,14 @@ import { cn } from "@/lib/cn";
 import type { CvDocument } from "@/types/cv";
 import { Button } from "@/components/ui/Button";
 
-const PREVIEW_SURFACE_STYLE = { backgroundColor: "var(--color-surface)" } as const;
+const PREVIEW_SURFACE_STYLE = {
+  backgroundColor: "var(--color-surface)",
+} as const;
 
 const PdfPreviewFrame = dynamic(
   () =>
-    import("@/components/pdf/PdfPreviewFrame").then(
-      (module) => module.PdfPreviewFrame
+    import("@/components/preview/PdfPreviewFrame").then(
+      (module) => module.PdfPreviewFrame,
     ),
   {
     ssr: false,
@@ -22,8 +24,8 @@ const PdfPreviewFrame = dynamic(
       >
         Loading preview...
       </div>
-    )
-  }
+    ),
+  },
 );
 
 type PreviewPanelProps = {
@@ -39,14 +41,11 @@ export function PreviewPanel({
   cvData,
   headerAction,
   showCloseAction = false,
-  onClose
+  onClose,
 }: PreviewPanelProps) {
   return (
     <section
-      className={cn(
-        "rounded-lg bg-app-surface p-rhythm",
-        className
-      )}
+      className={cn("rounded-lg bg-app-surface p-rhythm", className)}
       aria-labelledby="preview-panel-title"
     >
       <div className="flex flex-wrap items-center justify-between gap-3">

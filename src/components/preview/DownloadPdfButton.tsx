@@ -2,7 +2,7 @@
 
 import { PDFDownloadLink } from "@react-pdf/renderer";
 import type { CvDocument } from "@/types/cv";
-import { CvPdfDocument } from "@/components/CvPdfDocument";
+import { CvPdfDocument } from "@/components/preview/pdf/CvPdfDocument";
 
 type DownloadPdfButtonProps = {
   cvData: CvDocument;
@@ -13,7 +13,7 @@ type DownloadPdfButtonProps = {
 export function DownloadPdfButton({
   cvData,
   fileName,
-  className
+  className,
 }: DownloadPdfButtonProps) {
   return (
     <PDFDownloadLink

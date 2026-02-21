@@ -2,7 +2,7 @@
 
 import { PDFViewer } from "@react-pdf/renderer";
 import type { CvDocument } from "@/types/cv";
-import { CvPdfDocument } from "@/components/CvPdfDocument";
+import { CvPdfDocument } from "@/components/preview/pdf/CvPdfDocument";
 
 type PdfPreviewFrameProps = {
   cvData: CvDocument;
@@ -16,7 +16,7 @@ export function PdfPreviewFrame({ cvData }: PdfPreviewFrameProps) {
         border: "none",
         width: "100%",
         height: "100%",
-        backgroundColor: "var(--color-surface)"
+        backgroundColor: "var(--color-surface)",
       }}
       showToolbar={false}
     >

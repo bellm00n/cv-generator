@@ -1,5 +1,6 @@
 import {
   Document,
+  Font,
   Link,
   Page,
   StyleSheet,
@@ -20,14 +21,21 @@ const SIDEBAR_WIDTH = 141.28;
 const COLUMN_GAP = 16;
 const MAIN_COLUMN_WIDTH = SIDEBAR_START - MAIN_COLUMN_START - COLUMN_GAP;
 
+Font.register({
+  family: "Source Sans Pro",
+  fonts: [
+    { src: "/fonts/SourceSansPro-Regular.ttf", fontWeight: 400 },
+    { src: "/fonts/SourceSansPro-SemiBold.ttf", fontWeight: 600 }
+  ]
+});
+
 const styles = StyleSheet.create({
   page: {
     backgroundColor: "#FFFFFF",
     color: "#262B33",
-    fontFamily: "Helvetica",
+    fontFamily: "Source Sans Pro",
     fontSize: 10.6,
     paddingTop: 30,
-    paddingBottom: 36
   },
   layout: {
     marginLeft: MAIN_COLUMN_START,
@@ -43,9 +51,6 @@ const styles = StyleSheet.create({
   },
   title: {
     marginTop: 4,
-    color: "#98A1B2",
-    fontSize: 10.6,
-    fontWeight: 600
   },
   contactRow: {
     marginTop: 10,

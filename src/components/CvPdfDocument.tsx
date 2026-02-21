@@ -9,11 +9,6 @@ import {
 import type { ReactNode } from "react";
 import type { CvDocument } from "@/types/cv";
 
-const PAGE_SIZE = {
-  width: 595.28,
-  height: 841.89,
-};
-
 const MAIN_COLUMN_START = 58;
 const SIDEBAR_START = 413;
 const SIDEBAR_WIDTH = 141.28;
@@ -54,19 +49,40 @@ const formatDateRange = (
   return `${start} - ${end}`;
 };
 
+const headerStyles = StyleSheet.create({
+  header: {
+    marginBottom: 6,
+  },
+  name: {
+    fontSize: 24,
+    fontWeight: 600,
+    lineHeight: 1,
+  },
+  title: {
+    marginTop: 6,
+    fontSize: 9,
+  },
+});
+
+function PdfHeader({ fullName, title }: { fullName: string; title: string }) {
+  return (
+    <View style={headerStyles.header}>
+      <Text style={headerStyles.name}>{fullName || " "}</Text>
+      <Text style={headerStyles.title}>{title || " "}</Text>
+    </View>
+  );
+}
+
 const sectionStyles = StyleSheet.create({
   section: {
-    marginTop: 36.8,
+    marginTop: 16,
   },
   title: {
     color: "#262B33",
-    fontSize: 14,
+    fontSize: 16,
     fontWeight: 600,
-    letterSpacing: 0.4,
   },
-  body: {
-    marginTop: 9,
-  },
+  body: {},
 });
 
 function PdfSection({
@@ -84,52 +100,29 @@ function PdfSection({
   );
 }
 
-const headerStyles = StyleSheet.create({
-  header: {
-    marginBottom: 36.8,
-  },
-  name: {
-    fontSize: 23,
-    fontWeight: 600,
-    lineHeight: 1.1,
-  },
-  title: {
+const summarySectionStyles = StyleSheet.create({
+  container: {
     marginTop: 4,
   },
-});
-
-function PdfHeader({ fullName, title }: { fullName: string; title: string }) {
-  return (
-    <View style={headerStyles.header}>
-      <Text style={headerStyles.name}>{fullName || " "}</Text>
-      <Text style={headerStyles.title}>{title || " "}</Text>
-    </View>
-  );
-}
-
-const summarySectionStyles = StyleSheet.create({
-  paragraph: {
-    fontSize: 10.6,
-    lineHeight: 1.45,
-  },
+  paragraph: {},
 });
 
 function SummarySection({ summary }: { summary: string }) {
   return (
-    <PdfSection title="Summary">
-      <Text style={summarySectionStyles.paragraph}>{summary || " "}</Text>
+    <PdfSection title="Profile">
+      <View style={summarySectionStyles.container}>
+        <Text style={summarySectionStyles.paragraph}>{summary || " "}</Text>
+      </View>
     </PdfSection>
   );
 }
 
 const employmentHistorySectionStyles = StyleSheet.create({
   block: {
-    marginTop: 21.37,
+    marginTop: 16,
   },
   entryTitle: {
-    fontSize: 10.6,
     fontWeight: 600,
-    lineHeight: 1.45,
   },
   entryMeta: {
     marginTop: 2,
@@ -139,10 +132,7 @@ const employmentHistorySectionStyles = StyleSheet.create({
   entryDescription: {
     marginTop: 7,
   },
-  entryDescriptionText: {
-    fontSize: 10.6,
-    lineHeight: 1.45,
-  },
+  entryDescriptionText: {},
 });
 
 function EmploymentHistorySection({
@@ -159,7 +149,8 @@ function EmploymentHistorySection({
           return (
             <View key={entry.id} style={employmentHistorySectionStyles.block}>
               <Text style={employmentHistorySectionStyles.entryTitle}>
-                {entry.title || " "} {entry.company ? `- ${entry.company}` : ""}
+                {entry.title || " "}{" "}
+                {entry.company ? `at ${entry.company}` : ""}
               </Text>
               <Text style={employmentHistorySectionStyles.entryMeta}>
                 {formatDateRange(
@@ -190,9 +181,7 @@ const educationSectionStyles = StyleSheet.create({
     marginTop: 21.37,
   },
   entryTitle: {
-    fontSize: 10.6,
     fontWeight: 600,
-    lineHeight: 1.45,
   },
   entryMeta: {
     marginTop: 2,
@@ -228,8 +217,7 @@ function EducationSection({
 const detailsSectionStyles = StyleSheet.create({
   item: {
     marginTop: 4,
-    fontSize: 10.6,
-    lineHeight: 1.45,
+    fontSize: 11,
   },
 });
 
@@ -250,8 +238,6 @@ function DetailsSection({ contact }: { contact: CvDocument["contact"] }) {
 const listSectionStyles = StyleSheet.create({
   item: {
     marginTop: 4,
-    fontSize: 10.6,
-    lineHeight: 1.45,
   },
 });
 

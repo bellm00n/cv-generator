@@ -27,7 +27,7 @@ const styles = StyleSheet.create({
     fontFamily: "Source Sans Pro",
     fontSize: 11,
     paddingTop: 30,
-    paddingBottom: 30,
+    paddingBottom: 15,
   },
   layout: {
     marginLeft: MAIN_COLUMN_START,

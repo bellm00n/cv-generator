@@ -16,7 +16,7 @@ const styles = StyleSheet.create({
     fontSize: 9,
   },
   entryDescription: {
-    marginTop: 7,
+    marginTop: 4,
   },
 });
 

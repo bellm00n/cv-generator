@@ -116,7 +116,7 @@ const summarySectionStyles = StyleSheet.create({
 
 function SummarySection({ summary }: { summary: string }) {
   return (
-    <PdfSection title="SUMMARY">
+    <PdfSection title="Summary">
       <Text style={summarySectionStyles.paragraph}>{summary || " "}</Text>
     </PdfSection>
   );
@@ -151,7 +151,7 @@ function EmploymentHistorySection({
   employmentHistory: CvDocument["employmentHistory"];
 }) {
   return (
-    <PdfSection title="EMPLOYMENT HISTORY">
+    <PdfSection title="Employment History">
       <View>
         {employmentHistory.map((entry) => {
           const description = entry.description.trim();
@@ -207,7 +207,7 @@ function EducationSection({
   education: CvDocument["education"];
 }) {
   return (
-    <PdfSection title="EDUCATION">
+    <PdfSection title="Education">
       <View>
         {education.map((entry) => (
           <View key={entry.id} style={educationSectionStyles.block}>
@@ -331,7 +331,7 @@ export function CvPdfDocument({ cvData }: { cvData: CvDocument }) {
                 itemKeyPrefix="skill"
               />
               <ListSection
-                title="LANGUAGES"
+                title="Languages"
                 items={languages}
                 itemKeyPrefix="language"
               />

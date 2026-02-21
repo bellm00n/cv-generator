@@ -1,7 +1,6 @@
 import {
   Document,
   Font,
-  Link,
   Page,
   StyleSheet,
   Text,
@@ -29,105 +28,8 @@ Font.register({
   ],
 });
 
-const styles = StyleSheet.create({
-  page: {
-    backgroundColor: "#FFFFFF",
-    color: "#262B33",
-    fontFamily: "Source Sans Pro",
-    fontSize: 10.6,
-    paddingTop: 30,
-  },
-  layout: {
-    marginLeft: MAIN_COLUMN_START,
-    marginRight: 41,
-  },
-  header: {
-    marginBottom: 36.8,
-  },
-  name: {
-    fontSize: 23,
-    fontWeight: 600,
-    lineHeight: 1.1,
-  },
-  title: {
-    marginTop: 4,
-  },
-  contactRow: {
-    marginTop: 10,
-    flexDirection: "row",
-    flexWrap: "wrap",
-  },
-  metaText: {
-    color: "#98A1B2",
-    fontSize: 9,
-  },
-  contactLink: {
-    color: "#2196F3",
-    fontSize: 9,
-    textDecoration: "none",
-  },
-  columns: {
-    flexDirection: "row",
-  },
-  mainColumn: {
-    width: MAIN_COLUMN_WIDTH,
-    marginRight: COLUMN_GAP,
-  },
-  sideColumn: {
-    width: SIDEBAR_WIDTH,
-  },
-  section: {
-    marginTop: 36.8,
-  },
-  sectionTitle: {
-    color: "#262B33",
-    fontSize: 14,
-    fontWeight: 600,
-    letterSpacing: 0.4,
-  },
-  sectionBody: {
-    marginTop: 9,
-  },
-  paragraph: {
-    fontSize: 10.6,
-    lineHeight: 1.45,
-  },
-  block: {
-    marginTop: 21.37,
-  },
-  entryTitle: {
-    fontSize: 10.6,
-    fontWeight: 600,
-    lineHeight: 1.45,
-  },
-  entryMeta: {
-    marginTop: 2,
-    color: "#98A1B2",
-    fontSize: 9,
-  },
-  entryDescription: {
-    marginTop: 7,
-  },
-  entryDescriptionText: {
-    fontSize: 10.6,
-    lineHeight: 1.45,
-  },
-  sideListItem: {
-    marginTop: 4,
-    fontSize: 10.6,
-    lineHeight: 1.45,
-  },
-});
-
 const normalizeList = (items: string[]) =>
   items.map((item) => item.trim()).filter(Boolean);
-
-const sectionData = (title: string, children: ReactNode) => (
-  <View style={styles.section}>
-    <Text style={styles.sectionTitle}>{title}</Text>
-    <View style={styles.sectionBody}>{children}</View>
-  </View>
-);
 
 const formatDateRange = (
   startDate: string,
@@ -152,115 +54,287 @@ const formatDateRange = (
   return `${start} - ${end}`;
 };
 
+const sectionStyles = StyleSheet.create({
+  section: {
+    marginTop: 36.8,
+  },
+  title: {
+    color: "#262B33",
+    fontSize: 14,
+    fontWeight: 600,
+    letterSpacing: 0.4,
+  },
+  body: {
+    marginTop: 9,
+  },
+});
+
+function PdfSection({
+  title,
+  children,
+}: {
+  title: string;
+  children: ReactNode;
+}) {
+  return (
+    <View style={sectionStyles.section}>
+      <Text style={sectionStyles.title}>{title}</Text>
+      <View style={sectionStyles.body}>{children}</View>
+    </View>
+  );
+}
+
+const headerStyles = StyleSheet.create({
+  header: {
+    marginBottom: 36.8,
+  },
+  name: {
+    fontSize: 23,
+    fontWeight: 600,
+    lineHeight: 1.1,
+  },
+  title: {
+    marginTop: 4,
+  },
+});
+
+function PdfHeader({ fullName, title }: { fullName: string; title: string }) {
+  return (
+    <View style={headerStyles.header}>
+      <Text style={headerStyles.name}>{fullName || " "}</Text>
+      <Text style={headerStyles.title}>{title || " "}</Text>
+    </View>
+  );
+}
+
+const summarySectionStyles = StyleSheet.create({
+  paragraph: {
+    fontSize: 10.6,
+    lineHeight: 1.45,
+  },
+});
+
+function SummarySection({ summary }: { summary: string }) {
+  return (
+    <PdfSection title="SUMMARY">
+      <Text style={summarySectionStyles.paragraph}>{summary || " "}</Text>
+    </PdfSection>
+  );
+}
+
+const employmentHistorySectionStyles = StyleSheet.create({
+  block: {
+    marginTop: 21.37,
+  },
+  entryTitle: {
+    fontSize: 10.6,
+    fontWeight: 600,
+    lineHeight: 1.45,
+  },
+  entryMeta: {
+    marginTop: 2,
+    color: "#98A1B2",
+    fontSize: 9,
+  },
+  entryDescription: {
+    marginTop: 7,
+  },
+  entryDescriptionText: {
+    fontSize: 10.6,
+    lineHeight: 1.45,
+  },
+});
+
+function EmploymentHistorySection({
+  employmentHistory,
+}: {
+  employmentHistory: CvDocument["employmentHistory"];
+}) {
+  return (
+    <PdfSection title="EMPLOYMENT HISTORY">
+      <View>
+        {employmentHistory.map((entry) => {
+          const description = entry.description.trim();
+
+          return (
+            <View key={entry.id} style={employmentHistorySectionStyles.block}>
+              <Text style={employmentHistorySectionStyles.entryTitle}>
+                {entry.title || " "} {entry.company ? `- ${entry.company}` : ""}
+              </Text>
+              <Text style={employmentHistorySectionStyles.entryMeta}>
+                {formatDateRange(
+                  entry.startDate,
+                  entry.endDate ?? "",
+                  "Present",
+                )}
+              </Text>
+              {description ? (
+                <View style={employmentHistorySectionStyles.entryDescription}>
+                  <Text
+                    style={employmentHistorySectionStyles.entryDescriptionText}
+                  >
+                    {description}
+                  </Text>
+                </View>
+              ) : null}
+            </View>
+          );
+        })}
+      </View>
+    </PdfSection>
+  );
+}
+
+const educationSectionStyles = StyleSheet.create({
+  block: {
+    marginTop: 21.37,
+  },
+  entryTitle: {
+    fontSize: 10.6,
+    fontWeight: 600,
+    lineHeight: 1.45,
+  },
+  entryMeta: {
+    marginTop: 2,
+    color: "#98A1B2",
+    fontSize: 9,
+  },
+});
+
+function EducationSection({
+  education,
+}: {
+  education: CvDocument["education"];
+}) {
+  return (
+    <PdfSection title="EDUCATION">
+      <View>
+        {education.map((entry) => (
+          <View key={entry.id} style={educationSectionStyles.block}>
+            <Text style={educationSectionStyles.entryTitle}>
+              {entry.degree || " "}
+              {entry.university ? ` - ${entry.university}` : ""}
+            </Text>
+            <Text style={educationSectionStyles.entryMeta}>
+              {formatDateRange(entry.startDate, entry.endDate)}
+            </Text>
+          </View>
+        ))}
+      </View>
+    </PdfSection>
+  );
+}
+
+const detailsSectionStyles = StyleSheet.create({
+  item: {
+    marginTop: 4,
+    fontSize: 10.6,
+    lineHeight: 1.45,
+  },
+});
+
+function DetailsSection({ contact }: { contact: CvDocument["contact"] }) {
+  return (
+    <PdfSection title="Details">
+      <View>
+        <Text style={detailsSectionStyles.item}>{contact.city}</Text>
+        {/* TODO: Add country */}
+        {/* <Text style={detailsSectionStyles.item}>{contact.country}</Text> */}
+        <Text style={detailsSectionStyles.item}>{contact.phone}</Text>
+        <Text style={detailsSectionStyles.item}>{contact.email}</Text>
+      </View>
+    </PdfSection>
+  );
+}
+
+const listSectionStyles = StyleSheet.create({
+  item: {
+    marginTop: 4,
+    fontSize: 10.6,
+    lineHeight: 1.45,
+  },
+});
+
+function ListSection({
+  title,
+  items,
+  itemKeyPrefix,
+}: {
+  title: string;
+  items: string[];
+  itemKeyPrefix: string;
+}) {
+  return (
+    <PdfSection title={title}>
+      <View>
+        {items.map((item, index) => (
+          <Text
+            key={`${itemKeyPrefix}-${index}`}
+            style={listSectionStyles.item}
+          >
+            {item}
+          </Text>
+        ))}
+      </View>
+    </PdfSection>
+  );
+}
+
+const documentStyles = StyleSheet.create({
+  page: {
+    backgroundColor: "#FFFFFF",
+    color: "#262B33",
+    fontFamily: "Source Sans Pro",
+    fontSize: 10.6,
+    paddingTop: 30,
+  },
+  layout: {
+    marginLeft: MAIN_COLUMN_START,
+    marginRight: 41,
+  },
+  columns: {
+    flexDirection: "row",
+  },
+  mainColumn: {
+    width: MAIN_COLUMN_WIDTH,
+    marginRight: COLUMN_GAP,
+  },
+  sideColumn: {
+    width: SIDEBAR_WIDTH,
+  },
+});
+
 export function CvPdfDocument({ cvData }: { cvData: CvDocument }) {
   const skills = normalizeList(cvData.skills);
   const languages = normalizeList(cvData.languages);
 
   return (
     <Document>
-      <Page size={PAGE_SIZE} style={styles.page}>
-        <View style={styles.layout}>
-          <View style={styles.header}>
-            <Text style={styles.name}>{cvData.fullName || " "}</Text>
-            <Text style={styles.title}>{cvData.title || " "}</Text>
-          </View>
+      <Page size="A4" style={documentStyles.page}>
+        <View style={documentStyles.layout}>
+          <PdfHeader fullName={cvData.fullName} title={cvData.title} />
 
-          <View style={styles.columns}>
-            <View style={styles.mainColumn}>
-              {sectionData(
-                "SUMMARY",
-                <Text style={styles.paragraph}>{cvData.summary || " "}</Text>,
-              )}
-
-              {sectionData(
-                "EMPLOYMENT HISTORY",
-                <View>
-                  {cvData.employmentHistory.map((entry) => {
-                    const description = entry.description.trim();
-
-                    return (
-                      <View key={entry.id} style={styles.block}>
-                        <Text style={styles.entryTitle}>
-                          {entry.title || " "}{" "}
-                          {entry.company ? `- ${entry.company}` : ""}
-                        </Text>
-                        <Text style={styles.entryMeta}>
-                          {formatDateRange(
-                            entry.startDate,
-                            entry.endDate ?? "",
-                            "Present",
-                          )}
-                        </Text>
-                        {description ? (
-                          <View style={styles.entryDescription}>
-                            <Text style={styles.entryDescriptionText}>
-                              {description}
-                            </Text>
-                          </View>
-                        ) : null}
-                      </View>
-                    );
-                  })}
-                </View>,
-              )}
-
-              {sectionData(
-                "EDUCATION",
-                <View>
-                  {cvData.education.map((entry) => (
-                    <View key={entry.id} style={styles.block}>
-                      <Text style={styles.entryTitle}>
-                        {entry.degree || " "}
-                        {entry.university ? ` - ${entry.university}` : ""}
-                      </Text>
-                      <Text style={styles.entryMeta}>
-                        {formatDateRange(entry.startDate, entry.endDate)}
-                      </Text>
-                    </View>
-                  ))}
-                </View>,
-              )}
+          <View style={documentStyles.columns}>
+            <View style={documentStyles.mainColumn}>
+              <SummarySection summary={cvData.summary} />
+              <EmploymentHistorySection
+                employmentHistory={cvData.employmentHistory}
+              />
+              <EducationSection education={cvData.education} />
             </View>
 
-            <View style={styles.sideColumn}>
-              {sectionData(
-                "Details",
-                <View>
-                  <Text style={styles.sideListItem}>{cvData.contact.city}</Text>
-                  {/* TODO: Add country */}
-                  {/* <Text style={styles.sideListItem}>
-                    {cvData.contact.country}
-                    </Text> */}
-                  <Text style={styles.sideListItem}>
-                    {cvData.contact.phone}
-                  </Text>
-                  <Text style={styles.sideListItem}>
-                    {cvData.contact.email}
-                  </Text>
-                </View>,
-              )}
-
-              {sectionData(
-                "Skills",
-                <View>
-                  {skills.map((skill, index) => (
-                    <Text key={`skill-${index}`} style={styles.sideListItem}>
-                      {skill}
-                    </Text>
-                  ))}
-                </View>,
-              )}
-
-              {sectionData(
-                "LANGUAGES",
-                <View>
-                  {languages.map((language, index) => (
-                    <Text key={`language-${index}`} style={styles.sideListItem}>
-                      {language}
-                    </Text>
-                  ))}
-                </View>,
-              )}
+            <View style={documentStyles.sideColumn}>
+              <DetailsSection contact={cvData.contact} />
+              <ListSection
+                title="Skills"
+                items={skills}
+                itemKeyPrefix="skill"
+              />
+              <ListSection
+                title="LANGUAGES"
+                items={languages}
+                itemKeyPrefix="language"
+              />
             </View>
           </View>
         </View>

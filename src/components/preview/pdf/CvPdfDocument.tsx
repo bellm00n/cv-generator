@@ -28,6 +28,7 @@ const styles = StyleSheet.create({
     fontSize: 11,
     paddingTop: 30,
     paddingBottom: 15,
+    lineHeight: 1.4,
   },
   layout: {
     marginLeft: MAIN_COLUMN_START,

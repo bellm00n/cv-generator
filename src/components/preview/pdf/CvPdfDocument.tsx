@@ -2,11 +2,7 @@ import { Document, Font, Page, StyleSheet, View } from "@react-pdf/renderer";
 import type { CvDocument } from "@/types/cv";
 import { EducationSection } from "./EducationSection";
 import { EmploymentHistorySection } from "./EmploymentHistorySection";
-import {
-  ListSection,
-  ListSectionLink,
-  ListSectionText,
-} from "./ListSection";
+import { ListSection, ListSectionLink, ListSectionText } from "./ListSection";
 import { PdfHeader } from "./PdfHeader";
 import { SummarySection } from "./SummarySection";
 
@@ -46,6 +42,7 @@ const styles = StyleSheet.create({
   },
   sideColumn: {
     width: SIDEBAR_WIDTH,
+    paddingTop: "4px",
   },
 });
 

@@ -6,7 +6,6 @@ const styles = StyleSheet.create({
     marginTop: 16,
   },
   title: {
-    color: "#262B33",
     fontSize: 16,
     fontWeight: 600,
   },

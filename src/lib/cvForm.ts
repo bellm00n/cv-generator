@@ -11,6 +11,15 @@ export const cvListItemSchema = z.object({
   value: z.string().trim().min(1, "Add a value or remove this row.")
 });
 
+const linkItemSchema = z.object({
+  label: z.string().trim().min(1, REQUIRED_WARNING),
+  url: z
+    .string()
+    .trim()
+    .min(1, REQUIRED_WARNING)
+    .url("Use a valid URL, for example https://linkedin.com/in/username.")
+});
+
 const employmentItemSchema = z.object({
   title: z.string().trim().min(1, REQUIRED_WARNING),
   company: z.string().trim().min(1, REQUIRED_WARNING),
@@ -38,6 +47,7 @@ export const cvFormSchema = z.object({
     .min(1, REQUIRED_WARNING)
     .email("Use a valid email format, for example name@example.com."),
   summary: z.string().trim().min(1, REQUIRED_WARNING),
+  links: z.array(linkItemSchema),
   skills: z.array(cvListItemSchema).min(1, "Add at least one skill."),
   languages: z.array(cvListItemSchema).min(1, "Add at least one language."),
   employmentHistory: z
@@ -50,6 +60,10 @@ export type CvFormValues = z.infer<typeof cvFormSchema>;
 
 export function createEmptyListItem(): CvFormValues["skills"][number] {
   return { value: "" };
+}
+
+export function createEmptyLinkItem(): CvFormValues["links"][number] {
+  return { label: "", url: "" };
 }
 
 export function createEmptyEmploymentItem(): CvFormValues["employmentHistory"][number] {
@@ -80,6 +94,7 @@ export function createDefaultCvFormValues(): CvFormValues {
     phone: "",
     email: "",
     summary: "",
+    links: [],
     skills: [createEmptyListItem()],
     languages: [createEmptyListItem()],
     employmentHistory: [createEmptyEmploymentItem()],
@@ -130,6 +145,26 @@ const normalizeListItems = (value: unknown): CvFormValues["skills"] => {
       return null;
     })
     .filter((item): item is CvFormValues["skills"][number] => item !== null);
+};
+
+const normalizeLinks = (value: unknown): CvFormValues["links"] => {
+  if (!Array.isArray(value)) {
+    return [];
+  }
+
+  return value
+    .map((item) => {
+      const record = asRecord(item);
+      if (!record) {
+        return null;
+      }
+
+      return {
+        label: readString(record.label),
+        url: readString(record.url)
+      };
+    })
+    .filter((item): item is CvFormValues["links"][number] => item !== null);
 };
 
 const normalizeEmploymentHistory = (
@@ -210,6 +245,8 @@ export function normalizePersistedCvForm(raw: unknown): CvFormValues | null {
     phone: readString(source.phone ?? source.number ?? contact?.phone ?? contact?.number),
     email: readString(source.email ?? contact?.email),
     summary: readString(source.summary),
+    links:
+      source.links === undefined ? defaults.links : normalizeLinks(source.links),
     skills:
       source.skills === undefined ? defaults.skills : normalizeListItems(source.skills),
     languages:
@@ -236,6 +273,19 @@ export function mapCvFormValuesToDocument(values: CvFormValues): CvDocument {
   const normalizedLanguages = values.languages
     .map((item) => item.value.trim())
     .filter(Boolean);
+
+  const normalizedLinks: CvDocument["links"] = values.links.flatMap(
+    (item, index) => {
+      const label = item.label.trim();
+      const url = item.url.trim();
+
+      if (!hasContent(label) && !hasContent(url)) {
+        return [];
+      }
+
+      return [{ id: `link-${index + 1}`, label, url }];
+    }
+  );
 
   const normalizedEmploymentHistory: CvDocument["employmentHistory"] =
     values.employmentHistory.flatMap((item, index) => {
@@ -305,6 +355,7 @@ export function mapCvFormValuesToDocument(values: CvFormValues): CvDocument {
       email: values.email.trim()
     },
     summary: values.summary.trim(),
+    links: normalizedLinks,
     skills: normalizedSkills,
     languages: normalizedLanguages,
     employmentHistory: normalizedEmploymentHistory,

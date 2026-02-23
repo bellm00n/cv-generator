@@ -9,6 +9,7 @@ export const EMPTY_CV_DOCUMENT: CvDocument = {
     email: ""
   },
   summary: "",
+  links: [],
   skills: [],
   languages: [],
   employmentHistory: [],

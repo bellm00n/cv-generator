@@ -2,7 +2,11 @@ import { Document, Font, Page, StyleSheet, View } from "@react-pdf/renderer";
 import type { CvDocument } from "@/types/cv";
 import { EducationSection } from "./EducationSection";
 import { EmploymentHistorySection } from "./EmploymentHistorySection";
-import { ListSection } from "./ListSection";
+import {
+  ListSection,
+  ListSectionLink,
+  ListSectionText,
+} from "./ListSection";
 import { PdfHeader } from "./PdfHeader";
 import { SummarySection } from "./SummarySection";
 
@@ -68,25 +72,32 @@ export function CvPdfDocument({ cvData }: { cvData: CvDocument }) {
             </View>
 
             <View style={styles.sideColumn}>
-              <ListSection
-                title="Details"
-                items={[
-                  cvData.contact.city,
-                  cvData.contact.phone,
-                  cvData.contact.email,
-                ]}
-                itemKeyPrefix="detail"
-              />
-              <ListSection
-                title="Skills"
-                items={skills}
-                itemKeyPrefix="skill"
-              />
-              <ListSection
-                title="Languages"
-                items={languages}
-                itemKeyPrefix="language"
-              />
+              <ListSection title="Details">
+                <ListSectionText>{cvData.contact.city}</ListSectionText>
+                <ListSectionText>{cvData.contact.phone}</ListSectionText>
+                <ListSectionLink src={`mailto:${cvData.contact.email}`}>
+                  {cvData.contact.email}
+                </ListSectionLink>
+              </ListSection>
+              {cvData.links.length > 0 && (
+                <ListSection title="Links">
+                  {cvData.links.map((link) => (
+                    <ListSectionLink key={link.id} src={link.url}>
+                      {link.label}
+                    </ListSectionLink>
+                  ))}
+                </ListSection>
+              )}
+              <ListSection title="Skills">
+                {skills.map((skill) => (
+                  <ListSectionText key={skill}>{skill}</ListSectionText>
+                ))}
+              </ListSection>
+              <ListSection title="Languages">
+                {languages.map((language) => (
+                  <ListSectionText key={language}>{language}</ListSectionText>
+                ))}
+              </ListSection>
             </View>
           </View>
         </View>

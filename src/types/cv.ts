@@ -21,11 +21,18 @@ export interface CvEducationEntry {
   endDate: string;
 }
 
+export interface CvLinkEntry {
+  id: string;
+  label: string;
+  url: string;
+}
+
 export interface CvDocument {
   fullName: string;
   title: string;
   contact: CvContactInfo;
   summary: string;
+  links: CvLinkEntry[];
   skills: string[];
   languages: string[];
   employmentHistory: CvEmploymentEntry[];

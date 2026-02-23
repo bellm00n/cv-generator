@@ -39,6 +39,7 @@ export const cvFormSchema = z.object({
   name: z.string().trim().min(1, REQUIRED_WARNING),
   surname: z.string().trim().min(1, REQUIRED_WARNING),
   title: z.string().trim().min(1, REQUIRED_WARNING),
+  country: z.string().trim().min(1, REQUIRED_WARNING),
   city: z.string().trim().min(1, REQUIRED_WARNING),
   phone: z.string().trim().min(1, REQUIRED_WARNING),
   email: z
@@ -90,6 +91,7 @@ export function createDefaultCvFormValues(): CvFormValues {
     name: "",
     surname: "",
     title: "",
+    country: "",
     city: "",
     phone: "",
     email: "",
@@ -241,6 +243,7 @@ export function normalizePersistedCvForm(raw: unknown): CvFormValues | null {
     name: readString(source.name) || fullNameFallback.name,
     surname: readString(source.surname) || fullNameFallback.surname,
     title: readString(source.title),
+    country: readString(source.country ?? contact?.country),
     city: readString(source.city ?? contact?.city),
     phone: readString(source.phone ?? source.number ?? contact?.phone ?? contact?.number),
     email: readString(source.email ?? contact?.email),
@@ -350,6 +353,7 @@ export function mapCvFormValuesToDocument(values: CvFormValues): CvDocument {
     fullName: `${values.name.trim()} ${values.surname.trim()}`.trim(),
     title: values.title.trim(),
     contact: {
+      country: values.country.trim(),
       city: values.city.trim(),
       phone: values.phone.trim(),
       email: values.email.trim()

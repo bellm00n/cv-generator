@@ -317,6 +317,17 @@ export function EditorPanel({
               {...register("title")}
             />
             <Input
+              id="country"
+              label="Country"
+              placeholder="United States"
+              className={cn(
+                getWarningMessage(errors.country?.message) ? WARNING_INPUT_CLASS : undefined
+              )}
+              helperText={getWarningMessage(errors.country?.message)}
+              helperTone="warning"
+              {...register("country")}
+            />
+            <Input
               id="city"
               label="City"
               placeholder="San Francisco"

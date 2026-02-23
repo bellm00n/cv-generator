@@ -1,4 +1,5 @@
 export interface CvContactInfo {
+  country: string;
   city: string;
   phone: string;
   email: string;

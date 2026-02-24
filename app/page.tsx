@@ -1,13 +1,18 @@
 "use client";
 
-import { useState } from "react";
+import { type ChangeEvent, useRef, useState } from "react";
 import dynamic from "next/dynamic";
 import { EditorPanel } from "@/components/editor/EditorPanel";
 import { PreviewPanel } from "@/components/preview/PreviewPanel";
 import { Button } from "@/components/ui/Button";
 import { EMPTY_CV_DOCUMENT } from "@/constants";
 import { cn } from "@/lib/cn";
-import { CV_FORM_STORAGE_KEY } from "@/lib/cvForm";
+import {
+  CV_FORM_STORAGE_KEY,
+  cvUploadSchema,
+  mapCvFormValuesToDocument,
+  normalizePersistedCvForm
+} from "@/lib/cvForm";
 import type { CvDocument } from "@/types/cv";
 
 const DOWNLOAD_BUTTON_CLASS =
@@ -43,7 +48,48 @@ export default function HomePage() {
   const [cvDocument, setCvDocument] = useState<CvDocument>(EMPTY_CV_DOCUMENT);
   const [isEditorDirty, setIsEditorDirty] = useState(false);
   const [editorResetKey, setEditorResetKey] = useState(0);
+  const fileInputRef = useRef<HTMLInputElement>(null);
   const fileName = getFileName(cvDocument.fullName);
+
+  const handleUploadData = () => {
+    fileInputRef.current?.click();
+  };
+
+  const handleFileChange = (event: ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0];
+    if (!file) return;
+
+    event.target.value = "";
+
+    const reader = new FileReader();
+    reader.onload = (e) => {
+      try {
+        const json: unknown = JSON.parse(e.target?.result as string);
+        const result = cvUploadSchema.safeParse(json);
+
+        if (!result.success) {
+          alert("The uploaded file is not valid");
+          return;
+        }
+
+        const normalized = normalizePersistedCvForm(result.data);
+        if (!normalized) {
+          alert("The uploaded file is not valid");
+          return;
+        }
+
+        window.localStorage.setItem(
+          CV_FORM_STORAGE_KEY,
+          JSON.stringify(normalized),
+        );
+        setCvDocument(mapCvFormValuesToDocument(normalized));
+        setEditorResetKey((current) => current + 1);
+      } catch {
+        alert("The uploaded file is not valid");
+      }
+    };
+    reader.readAsText(file);
+  };
 
   const handleDownloadData = () => {
     if (typeof window === "undefined") return;
@@ -101,7 +147,17 @@ export default function HomePage() {
               onCvDataChange={setCvDocument}
               onDirtyChange={setIsEditorDirty}
             />
+            <input
+              ref={fileInputRef}
+              type="file"
+              accept=".json"
+              className="hidden"
+              onChange={handleFileChange}
+            />
             <div className="flex gap-3">
+              <Button variant="secondary" onClick={handleUploadData}>
+                Upload data
+              </Button>
               <Button variant="secondary" onClick={handleDownloadData}>
                 Download data
               </Button>

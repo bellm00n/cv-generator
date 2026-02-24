@@ -113,10 +113,12 @@ export default function HomePage() {
   };
 
   const handleReset = () => {
-    if (typeof window !== "undefined") {
-      window.localStorage.removeItem(CV_FORM_STORAGE_KEY);
-    }
+    const confirmed = window.confirm(
+      "DANGER! If you confirm this operation all CV data will be removed!",
+    );
+    if (!confirmed) return;
 
+    window.localStorage.removeItem(CV_FORM_STORAGE_KEY);
     setCvDocument(EMPTY_CV_DOCUMENT);
     setIsEditorDirty(false);
     setEditorResetKey((current) => current + 1);
@@ -164,7 +166,6 @@ export default function HomePage() {
               <Button
                 variant="destructive"
                 onClick={handleReset}
-                disabled={!isEditorDirty}
               >
                 Reset
               </Button>

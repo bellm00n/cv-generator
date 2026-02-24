@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { type KeyboardEvent, useEffect, useRef, useState } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import {
   type FieldErrors,
@@ -262,6 +262,19 @@ export function EditorPanel({
     };
   }, [getValues, isHydrated, onCvDataChange, watch]);
 
+  const handleLanguageKeyDown = (event: KeyboardEvent<HTMLInputElement>, index: number) => {
+    if (event.key !== "Enter") return;
+    event.preventDefault();
+
+    const value = getValues(`languages.${index}.value`);
+    if (!value?.trim()) return;
+
+    languagesArray.insert(index + 1, createEmptyListItem());
+    requestAnimationFrame(() => {
+      document.getElementById(`language-${index + 1}`)?.focus();
+    });
+  };
+
   return (
     <section
       className={cn(
@@ -484,7 +497,7 @@ export function EditorPanel({
           <div className="flex flex-wrap items-center justify-between gap-2">
             <div className="space-y-0.5">
               <h3 className="text-sm font-semibold">Languages</h3>
-              <p className="text-xs text-app-muted">Add one language per row.</p>
+              <p className="text-xs text-app-muted">Add one per row. Press Enter to add a new row.</p>
             </div>
             <Button
               variant="secondary"
@@ -517,6 +530,7 @@ export function EditorPanel({
                       helperText={languageWarning}
                       helperTone="warning"
                       {...register(`languages.${index}.value` as const)}
+                      onKeyDown={(e) => handleLanguageKeyDown(e, index)}
                     />
                   </div>
                   <Button

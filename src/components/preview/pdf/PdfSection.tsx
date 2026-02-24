@@ -1,7 +1,7 @@
 import { StyleSheet, Text, View } from "@react-pdf/renderer";
 import type { ReactNode } from "react";
 
-const ICON_OFFSET = 17;
+const ICON_OFFSET = 19;
 
 const styles = StyleSheet.create({
   section: {
@@ -11,10 +11,10 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     marginLeft: -ICON_OFFSET,
-    gap: 5,
+    gap: 7,
   },
   iconWrap: {
-    marginTop: 3,
+    marginTop: 4,
   },
   titleRowPlain: {
     flexDirection: "row",

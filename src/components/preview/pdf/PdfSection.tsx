@@ -1,9 +1,24 @@
 import { StyleSheet, Text, View } from "@react-pdf/renderer";
 import type { ReactNode } from "react";
 
+const ICON_OFFSET = 17;
+
 const styles = StyleSheet.create({
   section: {
     marginTop: 16,
+  },
+  titleRow: {
+    flexDirection: "row",
+    alignItems: "center",
+    marginLeft: -ICON_OFFSET,
+    gap: 5,
+  },
+  iconWrap: {
+    marginTop: 3,
+  },
+  titleRowPlain: {
+    flexDirection: "row",
+    alignItems: "center",
   },
   title: {
     fontSize: 16,
@@ -13,14 +28,19 @@ const styles = StyleSheet.create({
 
 export function PdfSection({
   title,
+  icon,
   children,
 }: {
   title: string;
+  icon?: ReactNode;
   children: ReactNode;
 }) {
   return (
     <View style={styles.section}>
-      <Text style={styles.title}>{title}</Text>
+      <View style={icon ? styles.titleRow : styles.titleRowPlain}>
+        {icon ? <View style={styles.iconWrap}>{icon}</View> : null}
+        <Text style={styles.title}>{title}</Text>
+      </View>
       <View>{children}</View>
     </View>
   );

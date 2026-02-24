@@ -2,6 +2,7 @@ import { StyleSheet, Text, View } from "@react-pdf/renderer";
 import { formatDateRange } from "@/lib/formatDateRange";
 import type { CvDocument } from "@/types/cv";
 import { PdfSection } from "./PdfSection";
+import { GraduationCapIcon } from "./SectionIcons";
 
 const styles = StyleSheet.create({
   block: {
@@ -23,7 +24,7 @@ export function EducationSection({
   education: CvDocument["education"];
 }) {
   return (
-    <PdfSection title="Education">
+    <PdfSection title="Education" icon={<GraduationCapIcon />}>
       <View>
         {education.map((entry) => (
           <View key={entry.id} style={styles.block}>

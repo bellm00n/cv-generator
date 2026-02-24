@@ -2,6 +2,7 @@ import { StyleSheet, Text, View } from "@react-pdf/renderer";
 import { formatDateRange } from "@/lib/formatDateRange";
 import type { CvDocument } from "@/types/cv";
 import { PdfSection } from "./PdfSection";
+import { BriefcaseIcon } from "./SectionIcons";
 
 const styles = StyleSheet.create({
   block: {
@@ -26,7 +27,7 @@ export function EmploymentHistorySection({
   employmentHistory: CvDocument["employmentHistory"];
 }) {
   return (
-    <PdfSection title="Employment History">
+    <PdfSection title="Employment History" icon={<BriefcaseIcon />}>
       <View>
         {employmentHistory.map((entry) => {
           const description = entry.description.trim();

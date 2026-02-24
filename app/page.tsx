@@ -45,6 +45,27 @@ export default function HomePage() {
   const [editorResetKey, setEditorResetKey] = useState(0);
   const fileName = getFileName(cvDocument.fullName);
 
+  const handleDownloadData = () => {
+    if (typeof window === "undefined") return;
+
+    const raw = window.localStorage.getItem(CV_FORM_STORAGE_KEY);
+    if (!raw) return;
+
+    const timestamp = new Date()
+      .toISOString()
+      .slice(0, 19)
+      .replace("T", "_")
+      .replaceAll(":", "-");
+
+    const blob = new Blob([raw], { type: "application/json" });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = `cv-backup_${timestamp}.json`;
+    a.click();
+    URL.revokeObjectURL(url);
+  };
+
   const handleReset = () => {
     if (typeof window !== "undefined") {
       window.localStorage.removeItem(CV_FORM_STORAGE_KEY);
@@ -80,13 +101,18 @@ export default function HomePage() {
               onCvDataChange={setCvDocument}
               onDirtyChange={setIsEditorDirty}
             />
-            <Button
-              variant="destructive"
-              onClick={handleReset}
-              disabled={!isEditorDirty}
-            >
-              Reset
-            </Button>
+            <div className="flex gap-3">
+              <Button variant="secondary" onClick={handleDownloadData}>
+                Download data
+              </Button>
+              <Button
+                variant="destructive"
+                onClick={handleReset}
+                disabled={!isEditorDirty}
+              >
+                Reset
+              </Button>
+            </div>
           </div>
 
           <div

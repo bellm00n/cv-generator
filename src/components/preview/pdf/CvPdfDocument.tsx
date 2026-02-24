@@ -71,6 +71,7 @@ export function CvPdfDocument({ cvData }: { cvData: CvDocument }) {
 
             <View style={styles.sideColumn}>
               <ListSection title="Details">
+                <ListSectionText>{cvData.contact.country}</ListSectionText>
                 <ListSectionText>{cvData.contact.city}</ListSectionText>
                 <ListSectionText>{cvData.contact.phone}</ListSectionText>
                 <ListSectionLink src={`mailto:${cvData.contact.email}`}>

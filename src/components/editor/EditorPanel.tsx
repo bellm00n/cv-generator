@@ -10,6 +10,7 @@ import {
 } from "react-hook-form";
 import { cn } from "@/lib/cn";
 import { Button } from "@/components/ui/Button";
+import { Chips } from "@/components/ui/Chips";
 import { Input } from "@/components/ui/Input";
 import { Textarea } from "@/components/ui/Textarea";
 import {
@@ -459,59 +460,23 @@ export function EditorPanel({
         </section>
 
         <section className="py-4">
-          <div className="flex flex-wrap items-center justify-between gap-2">
-            <div className="space-y-0.5">
-              <h3 className="text-sm font-semibold">Skills</h3>
-              <p className="text-xs text-app-muted">Add one skill per row.</p>
-            </div>
-            <Button variant="secondary" onClick={() => skillsArray.append(createEmptyListItem())}>
-              Add skill
-            </Button>
+          <div className="space-y-0.5">
+            <h3 className="text-sm font-semibold">Skills</h3>
+            <p className="text-xs text-app-muted">Type a skill and press Enter to add it.</p>
           </div>
 
-          <div className="mt-3 space-y-2">
-            {skillsArray.fields.map((skill, index) => {
-              const skillWarning = getWarningMessage(
-                (
-                  errors.skills as
-                    | FieldErrors<CvFormValues["skills"][number]>[]
-                    | undefined
-                )?.[index]?.value?.message
-              );
-
-              return (
-                <div key={skill.id} className="flex flex-wrap items-start gap-2">
-                  <div className="min-w-[14rem] flex-1">
-                    <Input
-                      id={`skill-${index}`}
-                      label={`Skill ${index + 1}`}
-                      hideLabel
-                      aria-label={`Skill ${index + 1}`}
-                      placeholder="Stakeholder management"
-                      className={cn(skillWarning ? WARNING_INPUT_CLASS : undefined)}
-                      helperText={skillWarning}
-                      helperTone="warning"
-                      {...register(`skills.${index}.value` as const)}
-                    />
-                  </div>
-                  <Button
-                    variant="destructive"
-                    className="h-9 px-3"
-                    onClick={() => skillsArray.remove(index)}
-                  >
-                    Delete
-                  </Button>
-                </div>
-              );
-            })}
-
-            {getArrayWarning(errors.skills) ? (
-              <p className="text-xs text-amber-700">{getArrayWarning(errors.skills)}</p>
-            ) : null}
-
-            {skillsArray.fields.length === 0 ? (
-              <p className="text-xs text-app-muted">No skills added yet.</p>
-            ) : null}
+          <div className="mt-3">
+            <Chips
+              id="skills"
+              label="Skills"
+              hideLabel
+              placeholder="Stakeholder management"
+              values={skillsArray.fields.map((field) => field.value)}
+              onAdd={(value) => skillsArray.append({ value })}
+              onRemove={(index) => skillsArray.remove(index)}
+              helperText={getArrayWarning(errors.skills)}
+              helperTone="warning"
+            />
           </div>
         </section>
 

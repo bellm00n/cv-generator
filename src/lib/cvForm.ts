@@ -23,6 +23,7 @@ const linkItemSchema = z.object({
 const employmentItemSchema = z.object({
   title: z.string().trim().min(1, REQUIRED_WARNING),
   company: z.string().trim().min(1, REQUIRED_WARNING),
+  location: z.string().trim(),
   startDate: z.string().trim().min(1, REQUIRED_WARNING),
   endDate: z.string().trim(),
   description: z.string().trim().min(1, REQUIRED_WARNING)
@@ -110,6 +111,7 @@ export function createEmptyEmploymentItem(): CvFormValues["employmentHistory"][n
   return {
     title: "",
     company: "",
+    location: "",
     startDate: "",
     endDate: "",
     description: ""
@@ -238,6 +240,7 @@ const normalizeEmploymentHistory = (
       return {
         title: readString(record.title),
         company: readString(record.company ?? record.companyName),
+        location: readString(record.location),
         startDate: readString(record.startDate),
         endDate: readString(record.endDate),
         description
@@ -333,6 +336,7 @@ export function mapCvFormValuesToDocument(values: CvFormValues): CvDocument {
     values.employmentHistory.flatMap((item, index) => {
       const title = item.title.trim();
       const company = item.company.trim();
+      const location = item.location.trim();
       const startDate = item.startDate.trim();
       const endDate = item.endDate.trim();
       const description = item.description.trim();
@@ -340,6 +344,7 @@ export function mapCvFormValuesToDocument(values: CvFormValues): CvDocument {
       if (
         !hasContent(title) &&
         !hasContent(company) &&
+        !hasContent(location) &&
         !hasContent(startDate) &&
         !hasContent(endDate) &&
         !hasContent(description)
@@ -351,6 +356,7 @@ export function mapCvFormValuesToDocument(values: CvFormValues): CvDocument {
         id: `employment-${index + 1}`,
         title,
         company,
+        location,
         startDate,
         description
       };

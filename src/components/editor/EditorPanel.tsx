@@ -97,6 +97,12 @@ function EmploymentItemCard({
           {...register(`employmentHistory.${index}.company` as const)}
         />
         <Input
+          id={`employment-location-${index}`}
+          label="Location (optional)"
+          placeholder="Krakow"
+          {...register(`employmentHistory.${index}.location` as const)}
+        />
+        <Input
           id={`employment-start-${index}`}
           type="month"
           label="Start date"

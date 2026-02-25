@@ -35,8 +35,9 @@ export function EmploymentHistorySection({
           return (
             <View key={entry.id} style={styles.block}>
               <Text style={styles.entryTitle}>
-                {entry.title || " "}{" "}
-                {entry.company ? `at ${entry.company}` : ""}
+                {entry.title || " "}
+                {entry.company ? ` at ${entry.company}` : ""}
+                {entry.location ? `, ${entry.location}` : ""}
               </Text>
               <Text style={styles.entryMeta}>
                 {formatDateRange(

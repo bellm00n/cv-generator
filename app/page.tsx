@@ -127,14 +127,24 @@ export default function HomePage() {
   return (
     <main className="min-h-screen bg-app-bg py-6">
       <div className="mx-auto flex w-full max-w-7xl flex-col gap-rhythm px-4 sm:px-6 lg:px-8">
-        <section className="rounded-lg bg-app-surface p-rhythm lg:hidden">
-          <Button
-            variant="secondary"
-            onClick={() => setIsMobilePreviewOpen(true)}
-            disabled={isMobilePreviewOpen}
-          >
-            Open Preview
-          </Button>
+        <section className="sticky top-0 z-10 rounded-lg bg-app-surface px-rhythm py-2 lg:hidden">
+          {isMobilePreviewOpen ? (
+            <Button
+              variant="secondary"
+              className="min-h-7 px-2.5 py-1 text-xs"
+              onClick={() => setIsMobilePreviewOpen(false)}
+            >
+              Back to editor
+            </Button>
+          ) : (
+            <Button
+              variant="secondary"
+              className="min-h-7 px-2.5 py-1 text-xs"
+              onClick={() => setIsMobilePreviewOpen(true)}
+            >
+              Open Preview
+            </Button>
+          )}
         </section>
 
         <section className="grid grid-cols-1 gap-rhythm lg:grid-cols-2">
@@ -180,8 +190,6 @@ export default function HomePage() {
           >
             <PreviewPanel
               cvData={cvDocument}
-              showCloseAction={isMobilePreviewOpen}
-              onClose={() => setIsMobilePreviewOpen(false)}
               headerAction={
                 <DownloadPdfButton
                   cvData={cvDocument}

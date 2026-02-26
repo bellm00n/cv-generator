@@ -4,7 +4,6 @@ import dynamic from "next/dynamic";
 import type { ReactNode } from "react";
 import { cn } from "@/lib/cn";
 import type { CvDocument } from "@/types/cv";
-import { Button } from "@/components/ui/Button";
 
 const PREVIEW_SURFACE_STYLE = {
   backgroundColor: "var(--color-surface)",
@@ -32,16 +31,12 @@ type PreviewPanelProps = {
   className?: string;
   cvData: CvDocument;
   headerAction?: ReactNode;
-  showCloseAction?: boolean;
-  onClose?: () => void;
 };
 
 export function PreviewPanel({
   className,
   cvData,
   headerAction,
-  showCloseAction = false,
-  onClose,
 }: PreviewPanelProps) {
   return (
     <section
@@ -55,11 +50,6 @@ export function PreviewPanel({
           </h2>
         </div>
         <div className="flex flex-wrap items-center justify-end gap-2">
-          {showCloseAction ? (
-            <Button variant="secondary" onClick={onClose}>
-              Back to editor
-            </Button>
-          ) : null}
           {headerAction}
         </div>
       </div>

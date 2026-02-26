@@ -12,6 +12,9 @@ const styles = StyleSheet.create({
   entryDescription: {
     marginTop: 4,
   },
+  paragraph: {
+    marginTop: 4,
+  },
 });
 
 export function EmploymentHistorySection({
@@ -41,7 +44,11 @@ export function EmploymentHistorySection({
               </SectionDescription>
               {description ? (
                 <View style={styles.entryDescription}>
-                  <Text>{description}</Text>
+                  {description.split(/\n{2,}/).map((paragraph, i) => (
+                    <Text key={i} style={i > 0 ? styles.paragraph : undefined}>
+                      {paragraph || " "}
+                    </Text>
+                  ))}
                 </View>
               ) : null}
             </View>

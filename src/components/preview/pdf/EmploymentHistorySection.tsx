@@ -15,7 +15,24 @@ const styles = StyleSheet.create({
   paragraph: {
     marginTop: 4,
   },
+  bold: {
+    fontWeight: 600,
+  },
 });
+
+function renderFormattedText(text: string) {
+  const parts = text.split(/\*\*(.+?)\*\*/g);
+  if (parts.length === 1) return text;
+  return parts.map((part, i) =>
+    i % 2 === 1 ? (
+      <Text key={i} style={styles.bold}>
+        {part}
+      </Text>
+    ) : (
+      part
+    ),
+  );
+}
 
 export function EmploymentHistorySection({
   employmentHistory,
@@ -46,7 +63,7 @@ export function EmploymentHistorySection({
                 <View style={styles.entryDescription}>
                   {description.split(/\n{2,}/).map((paragraph, i) => (
                     <Text key={i} style={i > 0 ? styles.paragraph : undefined}>
-                      {paragraph || " "}
+                      {renderFormattedText(paragraph) || " "}
                     </Text>
                   ))}
                 </View>

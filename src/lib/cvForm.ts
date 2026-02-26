@@ -26,6 +26,7 @@ const employmentItemSchema = z.object({
   location: z.string().trim(),
   startDate: z.string().trim().min(1, REQUIRED_WARNING),
   endDate: z.string().trim(),
+  currentlyWorking: z.boolean(),
   description: z.string().trim().min(1, REQUIRED_WARNING)
 });
 
@@ -114,6 +115,7 @@ export function createEmptyEmploymentItem(): CvFormValues["employmentHistory"][n
     location: "",
     startDate: "",
     endDate: "",
+    currentlyWorking: false,
     description: ""
   };
 }
@@ -237,12 +239,18 @@ const normalizeEmploymentHistory = (
         return normalizedBullets.join("\n");
       })();
 
+      const currentlyWorking =
+        typeof record.currentlyWorking === "boolean"
+          ? record.currentlyWorking
+          : false;
+
       return {
         title: readString(record.title),
         company: readString(record.company ?? record.companyName),
         location: readString(record.location),
         startDate: readString(record.startDate),
-        endDate: readString(record.endDate),
+        endDate: currentlyWorking ? "" : readString(record.endDate),
+        currentlyWorking,
         description
       };
     })
@@ -338,7 +346,7 @@ export function mapCvFormValuesToDocument(values: CvFormValues): CvDocument {
       const company = item.company.trim();
       const location = item.location.trim();
       const startDate = item.startDate.trim();
-      const endDate = item.endDate.trim();
+      const endDate = item.currentlyWorking ? "" : item.endDate.trim();
       const description = item.description.trim();
 
       if (

@@ -3,13 +3,17 @@
 import { type KeyboardEvent, useEffect, useRef, useState } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import {
+  type Control,
   type FieldErrors,
   type UseFormRegister,
+  type UseFormSetValue,
   useFieldArray,
-  useForm
+  useForm,
+  useWatch
 } from "react-hook-form";
 import { cn } from "@/lib/cn";
 import { Button } from "@/components/ui/Button";
+import { Checkbox } from "@/components/ui/Checkbox";
 import { Chips } from "@/components/ui/Chips";
 import { Input } from "@/components/ui/Input";
 import { Textarea } from "@/components/ui/Textarea";
@@ -49,20 +53,29 @@ const getArrayWarning = (error: unknown): string | undefined => {
 
 type EmploymentItemCardProps = {
   index: number;
+  control: Control<CvFormValues>;
   register: UseFormRegister<CvFormValues>;
+  setValue: UseFormSetValue<CvFormValues>;
   errors: FieldErrors<CvFormValues>;
   onRemove: () => void;
 };
 
 function EmploymentItemCard({
   index,
+  control,
   register,
+  setValue,
   errors,
   onRemove
 }: EmploymentItemCardProps) {
   const itemErrors = (
     errors.employmentHistory as FieldErrors<CvFormValues["employmentHistory"][number]>[] | undefined
   )?.[index];
+
+  const currentlyWorking = useWatch({
+    control,
+    name: `employmentHistory.${index}.currentlyWorking` as const
+  });
 
   return (
     <article className="rounded-md border-l-2 border-app-accent/30 bg-gray-50/50 p-3">
@@ -102,6 +115,9 @@ function EmploymentItemCard({
           placeholder="Krakow"
           {...register(`employmentHistory.${index}.location` as const)}
         />
+      </div>
+
+      <div className="mt-3 grid grid-cols-[1fr_1fr_auto] items-end gap-3">
         <Input
           id={`employment-start-${index}`}
           type="month"
@@ -118,15 +134,31 @@ function EmploymentItemCard({
         <Input
           id={`employment-end-${index}`}
           type="month"
-          label="End date (optional)"
-          placeholder="Leave empty if current"
+          label="End date"
+          disabled={currentlyWorking}
           className={cn(
+            currentlyWorking && "opacity-50",
             getWarningMessage(itemErrors?.endDate?.message) ? WARNING_INPUT_CLASS : undefined
           )}
           helperText={getWarningMessage(itemErrors?.endDate?.message)}
           helperTone="warning"
           {...register(`employmentHistory.${index}.endDate` as const)}
         />
+        <div className="pb-0.5">
+          <Checkbox
+            id={`employment-present-${index}`}
+            label="Present"
+            {...register(`employmentHistory.${index}.currentlyWorking` as const, {
+              onChange: (e: React.ChangeEvent<HTMLInputElement>) => {
+                if (e.target.checked) {
+                  setValue(`employmentHistory.${index}.endDate`, "", {
+                    shouldDirty: true
+                  });
+                }
+              }
+            })}
+          />
+        </div>
       </div>
 
       <div className="mt-3">
@@ -162,6 +194,7 @@ export function EditorPanel({
     getValues,
     register,
     reset,
+    setValue,
     watch,
     formState: { errors, isDirty }
   } = useForm<CvFormValues>({
@@ -579,7 +612,9 @@ export function EditorPanel({
               <EmploymentItemCard
                 key={item.id}
                 index={index}
+                control={control}
                 register={register}
+                setValue={setValue}
                 errors={errors}
                 onRemove={() => employmentArray.remove(index)}
               />

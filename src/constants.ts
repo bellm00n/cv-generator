@@ -6,7 +6,8 @@ export const EMPTY_CV_DOCUMENT: CvDocument = {
   contact: {
     city: "",
     phone: "",
-    email: ""
+    email: "",
+    country: ""
   },
   summary: "",
   links: [],

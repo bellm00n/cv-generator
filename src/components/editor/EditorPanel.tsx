@@ -3,6 +3,7 @@
 import { type KeyboardEvent, useEffect, useRef, useState } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import {
+  Controller,
   type Control,
   type FieldErrors,
   type UseFormRegister,
@@ -16,6 +17,7 @@ import { Button } from "@/components/ui/Button";
 import { Checkbox } from "@/components/ui/Checkbox";
 import { Chips } from "@/components/ui/Chips";
 import { Input } from "@/components/ui/Input";
+import { MonthPicker } from "@/components/ui/MonthPicker";
 import { Textarea } from "@/components/ui/Textarea";
 import {
   CV_FORM_STORAGE_KEY,
@@ -118,31 +120,46 @@ function EmploymentItemCard({
       </div>
 
       <div className="mt-3 grid grid-cols-[1fr_1fr_auto] items-end gap-3">
-        <Input
-          id={`employment-start-${index}`}
-          type="month"
-          label="Start date"
-          className={cn(
-            getWarningMessage(itemErrors?.startDate?.message)
-              ? WARNING_INPUT_CLASS
-              : undefined
+        <Controller
+          control={control}
+          name={`employmentHistory.${index}.startDate` as const}
+          render={({ field }) => (
+            <MonthPicker
+              id={`employment-start-${index}`}
+              label="Start date"
+              value={field.value}
+              onChange={field.onChange}
+              onBlur={field.onBlur}
+              className={cn(
+                getWarningMessage(itemErrors?.startDate?.message)
+                  ? WARNING_INPUT_CLASS
+                  : undefined
+              )}
+              helperText={getWarningMessage(itemErrors?.startDate?.message)}
+              helperTone="warning"
+            />
           )}
-          helperText={getWarningMessage(itemErrors?.startDate?.message)}
-          helperTone="warning"
-          {...register(`employmentHistory.${index}.startDate` as const)}
         />
-        <Input
-          id={`employment-end-${index}`}
-          type="month"
-          label="End date"
-          disabled={currentlyWorking}
-          className={cn(
-            currentlyWorking && "opacity-50",
-            getWarningMessage(itemErrors?.endDate?.message) ? WARNING_INPUT_CLASS : undefined
+        <Controller
+          control={control}
+          name={`employmentHistory.${index}.endDate` as const}
+          render={({ field }) => (
+            <MonthPicker
+              id={`employment-end-${index}`}
+              label="End date"
+              value={field.value}
+              onChange={field.onChange}
+              onBlur={field.onBlur}
+              disabled={currentlyWorking}
+              className={cn(
+                getWarningMessage(itemErrors?.endDate?.message)
+                  ? WARNING_INPUT_CLASS
+                  : undefined
+              )}
+              helperText={getWarningMessage(itemErrors?.endDate?.message)}
+              helperTone="warning"
+            />
           )}
-          helperText={getWarningMessage(itemErrors?.endDate?.message)}
-          helperTone="warning"
-          {...register(`employmentHistory.${index}.endDate` as const)}
         />
         <div className="pb-0.5">
           <Checkbox
@@ -694,31 +711,45 @@ export function EditorPanel({
                       helperTone="warning"
                       {...register(`education.${index}.university` as const)}
                     />
-                    <Input
-                      id={`education-start-${index}`}
-                      type="month"
-                      label="Start date"
-                      className={cn(
-                        getWarningMessage(educationErrors?.startDate?.message)
-                          ? WARNING_INPUT_CLASS
-                          : undefined
+                    <Controller
+                      control={control}
+                      name={`education.${index}.startDate` as const}
+                      render={({ field }) => (
+                        <MonthPicker
+                          id={`education-start-${index}`}
+                          label="Start date"
+                          value={field.value}
+                          onChange={field.onChange}
+                          onBlur={field.onBlur}
+                          className={cn(
+                            getWarningMessage(educationErrors?.startDate?.message)
+                              ? WARNING_INPUT_CLASS
+                              : undefined
+                          )}
+                          helperText={getWarningMessage(educationErrors?.startDate?.message)}
+                          helperTone="warning"
+                        />
                       )}
-                      helperText={getWarningMessage(educationErrors?.startDate?.message)}
-                      helperTone="warning"
-                      {...register(`education.${index}.startDate` as const)}
                     />
-                    <Input
-                      id={`education-end-${index}`}
-                      type="month"
-                      label="End date"
-                      className={cn(
-                        getWarningMessage(educationErrors?.endDate?.message)
-                          ? WARNING_INPUT_CLASS
-                          : undefined
+                    <Controller
+                      control={control}
+                      name={`education.${index}.endDate` as const}
+                      render={({ field }) => (
+                        <MonthPicker
+                          id={`education-end-${index}`}
+                          label="End date"
+                          value={field.value}
+                          onChange={field.onChange}
+                          onBlur={field.onBlur}
+                          className={cn(
+                            getWarningMessage(educationErrors?.endDate?.message)
+                              ? WARNING_INPUT_CLASS
+                              : undefined
+                          )}
+                          helperText={getWarningMessage(educationErrors?.endDate?.message)}
+                          helperTone="warning"
+                        />
                       )}
-                      helperText={getWarningMessage(educationErrors?.endDate?.message)}
-                      helperTone="warning"
-                      {...register(`education.${index}.endDate` as const)}
                     />
                   </div>
                 </article>

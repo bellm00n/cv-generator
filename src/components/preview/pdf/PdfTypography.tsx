@@ -6,9 +6,9 @@ const styles = StyleSheet.create({
     fontWeight: 600,
   },
   sectionDescription: {
-    marginTop: 2,
     color: "#98A1B2",
     fontSize: 9,
+    lineHeight: 1
   },
 });
 

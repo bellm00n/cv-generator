@@ -4,13 +4,33 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import { cn } from "@/lib/cn";
 
 const MONTH_LABELS = [
-  "Jan", "Feb", "Mar", "Apr", "May", "Jun",
-  "Jul", "Aug", "Sep", "Oct", "Nov", "Dec",
+  "Jan",
+  "Feb",
+  "Mar",
+  "Apr",
+  "May",
+  "Jun",
+  "Jul",
+  "Aug",
+  "Sep",
+  "Oct",
+  "Nov",
+  "Dec",
 ] as const;
 
 const MONTH_FULL_NAMES = [
-  "January", "February", "March", "April", "May", "June",
-  "July", "August", "September", "October", "November", "December",
+  "January",
+  "February",
+  "March",
+  "April",
+  "May",
+  "June",
+  "July",
+  "August",
+  "September",
+  "October",
+  "November",
+  "December",
 ] as const;
 
 type MonthPickerProps = {
@@ -49,7 +69,7 @@ export function MonthPicker({
   const [open, setOpen] = useState(false);
   const parsed = parseYearMonth(value);
   const [viewYear, setViewYear] = useState(
-    parsed?.year ?? new Date().getFullYear()
+    parsed?.year ?? new Date().getFullYear(),
   );
   const containerRef = useRef<HTMLDivElement>(null);
 
@@ -92,7 +112,7 @@ export function MonthPicker({
       setOpen(false);
       onBlur?.();
     },
-    [viewYear, onChange, onBlur]
+    [viewYear, onChange, onBlur],
   );
 
   const displayText = parsed
@@ -113,10 +133,10 @@ export function MonthPicker({
           onClick={() => setOpen((prev) => !prev)}
           className={cn(
             "flex h-9 w-full items-center rounded-md border border-app-border bg-white px-3 text-left text-sm",
-            "transition-shadow focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-app-accent/40",
+            "focus-visible:ring-app-accent/40 transition-shadow focus-visible:outline-none focus-visible:ring-2",
             displayText ? "text-app-text" : "text-app-muted/90",
             disabled && "cursor-default opacity-50",
-            className
+            className,
           )}
         >
           {displayText ?? "Select month"}
@@ -132,7 +152,13 @@ export function MonthPicker({
                 aria-label="Previous year"
               >
                 <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
-                  <path d="M10 12L6 8L10 4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+                  <path
+                    d="M10 12L6 8L10 4"
+                    stroke="currentColor"
+                    strokeWidth="1.5"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  />
                 </svg>
               </button>
               <span className="text-sm font-medium tabular-nums">
@@ -145,7 +171,13 @@ export function MonthPicker({
                 aria-label="Next year"
               >
                 <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
-                  <path d="M6 4L10 8L6 12" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+                  <path
+                    d="M6 4L10 8L6 12"
+                    stroke="currentColor"
+                    strokeWidth="1.5"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  />
                 </svg>
               </button>
             </div>
@@ -164,7 +196,7 @@ export function MonthPicker({
                       "rounded-md py-1.5 text-xs font-medium transition-colors",
                       isSelected
                         ? "bg-app-accent text-white"
-                        : "text-app-text hover:bg-gray-100"
+                        : "text-app-text hover:bg-gray-100",
                     )}
                   >
                     {monthLabel}
@@ -180,7 +212,7 @@ export function MonthPicker({
         <p
           className={cn(
             "text-xs",
-            helperTone === "warning" ? "text-amber-700" : "text-app-muted"
+            helperTone === "warning" ? "text-amber-700" : "text-app-muted",
           )}
         >
           {helperText}

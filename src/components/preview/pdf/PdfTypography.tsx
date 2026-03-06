@@ -8,7 +8,7 @@ const styles = StyleSheet.create({
   sectionDescription: {
     color: "#98A1B2",
     fontSize: 9,
-    lineHeight: 1
+    lineHeight: 1,
   },
 });
 

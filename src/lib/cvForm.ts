@@ -8,7 +8,7 @@ const REQUIRED_WARNING = "This field is recommended.";
 export const CV_FORM_STORAGE_KEY = "cv-generator:editor-form:v1";
 
 export const cvListItemSchema = z.object({
-  value: z.string().trim().min(1, "Add a value or remove this row.")
+  value: z.string().trim().min(1, "Add a value or remove this row."),
 });
 
 const linkItemSchema = z.object({
@@ -17,7 +17,7 @@ const linkItemSchema = z.object({
     .string()
     .trim()
     .min(1, REQUIRED_WARNING)
-    .url("Use a valid URL, for example https://linkedin.com/in/username.")
+    .url("Use a valid URL, for example https://linkedin.com/in/username."),
 });
 
 const employmentItemSchema = z.object({
@@ -27,14 +27,14 @@ const employmentItemSchema = z.object({
   startDate: z.string().trim().min(1, REQUIRED_WARNING),
   endDate: z.string().trim(),
   currentlyWorking: z.boolean(),
-  description: z.string().trim().min(1, REQUIRED_WARNING)
+  description: z.string().trim().min(1, REQUIRED_WARNING),
 });
 
 const educationItemSchema = z.object({
   degree: z.string().trim().min(1, REQUIRED_WARNING),
   university: z.string().trim().min(1, REQUIRED_WARNING),
   startDate: z.string().trim().min(1, REQUIRED_WARNING),
-  endDate: z.string().trim().min(1, REQUIRED_WARNING)
+  endDate: z.string().trim().min(1, REQUIRED_WARNING),
 });
 
 export const cvFormSchema = z.object({
@@ -56,7 +56,9 @@ export const cvFormSchema = z.object({
   employmentHistory: z
     .array(employmentItemSchema)
     .min(1, "Add at least one employment item."),
-  education: z.array(educationItemSchema).min(1, "Add at least one education item.")
+  education: z
+    .array(educationItemSchema)
+    .min(1, "Add at least one education item."),
 });
 
 export type CvFormValues = z.infer<typeof cvFormSchema>;
@@ -78,24 +80,24 @@ export const cvUploadSchema = z
         country: z.string().optional(),
         city: z.string().optional(),
         phone: z.string().optional(),
-        email: z.string().optional()
+        email: z.string().optional(),
       })
       .optional(),
     links: z.array(z.unknown()).optional(),
     skills: z.array(z.unknown()).optional(),
     languages: z.array(z.unknown()).optional(),
     employmentHistory: z.array(z.unknown()).optional(),
-    education: z.array(z.unknown()).optional()
+    education: z.array(z.unknown()).optional(),
   })
   .passthrough()
   .refine((data) => {
     const hasIdentity = Boolean(data.name || data.fullName);
     const hasContent = Boolean(
       data.title ||
-        data.summary ||
-        data.skills?.length ||
-        data.employmentHistory?.length ||
-        data.education?.length
+      data.summary ||
+      data.skills?.length ||
+      data.employmentHistory?.length ||
+      data.education?.length,
     );
     return hasIdentity || hasContent;
   });
@@ -116,7 +118,7 @@ export function createEmptyEmploymentItem(): CvFormValues["employmentHistory"][n
     startDate: "",
     endDate: "",
     currentlyWorking: false,
-    description: ""
+    description: "",
   };
 }
 
@@ -125,7 +127,7 @@ export function createEmptyEducationItem(): CvFormValues["education"][number] {
     degree: "",
     university: "",
     startDate: "",
-    endDate: ""
+    endDate: "",
   };
 }
 
@@ -143,17 +145,18 @@ export function createDefaultCvFormValues(): CvFormValues {
     skills: [createEmptyListItem()],
     languages: [createEmptyListItem()],
     employmentHistory: [createEmptyEmploymentItem()],
-    education: [createEmptyEducationItem()]
+    education: [createEmptyEducationItem()],
   };
 }
 
 const asRecord = (value: unknown): UnknownRecord | null =>
   typeof value === "object" && value !== null ? (value as UnknownRecord) : null;
 
-const readString = (value: unknown): string => (typeof value === "string" ? value : "");
+const readString = (value: unknown): string =>
+  typeof value === "string" ? value : "";
 
 const splitFullName = (
-  fullName: string
+  fullName: string,
 ): Pick<CvFormValues, "name" | "surname"> => {
   const normalized = fullName.trim().replace(/\s+/g, " ");
   if (!normalized) {
@@ -167,7 +170,7 @@ const splitFullName = (
 
   return {
     name: parts.slice(0, -1).join(" "),
-    surname: parts.at(-1) ?? ""
+    surname: parts.at(-1) ?? "",
   };
 };
 
@@ -206,14 +209,14 @@ const normalizeLinks = (value: unknown): CvFormValues["links"] => {
 
       return {
         label: readString(record.label),
-        url: readString(record.url)
+        url: readString(record.url),
       };
     })
     .filter((item): item is CvFormValues["links"][number] => item !== null);
 };
 
 const normalizeEmploymentHistory = (
-  value: unknown
+  value: unknown,
 ): CvFormValues["employmentHistory"] => {
   if (!Array.isArray(value)) {
     return [];
@@ -251,10 +254,13 @@ const normalizeEmploymentHistory = (
         startDate: readString(record.startDate),
         endDate: currentlyWorking ? "" : readString(record.endDate),
         currentlyWorking,
-        description
+        description,
       };
     })
-    .filter((item): item is CvFormValues["employmentHistory"][number] => item !== null);
+    .filter(
+      (item): item is CvFormValues["employmentHistory"][number] =>
+        item !== null,
+    );
 };
 
 const normalizeEducation = (value: unknown): CvFormValues["education"] => {
@@ -273,7 +279,7 @@ const normalizeEducation = (value: unknown): CvFormValues["education"] => {
         degree: readString(record.degree),
         university: readString(record.university),
         startDate: readString(record.startDate),
-        endDate: readString(record.endDate)
+        endDate: readString(record.endDate),
       };
     })
     .filter((item): item is CvFormValues["education"][number] => item !== null);
@@ -295,13 +301,19 @@ export function normalizePersistedCvForm(raw: unknown): CvFormValues | null {
     title: readString(source.title),
     country: readString(source.country ?? contact?.country),
     city: readString(source.city ?? contact?.city),
-    phone: readString(source.phone ?? source.number ?? contact?.phone ?? contact?.number),
+    phone: readString(
+      source.phone ?? source.number ?? contact?.phone ?? contact?.number,
+    ),
     email: readString(source.email ?? contact?.email),
     summary: readString(source.summary),
     links:
-      source.links === undefined ? defaults.links : normalizeLinks(source.links),
+      source.links === undefined
+        ? defaults.links
+        : normalizeLinks(source.links),
     skills:
-      source.skills === undefined ? defaults.skills : normalizeListItems(source.skills),
+      source.skills === undefined
+        ? defaults.skills
+        : normalizeListItems(source.skills),
     languages:
       source.languages === undefined
         ? defaults.languages
@@ -313,7 +325,7 @@ export function normalizePersistedCvForm(raw: unknown): CvFormValues | null {
     education:
       source.education === undefined
         ? defaults.education
-        : normalizeEducation(source.education)
+        : normalizeEducation(source.education),
   };
 }
 
@@ -337,7 +349,7 @@ export function mapCvFormValuesToDocument(values: CvFormValues): CvDocument {
       }
 
       return [{ id: `link-${index + 1}`, label, url }];
-    }
+    },
   );
 
   const normalizedEmploymentHistory: CvDocument["employmentHistory"] =
@@ -366,7 +378,7 @@ export function mapCvFormValuesToDocument(values: CvFormValues): CvDocument {
         company,
         location,
         startDate,
-        description
+        description,
       };
 
       if (endDate) {
@@ -397,7 +409,7 @@ export function mapCvFormValuesToDocument(values: CvFormValues): CvDocument {
         degree,
         university,
         startDate,
-        endDate
+        endDate,
       };
     })
     .filter((item): item is CvDocument["education"][number] => item !== null);
@@ -409,13 +421,13 @@ export function mapCvFormValuesToDocument(values: CvFormValues): CvDocument {
       country: values.country.trim(),
       city: values.city.trim(),
       phone: values.phone.trim(),
-      email: values.email.trim()
+      email: values.email.trim(),
     },
     summary: values.summary.trim(),
     links: normalizedLinks,
     skills: normalizedSkills,
     languages: normalizedLanguages,
     employmentHistory: normalizedEmploymentHistory,
-    education: normalizedEducation
+    education: normalizedEducation,
   };
 }

@@ -7,12 +7,12 @@ export const EMPTY_CV_DOCUMENT: CvDocument = {
     city: "",
     phone: "",
     email: "",
-    country: ""
+    country: "",
   },
   summary: "",
   links: [],
   skills: [],
   languages: [],
   employmentHistory: [],
-  education: []
+  education: [],
 };

@@ -11,7 +11,7 @@ import {
   CV_FORM_STORAGE_KEY,
   cvUploadSchema,
   mapCvFormValuesToDocument,
-  normalizePersistedCvForm
+  normalizePersistedCvForm,
 } from "@/lib/cvForm";
 import type { CvDocument } from "@/types/cv";
 
@@ -46,7 +46,7 @@ const getFileName = (fullName: string) => {
 export default function HomePage() {
   const [isMobilePreviewOpen, setIsMobilePreviewOpen] = useState(false);
   const [cvDocument, setCvDocument] = useState<CvDocument>(EMPTY_CV_DOCUMENT);
-  const [isEditorDirty, setIsEditorDirty] = useState(false);
+  const [_isEditorDirty, setIsEditorDirty] = useState(false);
   const [editorResetKey, setEditorResetKey] = useState(0);
   const fileInputRef = useRef<HTMLInputElement>(null);
   const fileName = getFileName(cvDocument.fullName);
@@ -173,10 +173,7 @@ export default function HomePage() {
               <Button variant="secondary" onClick={handleDownloadData}>
                 Download data
               </Button>
-              <Button
-                variant="destructive"
-                onClick={handleReset}
-              >
+              <Button variant="destructive" onClick={handleReset}>
                 Reset
               </Button>
             </div>

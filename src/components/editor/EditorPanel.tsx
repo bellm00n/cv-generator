@@ -10,7 +10,7 @@ import {
   type UseFormSetValue,
   useFieldArray,
   useForm,
-  useWatch
+  useWatch,
 } from "react-hook-form";
 import { cn } from "@/lib/cn";
 import { Button } from "@/components/ui/Button";
@@ -29,7 +29,7 @@ import {
   cvFormSchema,
   mapCvFormValuesToDocument,
   type CvFormValues,
-  normalizePersistedCvForm
+  normalizePersistedCvForm,
 } from "@/lib/cvForm";
 import type { CvDocument } from "@/types/cv";
 
@@ -68,19 +68,21 @@ function EmploymentItemCard({
   register,
   setValue,
   errors,
-  onRemove
+  onRemove,
 }: EmploymentItemCardProps) {
   const itemErrors = (
-    errors.employmentHistory as FieldErrors<CvFormValues["employmentHistory"][number]>[] | undefined
+    errors.employmentHistory as
+      | FieldErrors<CvFormValues["employmentHistory"][number]>[]
+      | undefined
   )?.[index];
 
   const currentlyWorking = useWatch({
     control,
-    name: `employmentHistory.${index}.currentlyWorking` as const
+    name: `employmentHistory.${index}.currentlyWorking` as const,
   });
 
   return (
-    <article className="rounded-md border-l-2 border-app-accent/30 bg-gray-50/50 p-3">
+    <article className="border-app-accent/30 rounded-md border-l-2 bg-gray-50/50 p-3">
       <div className="flex flex-wrap items-center justify-between gap-2">
         <h4 className="text-sm font-medium">Employment item {index + 1}</h4>
         <Button variant="destructive" onClick={onRemove}>
@@ -94,7 +96,9 @@ function EmploymentItemCard({
           label="Title"
           placeholder="Senior Product Designer"
           className={cn(
-            getWarningMessage(itemErrors?.title?.message) ? WARNING_INPUT_CLASS : undefined
+            getWarningMessage(itemErrors?.title?.message)
+              ? WARNING_INPUT_CLASS
+              : undefined,
           )}
           helperText={getWarningMessage(itemErrors?.title?.message)}
           helperTone="warning"
@@ -105,7 +109,9 @@ function EmploymentItemCard({
           label="Company name"
           placeholder="Acme Corp"
           className={cn(
-            getWarningMessage(itemErrors?.company?.message) ? WARNING_INPUT_CLASS : undefined
+            getWarningMessage(itemErrors?.company?.message)
+              ? WARNING_INPUT_CLASS
+              : undefined,
           )}
           helperText={getWarningMessage(itemErrors?.company?.message)}
           helperTone="warning"
@@ -133,7 +139,7 @@ function EmploymentItemCard({
               className={cn(
                 getWarningMessage(itemErrors?.startDate?.message)
                   ? WARNING_INPUT_CLASS
-                  : undefined
+                  : undefined,
               )}
               helperText={getWarningMessage(itemErrors?.startDate?.message)}
               helperTone="warning"
@@ -154,7 +160,7 @@ function EmploymentItemCard({
               className={cn(
                 getWarningMessage(itemErrors?.endDate?.message)
                   ? WARNING_INPUT_CLASS
-                  : undefined
+                  : undefined,
               )}
               helperText={getWarningMessage(itemErrors?.endDate?.message)}
               helperTone="warning"
@@ -165,15 +171,18 @@ function EmploymentItemCard({
           <Checkbox
             id={`employment-present-${index}`}
             label="Present"
-            {...register(`employmentHistory.${index}.currentlyWorking` as const, {
-              onChange: (e: React.ChangeEvent<HTMLInputElement>) => {
-                if (e.target.checked) {
-                  setValue(`employmentHistory.${index}.endDate`, "", {
-                    shouldDirty: true
-                  });
-                }
-              }
-            })}
+            {...register(
+              `employmentHistory.${index}.currentlyWorking` as const,
+              {
+                onChange: (e: React.ChangeEvent<HTMLInputElement>) => {
+                  if (e.target.checked) {
+                    setValue(`employmentHistory.${index}.endDate`, "", {
+                      shouldDirty: true,
+                    });
+                  }
+                },
+              },
+            )}
           />
         </div>
       </div>
@@ -187,7 +196,7 @@ function EmploymentItemCard({
           className={cn(
             getWarningMessage(itemErrors?.description?.message)
               ? WARNING_INPUT_CLASS
-              : undefined
+              : undefined,
           )}
           helperText={getWarningMessage(itemErrors?.description?.message)}
           helperTone="warning"
@@ -201,7 +210,7 @@ function EmploymentItemCard({
 export function EditorPanel({
   className,
   onCvDataChange,
-  onDirtyChange
+  onDirtyChange,
 }: EditorPanelProps) {
   const [isHydrated, setIsHydrated] = useState(false);
   const autosaveTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
@@ -213,37 +222,37 @@ export function EditorPanel({
     reset,
     setValue,
     watch,
-    formState: { errors, isDirty }
+    formState: { errors, isDirty },
   } = useForm<CvFormValues>({
     resolver: zodResolver(cvFormSchema),
     defaultValues: createDefaultCvFormValues(),
     mode: "onBlur",
-    reValidateMode: "onChange"
+    reValidateMode: "onChange",
   });
 
   const skillsArray = useFieldArray({
     control,
-    name: "skills"
+    name: "skills",
   });
 
   const languagesArray = useFieldArray({
     control,
-    name: "languages"
+    name: "languages",
   });
 
   const employmentArray = useFieldArray({
     control,
-    name: "employmentHistory"
+    name: "employmentHistory",
   });
 
   const educationArray = useFieldArray({
     control,
-    name: "education"
+    name: "education",
   });
 
   const linksArray = useFieldArray({
     control,
-    name: "links"
+    name: "links",
   });
 
   const summaryValue = watch("summary") ?? "";
@@ -318,7 +327,10 @@ export function EditorPanel({
     };
   }, [getValues, isHydrated, onCvDataChange, watch]);
 
-  const handleLanguageKeyDown = (event: KeyboardEvent<HTMLInputElement>, index: number) => {
+  const handleLanguageKeyDown = (
+    event: KeyboardEvent<HTMLInputElement>,
+    index: number,
+  ) => {
     if (event.key !== "Enter") return;
     event.preventDefault();
 
@@ -333,10 +345,7 @@ export function EditorPanel({
 
   return (
     <section
-      className={cn(
-        "rounded-lg bg-app-surface p-rhythm",
-        className
-      )}
+      className={cn("rounded-lg bg-app-surface p-rhythm", className)}
       aria-labelledby="editor-panel-title"
     >
       <div className="space-y-1">
@@ -345,11 +354,17 @@ export function EditorPanel({
         </h2>
       </div>
 
-      <form className="mt-rhythm divide-y divide-app-border/50" noValidate onSubmit={(event) => event.preventDefault()}>
+      <form
+        className="divide-app-border/50 mt-rhythm divide-y"
+        noValidate
+        onSubmit={(event) => event.preventDefault()}
+      >
         <section className="pb-4">
           <div className="space-y-0.5">
             <h3 className="text-sm font-semibold">Personal details</h3>
-            <p className="text-xs text-app-muted">Contact and headline information.</p>
+            <p className="text-xs text-app-muted">
+              Contact and headline information.
+            </p>
           </div>
 
           <div className="mt-3 grid gap-3 sm:grid-cols-2">
@@ -358,7 +373,9 @@ export function EditorPanel({
               label="Name"
               placeholder="Alex"
               className={cn(
-                getWarningMessage(errors.name?.message) ? WARNING_INPUT_CLASS : undefined
+                getWarningMessage(errors.name?.message)
+                  ? WARNING_INPUT_CLASS
+                  : undefined,
               )}
               helperText={getWarningMessage(errors.name?.message)}
               helperTone="warning"
@@ -369,7 +386,9 @@ export function EditorPanel({
               label="Surname"
               placeholder="Johnson"
               className={cn(
-                getWarningMessage(errors.surname?.message) ? WARNING_INPUT_CLASS : undefined
+                getWarningMessage(errors.surname?.message)
+                  ? WARNING_INPUT_CLASS
+                  : undefined,
               )}
               helperText={getWarningMessage(errors.surname?.message)}
               helperTone="warning"
@@ -380,7 +399,9 @@ export function EditorPanel({
               label="Title"
               placeholder="Product Manager"
               className={cn(
-                getWarningMessage(errors.title?.message) ? WARNING_INPUT_CLASS : undefined
+                getWarningMessage(errors.title?.message)
+                  ? WARNING_INPUT_CLASS
+                  : undefined,
               )}
               helperText={getWarningMessage(errors.title?.message)}
               helperTone="warning"
@@ -391,7 +412,9 @@ export function EditorPanel({
               label="Country"
               placeholder="United States"
               className={cn(
-                getWarningMessage(errors.country?.message) ? WARNING_INPUT_CLASS : undefined
+                getWarningMessage(errors.country?.message)
+                  ? WARNING_INPUT_CLASS
+                  : undefined,
               )}
               helperText={getWarningMessage(errors.country?.message)}
               helperTone="warning"
@@ -402,7 +425,9 @@ export function EditorPanel({
               label="City"
               placeholder="San Francisco"
               className={cn(
-                getWarningMessage(errors.city?.message) ? WARNING_INPUT_CLASS : undefined
+                getWarningMessage(errors.city?.message)
+                  ? WARNING_INPUT_CLASS
+                  : undefined,
               )}
               helperText={getWarningMessage(errors.city?.message)}
               helperTone="warning"
@@ -413,7 +438,9 @@ export function EditorPanel({
               label="Number"
               placeholder="+1 555 123 4567"
               className={cn(
-                getWarningMessage(errors.phone?.message) ? WARNING_INPUT_CLASS : undefined
+                getWarningMessage(errors.phone?.message)
+                  ? WARNING_INPUT_CLASS
+                  : undefined,
               )}
               helperText={getWarningMessage(errors.phone?.message)}
               helperTone="warning"
@@ -425,7 +452,9 @@ export function EditorPanel({
               label="Email"
               placeholder="alex@example.com"
               className={cn(
-                getWarningMessage(errors.email?.message) ? WARNING_INPUT_CLASS : undefined
+                getWarningMessage(errors.email?.message)
+                  ? WARNING_INPUT_CLASS
+                  : undefined,
               )}
               helperText={getWarningMessage(errors.email?.message)}
               helperTone="warning"
@@ -448,13 +477,17 @@ export function EditorPanel({
               label="Summary"
               placeholder="Product manager with 7+ years of experience in B2B SaaS..."
               className={cn(
-                getWarningMessage(errors.summary?.message) ? WARNING_INPUT_CLASS : undefined
+                getWarningMessage(errors.summary?.message)
+                  ? WARNING_INPUT_CLASS
+                  : undefined,
               )}
               helperText={getWarningMessage(errors.summary?.message)}
               helperTone="warning"
               {...register("summary")}
             />
-            <p className="text-xs text-app-muted">{summaryValue.length} characters</p>
+            <p className="text-xs text-app-muted">
+              {summaryValue.length} characters
+            </p>
           </div>
         </section>
 
@@ -462,9 +495,14 @@ export function EditorPanel({
           <div className="flex flex-wrap items-center justify-between gap-2">
             <div className="space-y-0.5">
               <h3 className="text-sm font-semibold">Links</h3>
-              <p className="text-xs text-app-muted">Add links to your profiles and portfolio.</p>
+              <p className="text-xs text-app-muted">
+                Add links to your profiles and portfolio.
+              </p>
             </div>
-            <Button variant="secondary" onClick={() => linksArray.append(createEmptyLinkItem())}>
+            <Button
+              variant="secondary"
+              onClick={() => linksArray.append(createEmptyLinkItem())}
+            >
               Add link
             </Button>
           </div>
@@ -472,13 +510,15 @@ export function EditorPanel({
           <div className="mt-3 space-y-3">
             {linksArray.fields.map((item, index) => {
               const linkErrors = (
-                errors.links as FieldErrors<CvFormValues["links"][number]>[] | undefined
+                errors.links as
+                  | FieldErrors<CvFormValues["links"][number]>[]
+                  | undefined
               )?.[index];
 
               return (
                 <article
                   key={item.id}
-                  className="rounded-md border-l-2 border-app-accent/30 bg-gray-50/50 p-3"
+                  className="border-app-accent/30 rounded-md border-l-2 bg-gray-50/50 p-3"
                 >
                   <div className="flex flex-wrap items-center justify-between gap-2">
                     <h4 className="text-sm font-medium">Link {index + 1}</h4>
@@ -498,7 +538,7 @@ export function EditorPanel({
                       className={cn(
                         getWarningMessage(linkErrors?.label?.message)
                           ? WARNING_INPUT_CLASS
-                          : undefined
+                          : undefined,
                       )}
                       helperText={getWarningMessage(linkErrors?.label?.message)}
                       helperTone="warning"
@@ -511,7 +551,7 @@ export function EditorPanel({
                       className={cn(
                         getWarningMessage(linkErrors?.url?.message)
                           ? WARNING_INPUT_CLASS
-                          : undefined
+                          : undefined,
                       )}
                       helperText={getWarningMessage(linkErrors?.url?.message)}
                       helperTone="warning"
@@ -531,7 +571,9 @@ export function EditorPanel({
         <section className="py-4">
           <div className="space-y-0.5">
             <h3 className="text-sm font-semibold">Skills</h3>
-            <p className="text-xs text-app-muted">Type a skill and press Enter to add it.</p>
+            <p className="text-xs text-app-muted">
+              Type a skill and press Enter to add it.
+            </p>
           </div>
 
           <div className="mt-3">
@@ -553,7 +595,9 @@ export function EditorPanel({
           <div className="flex flex-wrap items-center justify-between gap-2">
             <div className="space-y-0.5">
               <h3 className="text-sm font-semibold">Languages</h3>
-              <p className="text-xs text-app-muted">Add one per row. Press Enter to add a new row.</p>
+              <p className="text-xs text-app-muted">
+                Add one per row. Press Enter to add a new row.
+              </p>
             </div>
             <Button
               variant="secondary"
@@ -570,11 +614,14 @@ export function EditorPanel({
                   errors.languages as
                     | FieldErrors<CvFormValues["languages"][number]>[]
                     | undefined
-                )?.[index]?.value?.message
+                )?.[index]?.value?.message,
               );
 
               return (
-                <div key={language.id} className="flex flex-wrap items-start gap-2">
+                <div
+                  key={language.id}
+                  className="flex flex-wrap items-start gap-2"
+                >
                   <div className="min-w-[14rem] flex-1">
                     <Input
                       id={`language-${index}`}
@@ -582,7 +629,9 @@ export function EditorPanel({
                       hideLabel
                       aria-label={`Language ${index + 1}`}
                       placeholder="English (C2)"
-                      className={cn(languageWarning ? WARNING_INPUT_CLASS : undefined)}
+                      className={cn(
+                        languageWarning ? WARNING_INPUT_CLASS : undefined,
+                      )}
                       helperText={languageWarning}
                       helperTone="warning"
                       {...register(`languages.${index}.value` as const)}
@@ -601,7 +650,9 @@ export function EditorPanel({
             })}
 
             {getArrayWarning(errors.languages) ? (
-              <p className="text-xs text-amber-700">{getArrayWarning(errors.languages)}</p>
+              <p className="text-xs text-amber-700">
+                {getArrayWarning(errors.languages)}
+              </p>
             ) : null}
 
             {languagesArray.fields.length === 0 ? (
@@ -614,11 +665,15 @@ export function EditorPanel({
           <div className="flex flex-wrap items-center justify-between gap-2">
             <div className="space-y-0.5">
               <h3 className="text-sm font-semibold">Employment history</h3>
-              <p className="text-xs text-app-muted">Add your roles from most relevant to least relevant.</p>
+              <p className="text-xs text-app-muted">
+                Add your roles from most relevant to least relevant.
+              </p>
             </div>
             <Button
               variant="secondary"
-              onClick={() => employmentArray.append(createEmptyEmploymentItem())}
+              onClick={() =>
+                employmentArray.append(createEmptyEmploymentItem())
+              }
             >
               Add item
             </Button>
@@ -644,7 +699,9 @@ export function EditorPanel({
             ) : null}
 
             {employmentArray.fields.length === 0 ? (
-              <p className="text-xs text-app-muted">No employment items added yet.</p>
+              <p className="text-xs text-app-muted">
+                No employment items added yet.
+              </p>
             ) : null}
           </div>
         </section>
@@ -653,7 +710,9 @@ export function EditorPanel({
           <div className="flex flex-wrap items-center justify-between gap-2">
             <div className="space-y-0.5">
               <h3 className="text-sm font-semibold">Education</h3>
-              <p className="text-xs text-app-muted">Add your education history.</p>
+              <p className="text-xs text-app-muted">
+                Add your education history.
+              </p>
             </div>
             <Button
               variant="secondary"
@@ -666,16 +725,20 @@ export function EditorPanel({
           <div className="mt-3 space-y-3">
             {educationArray.fields.map((item, index) => {
               const educationErrors = (
-                errors.education as FieldErrors<CvFormValues["education"][number]>[] | undefined
+                errors.education as
+                  | FieldErrors<CvFormValues["education"][number]>[]
+                  | undefined
               )?.[index];
 
               return (
                 <article
                   key={item.id}
-                  className="rounded-md border-l-2 border-app-accent/30 bg-gray-50/50 p-3"
+                  className="border-app-accent/30 rounded-md border-l-2 bg-gray-50/50 p-3"
                 >
                   <div className="flex flex-wrap items-center justify-between gap-2">
-                    <h4 className="text-sm font-medium">Education item {index + 1}</h4>
+                    <h4 className="text-sm font-medium">
+                      Education item {index + 1}
+                    </h4>
                     <Button
                       variant="destructive"
                       onClick={() => educationArray.remove(index)}
@@ -692,9 +755,11 @@ export function EditorPanel({
                       className={cn(
                         getWarningMessage(educationErrors?.degree?.message)
                           ? WARNING_INPUT_CLASS
-                          : undefined
+                          : undefined,
                       )}
-                      helperText={getWarningMessage(educationErrors?.degree?.message)}
+                      helperText={getWarningMessage(
+                        educationErrors?.degree?.message,
+                      )}
                       helperTone="warning"
                       {...register(`education.${index}.degree` as const)}
                     />
@@ -705,9 +770,11 @@ export function EditorPanel({
                       className={cn(
                         getWarningMessage(educationErrors?.university?.message)
                           ? WARNING_INPUT_CLASS
-                          : undefined
+                          : undefined,
                       )}
-                      helperText={getWarningMessage(educationErrors?.university?.message)}
+                      helperText={getWarningMessage(
+                        educationErrors?.university?.message,
+                      )}
                       helperTone="warning"
                       {...register(`education.${index}.university` as const)}
                     />
@@ -722,11 +789,15 @@ export function EditorPanel({
                           onChange={field.onChange}
                           onBlur={field.onBlur}
                           className={cn(
-                            getWarningMessage(educationErrors?.startDate?.message)
+                            getWarningMessage(
+                              educationErrors?.startDate?.message,
+                            )
                               ? WARNING_INPUT_CLASS
-                              : undefined
+                              : undefined,
                           )}
-                          helperText={getWarningMessage(educationErrors?.startDate?.message)}
+                          helperText={getWarningMessage(
+                            educationErrors?.startDate?.message,
+                          )}
                           helperTone="warning"
                         />
                       )}
@@ -744,9 +815,11 @@ export function EditorPanel({
                           className={cn(
                             getWarningMessage(educationErrors?.endDate?.message)
                               ? WARNING_INPUT_CLASS
-                              : undefined
+                              : undefined,
                           )}
-                          helperText={getWarningMessage(educationErrors?.endDate?.message)}
+                          helperText={getWarningMessage(
+                            educationErrors?.endDate?.message,
+                          )}
                           helperTone="warning"
                         />
                       )}
@@ -757,11 +830,15 @@ export function EditorPanel({
             })}
 
             {getArrayWarning(errors.education) ? (
-              <p className="text-xs text-amber-700">{getArrayWarning(errors.education)}</p>
+              <p className="text-xs text-amber-700">
+                {getArrayWarning(errors.education)}
+              </p>
             ) : null}
 
             {educationArray.fields.length === 0 ? (
-              <p className="text-xs text-app-muted">No education items added yet.</p>
+              <p className="text-xs text-app-muted">
+                No education items added yet.
+              </p>
             ) : null}
           </div>
         </section>

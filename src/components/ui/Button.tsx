@@ -13,7 +13,7 @@ const VARIANT_STYLES: Record<ButtonVariant, string> = {
   secondary: "bg-app-surface text-app-text border-app-border hover:bg-slate-50",
   ghost: "bg-transparent text-app-muted border-transparent hover:text-app-text",
   destructive:
-    "bg-red-50 text-red-700 border-red-200 hover:bg-red-100 disabled:hover:bg-red-50"
+    "bg-red-50 text-red-700 border-red-200 hover:bg-red-100 disabled:hover:bg-red-50",
 };
 
 export function Button({
@@ -31,7 +31,7 @@ export function Button({
         "inline-flex min-h-9 items-center justify-center rounded-md border px-3 py-1.5 text-sm font-medium transition-colors",
         "disabled:cursor-not-allowed disabled:opacity-60",
         VARIANT_STYLES[variant],
-        className
+        className,
       )}
       {...props}
     />

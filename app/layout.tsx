@@ -4,7 +4,7 @@ import "./globals.css";
 
 export const metadata: Metadata = {
   title: "CV Generator",
-  description: "Local-first CV builder with editor and PDF preview."
+  description: "Local-first CV builder with editor and PDF preview.",
 };
 
 export default function RootLayout({ children }: PropsWithChildren) {

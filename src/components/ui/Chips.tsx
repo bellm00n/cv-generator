@@ -24,7 +24,7 @@ export function Chips({
   onAdd,
   onRemove,
   helperText,
-  helperTone = "muted"
+  helperTone = "muted",
 }: ChipsProps) {
   const [inputValue, setInputValue] = useState("");
 
@@ -49,7 +49,7 @@ export function Chips({
         htmlFor={id}
         className={cn(
           "text-sm font-medium text-app-text",
-          hideLabel ? "sr-only" : undefined
+          hideLabel ? "sr-only" : undefined,
         )}
       >
         {label}
@@ -60,13 +60,13 @@ export function Chips({
           {values.map((value, index) => (
             <span
               key={`${value}-${index}`}
-              className="inline-flex items-center gap-1 rounded-md border border-app-border bg-app-accent/10 px-2 py-0.5 text-sm text-app-text"
+              className="bg-app-accent/10 inline-flex items-center gap-1 rounded-md border border-app-border px-2 py-0.5 text-sm text-app-text"
             >
               {value}
               <button
                 type="button"
                 aria-label={`Remove ${value}`}
-                className="ml-0.5 inline-flex h-4 w-4 shrink-0 items-center justify-center rounded-full text-app-muted transition-colors hover:bg-app-accent/20 hover:text-app-text"
+                className="hover:bg-app-accent/20 ml-0.5 inline-flex h-4 w-4 shrink-0 items-center justify-center rounded-full text-app-muted transition-colors hover:text-app-text"
                 onClick={() => onRemove(index)}
               >
                 <svg
@@ -90,14 +90,14 @@ export function Chips({
         onChange={(event) => setInputValue(event.target.value)}
         onKeyDown={handleKeyDown}
         placeholder={values.length === 0 ? placeholder : "Add another…"}
-        className="h-9 w-full rounded-md border border-app-border bg-white px-3 text-sm text-app-text outline-none placeholder:text-app-muted/90 transition-shadow focus-visible:ring-2 focus-visible:ring-app-accent/40"
+        className="placeholder:text-app-muted/90 focus-visible:ring-app-accent/40 h-9 w-full rounded-md border border-app-border bg-white px-3 text-sm text-app-text outline-none transition-shadow focus-visible:ring-2"
       />
 
       {helperText ? (
         <p
           className={cn(
             "text-xs",
-            helperTone === "warning" ? "text-amber-700" : "text-app-muted"
+            helperTone === "warning" ? "text-amber-700" : "text-app-muted",
           )}
         >
           {helperText}

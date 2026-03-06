@@ -1,4 +1,9 @@
-import type { CvFormValues } from "@/lib/schemas";
+import {
+  createCvEducationId,
+  createCvEmploymentId,
+  createCvLinkId,
+  type CvFormValues,
+} from "@/lib/schemas";
 import type { CvDocument } from "@/types/cv";
 
 const hasContent = (value: string): boolean => value.trim().length > 0;
@@ -20,7 +25,7 @@ export function mapCvFormValuesToDocument(values: CvFormValues): CvDocument {
         return [];
       }
 
-      return [{ id: `link-${index + 1}`, label, url }];
+      return [{ id: createCvLinkId(index + 1), label, url }];
     },
   );
 
@@ -45,7 +50,7 @@ export function mapCvFormValuesToDocument(values: CvFormValues): CvDocument {
       }
 
       const entry: CvDocument["employmentHistory"][number] = {
-        id: `employment-${index + 1}`,
+        id: createCvEmploymentId(index + 1),
         title,
         company,
         location,
@@ -77,7 +82,7 @@ export function mapCvFormValuesToDocument(values: CvFormValues): CvDocument {
       }
 
       return {
-        id: `education-${index + 1}`,
+        id: createCvEducationId(index + 1),
         degree,
         university,
         startDate,

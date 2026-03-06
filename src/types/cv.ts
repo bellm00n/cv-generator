@@ -1,3 +1,5 @@
+import type { CvEducationId, CvEmploymentId, CvLinkId } from "@/lib/schemas";
+
 export interface CvContactInfo {
   country: string;
   city: string;
@@ -6,7 +8,7 @@ export interface CvContactInfo {
 }
 
 export interface CvEmploymentEntry {
-  id: string;
+  id: CvEmploymentId;
   title: string;
   company: string;
   location: string;
@@ -16,7 +18,7 @@ export interface CvEmploymentEntry {
 }
 
 export interface CvEducationEntry {
-  id: string;
+  id: CvEducationId;
   degree: string;
   university: string;
   startDate: string;
@@ -24,7 +26,7 @@ export interface CvEducationEntry {
 }
 
 export interface CvLinkEntry {
-  id: string;
+  id: CvLinkId;
   label: string;
   url: string;
 }

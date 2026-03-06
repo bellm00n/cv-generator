@@ -1,8 +1,17 @@
 import { z } from "zod";
 
 const REQUIRED_WARNING = "This field is recommended.";
-
 export const CV_FORM_STORAGE_KEY = "cv-generator:editor-form:v1";
+const cvItemIdSchema = z.string().trim().min(1, "Invalid identifier.");
+const cvItemOrderSchema = z.number().int().positive("Invalid order.");
+
+const cvLinkIdSchema = cvItemIdSchema.brand<"CvLinkId">();
+const cvEmploymentIdSchema = cvItemIdSchema.brand<"CvEmploymentId">();
+const cvEducationIdSchema = cvItemIdSchema.brand<"CvEducationId">();
+
+export type CvLinkId = z.infer<typeof cvLinkIdSchema>;
+export type CvEmploymentId = z.infer<typeof cvEmploymentIdSchema>;
+export type CvEducationId = z.infer<typeof cvEducationIdSchema>;
 
 export const cvListItemSchema = z.object({
   value: z.string().trim().min(1, "Add a value or remove this row."),
@@ -144,4 +153,20 @@ export function createDefaultCvFormValues(): CvFormValues {
     employmentHistory: [createEmptyEmploymentItem()],
     education: [createEmptyEducationItem()],
   };
+}
+
+export function createCvLinkId(order: number): CvLinkId {
+  return cvLinkIdSchema.parse(`link-${cvItemOrderSchema.parse(order)}`);
+}
+
+export function createCvEmploymentId(order: number): CvEmploymentId {
+  return cvEmploymentIdSchema.parse(
+    `employment-${cvItemOrderSchema.parse(order)}`,
+  );
+}
+
+export function createCvEducationId(order: number): CvEducationId {
+  return cvEducationIdSchema.parse(
+    `education-${cvItemOrderSchema.parse(order)}`,
+  );
 }

@@ -1,25 +1,12 @@
-const MONTH_NAMES = [
-  "January",
-  "February",
-  "March",
-  "April",
-  "May",
-  "June",
-  "July",
-  "August",
-  "September",
-  "October",
-  "November",
-  "December",
-];
+import { MONTH_FULL_NAMES, YEAR_MONTH_REGEX } from "@/constants/date";
 
 function formatMonthYear(value: string): string {
-  const match = value.match(/^(\d{4})-(\d{2})$/);
+  const match = value.match(YEAR_MONTH_REGEX);
   if (!match) return value;
 
   const year = match[1];
   const monthIndex = Number.parseInt(match[2], 10) - 1;
-  const monthName = MONTH_NAMES[monthIndex];
+  const monthName = MONTH_FULL_NAMES[monthIndex];
 
   return monthName ? `${monthName} ${year}` : value;
 }

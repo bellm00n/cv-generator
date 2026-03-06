@@ -5,7 +5,7 @@ import dynamic from "next/dynamic";
 import { EditorPanel } from "@/components/editor/EditorPanel";
 import { PreviewPanel } from "@/components/preview/PreviewPanel";
 import { Button } from "@/components/ui/Button";
-import { EMPTY_CV_DOCUMENT } from "@/constants";
+import { EMPTY_CV_DOCUMENT } from "@/constants/document";
 import { cn } from "@/lib/cn";
 import { mapCvFormValuesToDocument } from "@/lib/mappers";
 import { normalizePersistedCvForm } from "@/lib/normalizers";

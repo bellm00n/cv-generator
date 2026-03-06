@@ -3,6 +3,7 @@ import { useFieldArray, useFormContext } from "react-hook-form";
 import { cn } from "@/lib/cn";
 import { Button } from "@/components/ui/Button";
 import { Input } from "@/components/ui/Input";
+import { ItemCard } from "@/components/ui/ItemCard";
 import { createEmptyLinkItem, type CvFormValues } from "@/lib/schemas";
 import { WARNING_INPUT_CLASS, getWarningMessage } from "./editorUtils";
 
@@ -41,10 +42,7 @@ export function LinksSection() {
           )?.[index];
 
           return (
-            <article
-              key={item.id}
-              className="border-app-accent/30 rounded-md border-l-2 bg-gray-50/50 p-3"
-            >
+            <ItemCard key={item.id}>
               <div className="flex flex-wrap items-center justify-between gap-2">
                 <h4 className="text-sm font-medium">Link {index + 1}</h4>
                 <Button
@@ -83,7 +81,7 @@ export function LinksSection() {
                   {...register(`links.${index}.url` as const)}
                 />
               </div>
-            </article>
+            </ItemCard>
           );
         })}
 

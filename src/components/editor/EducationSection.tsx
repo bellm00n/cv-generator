@@ -3,6 +3,7 @@ import { Controller, useFieldArray, useFormContext } from "react-hook-form";
 import { cn } from "@/lib/cn";
 import { Button } from "@/components/ui/Button";
 import { Input } from "@/components/ui/Input";
+import { ItemCard } from "@/components/ui/ItemCard";
 import { MonthPicker } from "@/components/ui/MonthPicker";
 import { createEmptyEducationItem, type CvFormValues } from "@/lib/schemas";
 import {
@@ -44,10 +45,7 @@ export function EducationSection() {
           )?.[index];
 
           return (
-            <article
-              key={item.id}
-              className="border-app-accent/30 rounded-md border-l-2 bg-gray-50/50 p-3"
-            >
+            <ItemCard key={item.id}>
               <div className="flex flex-wrap items-center justify-between gap-2">
                 <h4 className="text-sm font-medium">
                   Education item {index + 1}
@@ -136,7 +134,7 @@ export function EducationSection() {
                   )}
                 />
               </div>
-            </article>
+            </ItemCard>
           );
         })}
 

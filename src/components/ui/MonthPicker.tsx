@@ -2,36 +2,11 @@
 
 import { useCallback, useEffect, useRef, useState } from "react";
 import { cn } from "@/lib/cn";
-
-const MONTH_LABELS = [
-  "Jan",
-  "Feb",
-  "Mar",
-  "Apr",
-  "May",
-  "Jun",
-  "Jul",
-  "Aug",
-  "Sep",
-  "Oct",
-  "Nov",
-  "Dec",
-] as const;
-
-const MONTH_FULL_NAMES = [
-  "January",
-  "February",
-  "March",
-  "April",
-  "May",
-  "June",
-  "July",
-  "August",
-  "September",
-  "October",
-  "November",
-  "December",
-] as const;
+import {
+  MONTH_FULL_NAMES,
+  MONTH_SHORT_NAMES,
+  YEAR_MONTH_REGEX,
+} from "@/constants/date";
 
 type MonthPickerProps = {
   id: string;
@@ -46,7 +21,7 @@ type MonthPickerProps = {
 };
 
 function parseYearMonth(value: string): { year: number; month: number } | null {
-  const match = value.match(/^(\d{4})-(\d{2})$/);
+  const match = value.match(YEAR_MONTH_REGEX);
   if (!match) return null;
   return { year: Number(match[1]), month: Number(match[2]) };
 }
@@ -183,7 +158,7 @@ export function MonthPicker({
             </div>
 
             <div className="mt-2 grid grid-cols-3 gap-1">
-              {MONTH_LABELS.map((monthLabel, index) => {
+              {MONTH_SHORT_NAMES.map((monthLabel, index) => {
                 const isSelected =
                   parsed?.year === viewYear && parsed?.month === index + 1;
 

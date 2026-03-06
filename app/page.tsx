@@ -7,12 +7,9 @@ import { PreviewPanel } from "@/components/preview/PreviewPanel";
 import { Button } from "@/components/ui/Button";
 import { EMPTY_CV_DOCUMENT } from "@/constants";
 import { cn } from "@/lib/cn";
-import {
-  CV_FORM_STORAGE_KEY,
-  cvUploadSchema,
-  mapCvFormValuesToDocument,
-  normalizePersistedCvForm,
-} from "@/lib/cvForm";
+import { mapCvFormValuesToDocument } from "@/lib/mappers";
+import { normalizePersistedCvForm } from "@/lib/normalizers";
+import { CV_FORM_STORAGE_KEY, cvUploadSchema } from "@/lib/schemas";
 import type { CvDocument } from "@/types/cv";
 
 const DOWNLOAD_BUTTON_CLASS =

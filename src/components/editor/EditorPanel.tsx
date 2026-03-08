@@ -4,7 +4,7 @@ import { useEffect, useRef, useState } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { FormProvider, useForm } from "react-hook-form";
 import { cn } from "@/lib/cn";
-import { normalizePersistedCvForm } from "@/lib/normalizers";
+import { parseImportedCv } from "@/schemas/cvImportSchema";
 import {
   CV_FORM_STORAGE_KEY,
   createDefaultCvFormValues,
@@ -64,7 +64,7 @@ export function EditorPanel({
 
     try {
       const parsedValue = JSON.parse(persistedValue) as unknown;
-      const normalizedForm = normalizePersistedCvForm(parsedValue);
+      const normalizedForm = parseImportedCv(parsedValue);
 
       if (normalizedForm) {
         reset(normalizedForm);

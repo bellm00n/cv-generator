@@ -7,10 +7,9 @@ import { PreviewPanel } from "@/components/preview/PreviewPanel";
 import { Button } from "@/components/ui/Button";
 import { EMPTY_CV_DOCUMENT } from "@/constants/document";
 import { cn } from "@/lib/cn";
-import { normalizePersistedCvForm } from "@/lib/normalizers";
 import { CV_FORM_STORAGE_KEY } from "@/schemas/formSchema";
 import { cvDocumentSchema } from "@/schemas/documentSchema";
-import { cvUploadSchema } from "@/schemas/uploadSchema";
+import { parseImportedCv } from "@/schemas/cvImportSchema";
 import type { CvDocument } from "@/types/cv";
 
 const DOWNLOAD_BUTTON_CLASS =
@@ -63,14 +62,8 @@ export default function HomePage() {
     reader.onload = (e) => {
       try {
         const json: unknown = JSON.parse(e.target?.result as string);
-        const result = cvUploadSchema.safeParse(json);
+        const normalized = parseImportedCv(json);
 
-        if (!result.success) {
-          alert("The uploaded file is not valid");
-          return;
-        }
-
-        const normalized = normalizePersistedCvForm(result.data);
         if (!normalized) {
           alert("The uploaded file is not valid");
           return;

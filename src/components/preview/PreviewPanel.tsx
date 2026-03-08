@@ -5,10 +5,6 @@ import type { ReactNode } from "react";
 import { cn } from "@/lib/cn";
 import type { CvDocument } from "@/types/cv";
 
-const PREVIEW_SURFACE_STYLE = {
-  backgroundColor: "var(--color-surface)",
-} as const;
-
 const PdfPreviewFrame = dynamic(
   () =>
     import("@/components/preview/PdfPreviewFrame").then(
@@ -17,10 +13,7 @@ const PdfPreviewFrame = dynamic(
   {
     ssr: false,
     loading: () => (
-      <div
-        className="flex h-full items-center justify-center text-sm text-app-muted"
-        style={PREVIEW_SURFACE_STYLE}
-      >
+      <div className="flex h-full items-center justify-center bg-app-surface text-sm text-app-muted">
         Loading preview...
       </div>
     ),
@@ -54,11 +47,8 @@ export function PreviewPanel({
         </div>
       </div>
 
-      <div className="mt-rhythm rounded-md" style={PREVIEW_SURFACE_STYLE}>
-        <div
-          className="mx-auto aspect-[595.28/841.89] w-full max-w-[35rem] overflow-hidden rounded-sm border border-app-border shadow-sm"
-          style={PREVIEW_SURFACE_STYLE}
-        >
+      <div className="mt-rhythm rounded-md bg-app-surface">
+        <div className="mx-auto aspect-[595.28/841.89] w-full max-w-[35rem] overflow-hidden rounded-sm border border-app-border bg-app-surface shadow-sm">
           <PdfPreviewFrame cvData={cvData} />
         </div>
       </div>

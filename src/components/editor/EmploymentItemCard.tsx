@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/Button";
 import { Checkbox } from "@/components/ui/Checkbox";
 import { Input } from "@/components/ui/Input";
 import { MonthPicker } from "@/components/ui/MonthPicker";
-import { ItemCard } from "@/components/ui/ItemCard";
+import { Card } from "@/components/ui/Card";
 import { Textarea } from "@/components/ui/Textarea";
 import type { CvFormValues } from "@/lib/schemas";
 import { WARNING_INPUT_CLASS, getWarningMessage } from "./editorUtils";
@@ -38,7 +38,7 @@ export function EmploymentItemCard({
   });
 
   return (
-    <ItemCard>
+    <Card>
       <div className="flex flex-wrap items-center justify-between gap-2">
         <h4 className="text-sm font-medium">Employment item {index + 1}</h4>
         <Button variant="destructive" onClick={onRemove}>
@@ -159,6 +159,6 @@ export function EmploymentItemCard({
           {...register(`employmentHistory.${index}.description` as const)}
         />
       </div>
-    </ItemCard>
+    </Card>
   );
 }

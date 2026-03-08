@@ -1,10 +1,10 @@
 import type { ReactNode } from "react";
 
-type ItemCardProps = {
+type CardProps = {
   children: ReactNode;
 };
 
-export function ItemCard({ children }: ItemCardProps) {
+export function Card({ children }: CardProps) {
   return (
     <div className="border-app-accent/30 rounded-md border-l-2 bg-gray-50/50 p-3">
       {children}

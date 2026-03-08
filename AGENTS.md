@@ -1,1 +1,0 @@
-- Don't run `npm run build` the user will do it in his own

@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/Button";
 import { Input } from "@/components/ui/Input";
 import { Card } from "@/components/ui/Card";
 import { MonthPicker } from "@/components/ui/MonthPicker";
-import { createEmptyEducationItem, type CvFormValues } from "@/lib/schemas";
+import { createEmptyEducationItem, type CvFormValues } from "@/schemas/formSchema";
 import {
   WARNING_INPUT_CLASS,
   getArrayWarning,

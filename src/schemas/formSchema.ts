@@ -2,16 +2,6 @@ import { z } from "zod";
 
 const REQUIRED_WARNING = "This field is recommended.";
 export const CV_FORM_STORAGE_KEY = "cv-generator:editor-form:v1";
-const cvItemIdSchema = z.string().trim().min(1, "Invalid identifier.");
-const cvItemOrderSchema = z.number().int().positive("Invalid order.");
-
-const cvLinkIdSchema = cvItemIdSchema.brand<"CvLinkId">();
-const cvEmploymentIdSchema = cvItemIdSchema.brand<"CvEmploymentId">();
-const cvEducationIdSchema = cvItemIdSchema.brand<"CvEducationId">();
-
-export type CvLinkId = z.infer<typeof cvLinkIdSchema>;
-export type CvEmploymentId = z.infer<typeof cvEmploymentIdSchema>;
-export type CvEducationId = z.infer<typeof cvEducationIdSchema>;
 
 export const cvListItemSchema = z.object({
   value: z.string().trim().min(1, "Add a value or remove this row."),
@@ -69,45 +59,6 @@ export const cvFormSchema = z.object({
 
 export type CvFormValues = z.infer<typeof cvFormSchema>;
 
-export const cvUploadSchema = z
-  .object({
-    name: z.string().optional(),
-    surname: z.string().optional(),
-    fullName: z.string().optional(),
-    title: z.string().optional(),
-    country: z.string().optional(),
-    city: z.string().optional(),
-    phone: z.string().optional(),
-    number: z.string().optional(),
-    email: z.string().optional(),
-    summary: z.string().optional(),
-    contact: z
-      .object({
-        country: z.string().optional(),
-        city: z.string().optional(),
-        phone: z.string().optional(),
-        email: z.string().optional(),
-      })
-      .optional(),
-    links: z.array(z.unknown()).optional(),
-    skills: z.array(z.unknown()).optional(),
-    languages: z.array(z.unknown()).optional(),
-    employmentHistory: z.array(z.unknown()).optional(),
-    education: z.array(z.unknown()).optional(),
-  })
-  .passthrough()
-  .refine((data) => {
-    const hasIdentity = Boolean(data.name || data.fullName);
-    const hasContent = Boolean(
-      data.title ||
-      data.summary ||
-      data.skills?.length ||
-      data.employmentHistory?.length ||
-      data.education?.length,
-    );
-    return hasIdentity || hasContent;
-  });
-
 export function createEmptyListItem(): CvFormValues["skills"][number] {
   return { value: "" };
 }
@@ -153,20 +104,4 @@ export function createDefaultCvFormValues(): CvFormValues {
     employmentHistory: [createEmptyEmploymentItem()],
     education: [createEmptyEducationItem()],
   };
-}
-
-export function createCvLinkId(order: number): CvLinkId {
-  return cvLinkIdSchema.parse(`link-${cvItemOrderSchema.parse(order)}`);
-}
-
-export function createCvEmploymentId(order: number): CvEmploymentId {
-  return cvEmploymentIdSchema.parse(
-    `employment-${cvItemOrderSchema.parse(order)}`,
-  );
-}
-
-export function createCvEducationId(order: number): CvEducationId {
-  return cvEducationIdSchema.parse(
-    `education-${cvItemOrderSchema.parse(order)}`,
-  );
 }

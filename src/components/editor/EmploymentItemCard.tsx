@@ -7,7 +7,7 @@ import { Input } from "@/components/ui/Input";
 import { MonthPicker } from "@/components/ui/MonthPicker";
 import { Card } from "@/components/ui/Card";
 import { Textarea } from "@/components/ui/Textarea";
-import type { CvFormValues } from "@/lib/schemas";
+import type { CvFormValues } from "@/schemas/formSchema";
 import { WARNING_INPUT_CLASS, getWarningMessage } from "./editorUtils";
 
 type EmploymentItemCardProps = {

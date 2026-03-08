@@ -1,6 +1,6 @@
 import { useFieldArray, useFormContext } from "react-hook-form";
 import { Chips } from "@/components/ui/Chips";
-import type { CvFormValues } from "@/lib/schemas";
+import type { CvFormValues } from "@/schemas/formSchema";
 import { getArrayWarning } from "./editorUtils";
 
 export function SkillsSection() {

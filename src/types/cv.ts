@@ -1,4 +1,8 @@
-import type { CvEducationId, CvEmploymentId, CvLinkId } from "@/lib/schemas";
+import type {
+  CvEducationId,
+  CvEmploymentId,
+  CvLinkId,
+} from "@/schemas/documentSchema";
 
 export interface CvContactInfo {
   country: string;

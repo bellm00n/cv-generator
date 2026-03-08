@@ -4,14 +4,14 @@ import { useEffect, useRef, useState } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { FormProvider, useForm } from "react-hook-form";
 import { cn } from "@/lib/cn";
-import { mapCvFormValuesToDocument } from "@/lib/mappers";
 import { normalizePersistedCvForm } from "@/lib/normalizers";
 import {
   CV_FORM_STORAGE_KEY,
   createDefaultCvFormValues,
   cvFormSchema,
   type CvFormValues,
-} from "@/lib/schemas";
+} from "@/schemas/formSchema";
+import { cvDocumentSchema } from "@/schemas/documentSchema";
 import type { CvDocument } from "@/types/cv";
 import { EducationSection } from "./EducationSection";
 import { EmploymentHistorySection } from "./EmploymentHistorySection";
@@ -83,7 +83,7 @@ export function EditorPanel({
       return;
     }
 
-    onCvDataChange(mapCvFormValuesToDocument(getValues()));
+    onCvDataChange(cvDocumentSchema.parse(getValues()));
   }, [getValues, isHydrated, onCvDataChange]);
 
   useEffect(() => {
@@ -101,7 +101,7 @@ export function EditorPanel({
 
     const subscription = watch((value) => {
       if (onCvDataChange) {
-        onCvDataChange(mapCvFormValuesToDocument(getValues()));
+        onCvDataChange(cvDocumentSchema.parse(getValues()));
       }
 
       if (autosaveTimeoutRef.current) {

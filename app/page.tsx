@@ -7,9 +7,10 @@ import { PreviewPanel } from "@/components/preview/PreviewPanel";
 import { Button } from "@/components/ui/Button";
 import { EMPTY_CV_DOCUMENT } from "@/constants/document";
 import { cn } from "@/lib/cn";
-import { mapCvFormValuesToDocument } from "@/lib/mappers";
 import { normalizePersistedCvForm } from "@/lib/normalizers";
-import { CV_FORM_STORAGE_KEY, cvUploadSchema } from "@/lib/schemas";
+import { CV_FORM_STORAGE_KEY } from "@/schemas/formSchema";
+import { cvDocumentSchema } from "@/schemas/documentSchema";
+import { cvUploadSchema } from "@/schemas/uploadSchema";
 import type { CvDocument } from "@/types/cv";
 
 const DOWNLOAD_BUTTON_CLASS =
@@ -79,7 +80,7 @@ export default function HomePage() {
           CV_FORM_STORAGE_KEY,
           JSON.stringify(normalized),
         );
-        setCvDocument(mapCvFormValuesToDocument(normalized));
+        setCvDocument(cvDocumentSchema.parse(normalized));
         setEditorResetKey((current) => current + 1);
       } catch {
         alert("The uploaded file is not valid");

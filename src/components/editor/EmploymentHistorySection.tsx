@@ -1,6 +1,9 @@
 import { useFieldArray, useFormContext } from "react-hook-form";
 import { Button } from "@/components/ui/Button";
-import { createEmptyEmploymentItem, type CvFormValues } from "@/lib/schemas";
+import {
+  createEmptyEmploymentItem,
+  type CvFormValues,
+} from "@/schemas/formSchema";
 import { EmploymentItemCard } from "./EmploymentItemCard";
 import { getArrayWarning } from "./editorUtils";
 

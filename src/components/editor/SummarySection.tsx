@@ -1,7 +1,7 @@
 import { useFormContext } from "react-hook-form";
 import { cn } from "@/lib/cn";
 import { Textarea } from "@/components/ui/Textarea";
-import type { CvFormValues } from "@/lib/schemas";
+import type { CvFormValues } from "@/schemas/formSchema";
 import { WARNING_INPUT_CLASS, getWarningMessage } from "./editorUtils";
 
 export function SummarySection() {

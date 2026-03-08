@@ -4,7 +4,7 @@ import { cn } from "@/lib/cn";
 import { Button } from "@/components/ui/Button";
 import { Input } from "@/components/ui/Input";
 import { Card } from "@/components/ui/Card";
-import { createEmptyLinkItem, type CvFormValues } from "@/lib/schemas";
+import { createEmptyLinkItem, type CvFormValues } from "@/schemas/formSchema";
 import { WARNING_INPUT_CLASS, getWarningMessage } from "./editorUtils";
 
 export function LinksSection() {

@@ -4,7 +4,7 @@ import { useFieldArray, useFormContext } from "react-hook-form";
 import { cn } from "@/lib/cn";
 import { Button } from "@/components/ui/Button";
 import { Input } from "@/components/ui/Input";
-import { createEmptyListItem, type CvFormValues } from "@/lib/schemas";
+import { createEmptyListItem, type CvFormValues } from "@/schemas/formSchema";
 import {
   WARNING_INPUT_CLASS,
   getArrayWarning,

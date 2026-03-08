@@ -1,4 +1,7 @@
-import { createDefaultCvFormValues, type CvFormValues } from "@/lib/schemas";
+import {
+  createDefaultCvFormValues,
+  type CvFormValues,
+} from "@/schemas/formSchema";
 
 type UnknownRecord = Record<string, unknown>;
 

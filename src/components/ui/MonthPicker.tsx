@@ -122,7 +122,7 @@ export function MonthPicker({
             <div className="flex items-center justify-between">
               <button
                 type="button"
-                className="flex h-7 w-7 items-center justify-center rounded-md text-app-muted hover:bg-gray-100 hover:text-app-text"
+                className="flex size-7 items-center justify-center rounded-md text-app-muted hover:bg-gray-100 hover:text-app-text"
                 onClick={() => setViewYear((y) => y - 1)}
                 aria-label="Previous year"
               >
@@ -141,7 +141,7 @@ export function MonthPicker({
               </span>
               <button
                 type="button"
-                className="flex h-7 w-7 items-center justify-center rounded-md text-app-muted hover:bg-gray-100 hover:text-app-text"
+                className="flex size-7 items-center justify-center rounded-md text-app-muted hover:bg-gray-100 hover:text-app-text"
                 onClick={() => setViewYear((y) => y + 1)}
                 aria-label="Next year"
               >

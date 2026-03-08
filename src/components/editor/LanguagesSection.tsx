@@ -66,7 +66,7 @@ export function LanguagesSection() {
 
           return (
             <div key={language.id} className="flex flex-wrap items-start gap-2">
-              <div className="min-w-[14rem] flex-1">
+              <div className="min-w-56 flex-1">
                 <Input
                   id={`language-${index}`}
                   label={`Language ${index + 1}`}

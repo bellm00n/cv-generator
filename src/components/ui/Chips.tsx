@@ -2,6 +2,7 @@
 
 import { type KeyboardEvent, useState } from "react";
 import { cn } from "@/lib/cn";
+import { Chip } from "./Chip";
 
 type ChipsProps = {
   id: string;
@@ -58,27 +59,11 @@ export function Chips({
       {values.length > 0 ? (
         <div className="flex flex-wrap items-center gap-1.5">
           {values.map((value, index) => (
-            <span
+            <Chip
               key={`${value}-${index}`}
-              className="bg-app-accent/10 inline-flex items-center gap-1 rounded-md border border-app-border px-2 py-0.5 text-sm text-app-text"
-            >
-              {value}
-              <button
-                type="button"
-                aria-label={`Remove ${value}`}
-                className="hover:bg-app-accent/20 ml-0.5 inline-flex size-4 shrink-0 items-center justify-center rounded-full text-app-muted transition-colors hover:text-app-text"
-                onClick={() => onRemove(index)}
-              >
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  viewBox="0 0 16 16"
-                  fill="currentColor"
-                  className="size-3"
-                >
-                  <path d="M5.28 4.22a.75.75 0 0 0-1.06 1.06L6.94 8l-2.72 2.72a.75.75 0 1 0 1.06 1.06L8 9.06l2.72 2.72a.75.75 0 1 0 1.06-1.06L9.06 8l2.72-2.72a.75.75 0 0 0-1.06-1.06L8 6.94 5.28 4.22Z" />
-                </svg>
-              </button>
-            </span>
+              value={value}
+              onRemove={() => onRemove(index)}
+            />
           ))}
         </div>
       ) : null}

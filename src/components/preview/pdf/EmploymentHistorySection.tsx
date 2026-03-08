@@ -61,11 +61,9 @@ export function EmploymentHistorySection({
               </SectionDescription>
               {description ? (
                 <View style={styles.entryDescription}>
-                  {description.split(/\n{2,}/).map((paragraph, i) => (
-                    <Text key={i} style={i > 0 ? styles.paragraph : undefined}>
-                      {renderFormattedText(paragraph) || " "}
-                    </Text>
-                  ))}
+                  <Text style={styles.paragraph}>
+                    {renderFormattedText(description)}
+                  </Text>
                 </View>
               ) : null}
             </View>

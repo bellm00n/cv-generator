@@ -37,4 +37,4 @@ next-env.d.ts
 # agents
 .cursor
 .claude
-
+.codex

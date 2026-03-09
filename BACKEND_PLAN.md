@@ -15,16 +15,16 @@
 
 ### 1. Database
 
-- [ ] Create an account on neon.tech
-- [ ] Get `DATABASE_URL`
-- [ ] Install Prisma (`npm install prisma @prisma/client`)
-- [ ] Add npm scripts to `package.json`:
+- [x] Create an account on neon.tech
+- [x] Get `DATABASE_URL`
+- [x] Install Prisma (`npm install prisma @prisma/client`)
+- [x] Add npm scripts to `package.json`:
   - `db:migrate` — create and apply a migration
   - `db:push` — apply schema without a migration file (for early stage)
   - `db:studio` — open visual DB interface in the browser
   - `db:generate` — regenerate TypeScript types from schema
-- [ ] Write schema (`User`, `CV`)
-- [ ] Run first migration (`npm run db:migrate`)
+- [x] Write schema (`User`, `CV`)
+- [x] Run first migration (`npm run db:migrate`)
 
 ### 2. Auth
 

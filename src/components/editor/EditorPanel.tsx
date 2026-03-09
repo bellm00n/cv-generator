@@ -1,12 +1,10 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { FormProvider, useForm } from "react-hook-form";
 import { cn } from "@/lib/cn";
-import { parseImportedCv } from "@/schemas/cvImportSchema";
 import {
-  CV_FORM_STORAGE_KEY,
   createDefaultCvFormValues,
   cvFormSchema,
   type CvFormValues,
@@ -23,93 +21,54 @@ import { SummarySection } from "./SummarySection";
 
 type EditorPanelProps = {
   className?: string;
+  initialFormValues?: CvFormValues;
   onCvDataChange?: (cvData: CvDocument) => void;
-  onDirtyChange?: (isDirty: boolean) => void;
+  onSave?: (values: CvFormValues) => Promise<void>;
 };
 
-const AUTOSAVE_DELAY_MS = 400;
+const AUTOSAVE_DELAY_MS = 1500;
 
 export function EditorPanel({
   className,
+  initialFormValues,
   onCvDataChange,
-  onDirtyChange,
+  onSave,
 }: EditorPanelProps) {
-  const [isHydrated, setIsHydrated] = useState(false);
   const autosaveTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const onSaveRef = useRef(onSave);
+  const onCvDataChangeRef = useRef(onCvDataChange);
+
+  useEffect(() => {
+    onSaveRef.current = onSave;
+  }, [onSave]);
+
+  useEffect(() => {
+    onCvDataChangeRef.current = onCvDataChange;
+  }, [onCvDataChange]);
 
   const methods = useForm<CvFormValues>({
     resolver: zodResolver(cvFormSchema),
-    defaultValues: createDefaultCvFormValues(),
+    defaultValues: initialFormValues ?? createDefaultCvFormValues(),
     mode: "onBlur",
     reValidateMode: "onChange",
   });
 
-  const {
-    getValues,
-    reset,
-    watch,
-    formState: { isDirty },
-  } = methods;
+  const { getValues, watch } = methods;
 
   useEffect(() => {
-    if (typeof window === "undefined") {
-      return;
-    }
-
-    const persistedValue = window.localStorage.getItem(CV_FORM_STORAGE_KEY);
-    if (!persistedValue) {
-      setIsHydrated(true);
-      return;
-    }
-
-    try {
-      const parsedValue = JSON.parse(persistedValue) as unknown;
-      const normalizedForm = parseImportedCv(parsedValue);
-
-      if (normalizedForm) {
-        reset(normalizedForm);
-      } else {
-        window.localStorage.removeItem(CV_FORM_STORAGE_KEY);
-      }
-    } catch {
-      window.localStorage.removeItem(CV_FORM_STORAGE_KEY);
-    }
-
-    setIsHydrated(true);
-  }, [reset]);
+    onCvDataChangeRef.current?.(cvDocumentSchema.parse(getValues()));
+  }, [getValues]);
 
   useEffect(() => {
-    if (!isHydrated || !onCvDataChange) {
-      return;
-    }
-
-    onCvDataChange(cvDocumentSchema.parse(getValues()));
-  }, [getValues, isHydrated, onCvDataChange]);
-
-  useEffect(() => {
-    if (!isHydrated || !onDirtyChange) {
-      return;
-    }
-
-    onDirtyChange(isDirty);
-  }, [isDirty, isHydrated, onDirtyChange]);
-
-  useEffect(() => {
-    if (!isHydrated || typeof window === "undefined") {
-      return;
-    }
-
-    const subscription = watch((value) => {
-      if (onCvDataChange) {
-        onCvDataChange(cvDocumentSchema.parse(getValues()));
-      }
+    const subscription = watch(() => {
+      onCvDataChangeRef.current?.(cvDocumentSchema.parse(getValues()));
 
       if (autosaveTimeoutRef.current) {
         clearTimeout(autosaveTimeoutRef.current);
       }
 
       autosaveTimeoutRef.current = setTimeout(() => {
-        window.localStorage.setItem(CV_FORM_STORAGE_KEY, JSON.stringify(value));
+        void onSaveRef.current?.(getValues());
       }, AUTOSAVE_DELAY_MS);
     });
 
@@ -119,7 +78,7 @@ export function EditorPanel({
         clearTimeout(autosaveTimeoutRef.current);
       }
     };
-  }, [getValues, isHydrated, onCvDataChange, watch]);
+  }, [getValues, watch]);
 
   return (
     <FormProvider {...methods}>

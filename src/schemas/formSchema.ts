@@ -1,7 +1,6 @@
 import { z } from "zod";
 
 const REQUIRED_WARNING = "This field is recommended.";
-export const CV_FORM_STORAGE_KEY = "cv-generator:editor-form:v1";
 
 export const cvListItemSchema = z.object({
   value: z.string().trim().min(1, "Add a value or remove this row."),

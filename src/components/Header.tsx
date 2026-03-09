@@ -1,5 +1,6 @@
 import { auth, signOut } from "@/auth";
 import Image from "next/image";
+import Link from "next/link";
 import { Button } from "@/components/ui/Button";
 
 export async function Header() {
@@ -7,7 +8,12 @@ export async function Header() {
 
   return (
     <header className="flex h-14 items-center justify-between border-b border-app-border bg-app-surface px-6">
-      <span className="text-sm font-semibold text-app-text">CV Generator</span>
+      <Link
+        href="/"
+        className="text-sm font-semibold text-app-text hover:text-app-accent"
+      >
+        CV Generator
+      </Link>
 
       <div className="flex items-center gap-3">
         {session?.user?.image && (

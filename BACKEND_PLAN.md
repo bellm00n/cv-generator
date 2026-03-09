@@ -35,11 +35,11 @@
 
 ### 3. CV CRUD
 
-- [ ] `GET /api/cv` — list CVs for current user
-- [ ] `POST /api/cv` — create CV
-- [ ] `PATCH /api/cv/[id]` — update CV
-- [ ] `DELETE /api/cv/[id]` — delete CV
-- [ ] Protect routes via NextAuth session
+- [x] `GET /api/cv` — list CVs for current user
+- [x] `POST /api/cv` — create CV
+- [x] `PATCH /api/cv/[id]` — update CV
+- [x] `DELETE /api/cv/[id]` — delete CV
+- [x] Protect routes via NextAuth session
 
 ### 4. Deploy
 

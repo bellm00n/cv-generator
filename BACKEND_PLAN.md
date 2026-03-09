@@ -1,0 +1,49 @@
+# Backend Plan
+
+## Stack
+
+| Component        | Technology                 |
+| ---------------- | -------------------------- |
+| Auth             | NextAuth.js (Google OAuth) |
+| ORM + migrations | Prisma                     |
+| Database         | PostgreSQL                 |
+| DB hosting       | Neon.tech (free tier)      |
+| API              | Next.js Route Handlers     |
+| App hosting      | Vercel                     |
+
+## Implementation Steps
+
+### 1. Database
+
+- [ ] Create an account on neon.tech
+- [ ] Get `DATABASE_URL`
+- [ ] Install Prisma (`npm install prisma @prisma/client`)
+- [ ] Add npm scripts to `package.json`:
+  - `db:migrate` — create and apply a migration
+  - `db:push` — apply schema without a migration file (for early stage)
+  - `db:studio` — open visual DB interface in the browser
+  - `db:generate` — regenerate TypeScript types from schema
+- [ ] Write schema (`User`, `CV`)
+- [ ] Run first migration (`npm run db:migrate`)
+
+### 2. Auth
+
+- [ ] Create a Google OAuth app in Google Cloud Console
+- [ ] Install NextAuth.js and Prisma Adapter (`npm install next-auth @auth/prisma-adapter`)
+- [ ] Configure Google Provider
+- [ ] Save user to DB via adapter
+
+### 3. CV CRUD
+
+- [ ] `GET /api/cv` — list CVs for current user
+- [ ] `POST /api/cv` — create CV
+- [ ] `PATCH /api/cv/[id]` — update CV
+- [ ] `DELETE /api/cv/[id]` — delete CV
+- [ ] Protect routes via NextAuth session
+
+### 4. Deploy
+
+- [ ] Connect repository to Vercel
+- [ ] Add env variables (DATABASE_URL, NEXTAUTH_SECRET, Google credentials)
+- [ ] Change Vercel Build Command to `prisma migrate deploy && next build`
+  - This ensures migrations are applied to the DB before the new app version is built

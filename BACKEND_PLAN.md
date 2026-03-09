@@ -43,7 +43,7 @@
 
 ### 4. Deploy
 
-- [ ] Connect repository to Vercel
-- [ ] Add env variables (DATABASE_URL, NEXTAUTH_SECRET, Google credentials)
-- [ ] Change Vercel Build Command to `prisma migrate deploy && next build`
+- [x] Connect repository to Vercel
+- [x] Add env variables (DATABASE_URL, NEXTAUTH_SECRET, Google credentials)
+- [x] Change Vercel Build Command to `prisma migrate deploy && next build`
   - This ensures migrations are applied to the DB before the new app version is built

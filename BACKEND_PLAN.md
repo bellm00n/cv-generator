@@ -28,10 +28,10 @@
 
 ### 2. Auth
 
-- [ ] Create a Google OAuth app in Google Cloud Console
-- [ ] Install NextAuth.js and Prisma Adapter (`npm install next-auth @auth/prisma-adapter`)
-- [ ] Configure Google Provider
-- [ ] Save user to DB via adapter
+- [x] Create a Google OAuth app in Google Cloud Console
+- [x] Install NextAuth.js and Prisma Adapter (`npm install next-auth @auth/prisma-adapter`)
+- [x] Configure Google Provider
+- [x] Save user to DB via adapter
 
 ### 3. CV CRUD
 

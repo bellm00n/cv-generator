@@ -45,10 +45,11 @@ const getFileName = (fullName: string) => {
 
 type CvEditorPageProps = {
   cvId: string;
+  cvTitle: string;
   initialFormValues: CvFormValues;
 };
 
-export function CvEditorPage({ cvId, initialFormValues }: CvEditorPageProps) {
+export function CvEditorPage({ cvId, cvTitle, initialFormValues }: CvEditorPageProps) {
   const router = useRouter();
   const [isMobilePreviewOpen, setIsMobilePreviewOpen] = useState(false);
   const [cvDocument, setCvDocument] = useState<CvDocument>(EMPTY_CV_DOCUMENT);
@@ -173,6 +174,7 @@ export function CvEditorPage({ cvId, initialFormValues }: CvEditorPageProps) {
           >
             <EditorPanel
               key={editorKey}
+              cvTitle={cvTitle}
               initialFormValues={currentFormValues}
               onCvDataChange={setCvDocument}
               onSave={handleSave}

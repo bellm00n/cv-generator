@@ -21,6 +21,7 @@ import { SummarySection } from "./SummarySection";
 
 type EditorPanelProps = {
   className?: string;
+  cvTitle?: string;
   initialFormValues?: CvFormValues;
   onCvDataChange?: (cvData: CvDocument) => void;
   onSave?: (values: CvFormValues) => Promise<void>;
@@ -30,6 +31,7 @@ const AUTOSAVE_DELAY_MS = 1500;
 
 export function EditorPanel({
   className,
+  cvTitle,
   initialFormValues,
   onCvDataChange,
   onSave,
@@ -88,7 +90,7 @@ export function EditorPanel({
       >
         <div className="space-y-1">
           <h2 id="editor-panel-title" className="text-xl">
-            Editor Panel
+            Editor Panel{cvTitle ? ` (${cvTitle})` : ""}
           </h2>
         </div>
 

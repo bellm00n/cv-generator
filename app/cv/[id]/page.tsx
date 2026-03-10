@@ -27,5 +27,5 @@ export default async function CvPage({ params }: PageProps) {
   const initialFormValues =
     parseImportedCv(cv.data) ?? createDefaultCvFormValues();
 
-  return <CvEditorPage cvId={id} initialFormValues={initialFormValues} />;
+  return <CvEditorPage cvId={id} cvTitle={cv.title} initialFormValues={initialFormValues} />;
 }

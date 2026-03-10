@@ -6,7 +6,9 @@ const { auth } = NextAuth(authConfig);
 
 export default auth((req) => {
   if (!req.auth) {
-    return NextResponse.redirect(new URL("/api/auth/signin", req.url));
+    const signInUrl = new URL("/api/auth/signin", req.url);
+    signInUrl.searchParams.set("callbackUrl", req.nextUrl.pathname);
+    return NextResponse.redirect(signInUrl);
   }
 });
 

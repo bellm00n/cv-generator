@@ -16,27 +16,34 @@ export async function Header() {
       </Link>
 
       <div className="flex items-center gap-3">
-        {session?.user?.image && (
-          <Image
-            src={session.user.image}
-            alt="avatar"
-            width={32}
-            height={32}
-            className="rounded-full"
-          />
+        {session?.user ? (
+          <>
+            {session.user.image && (
+              <Image
+                src={session.user.image}
+                alt="avatar"
+                width={32}
+                height={32}
+                className="rounded-full"
+              />
+            )}
+            <span className="text-sm text-app-muted">{session.user.name}</span>
+            <form
+              action={async () => {
+                "use server";
+                await signOut({ redirectTo: "/" });
+              }}
+            >
+              <Button type="submit" variant="secondary">
+                Log Out
+              </Button>
+            </form>
+          </>
+        ) : (
+          <Link href="/api/auth/signin?callbackUrl=/cv-list">
+            <Button variant="secondary">Log In</Button>
+          </Link>
         )}
-        <span className="text-sm text-app-muted">{session?.user?.name}</span>
-
-        <form
-          action={async () => {
-            "use server";
-            await signOut();
-          }}
-        >
-          <Button type="submit" variant="secondary">
-            Log Out
-          </Button>
-        </form>
       </div>
     </header>
   );

@@ -49,7 +49,11 @@ type CvEditorPageProps = {
   initialFormValues: CvFormValues;
 };
 
-export function CvEditorPage({ cvId, cvTitle, initialFormValues }: CvEditorPageProps) {
+export function CvEditorPage({
+  cvId,
+  cvTitle,
+  initialFormValues,
+}: CvEditorPageProps) {
   const router = useRouter();
   const [isMobilePreviewOpen, setIsMobilePreviewOpen] = useState(false);
   const [cvDocument, setCvDocument] = useState<CvDocument>(EMPTY_CV_DOCUMENT);

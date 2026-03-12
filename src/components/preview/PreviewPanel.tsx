@@ -36,7 +36,10 @@ export function PreviewPanel({
     >
       <div className="flex flex-wrap items-center justify-between gap-3">
         <div className="space-y-1">
-          <h2 id="preview-panel-title" className="text-xl">
+          <h2
+            id="preview-panel-title"
+            className="text-xl font-semibold leading-tight"
+          >
             Preview Panel
           </h2>
         </div>

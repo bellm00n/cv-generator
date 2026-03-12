@@ -89,7 +89,10 @@ export function EditorPanel({
         aria-labelledby="editor-panel-title"
       >
         <div className="space-y-1">
-          <h2 id="editor-panel-title" className="text-xl">
+          <h2
+            id="editor-panel-title"
+            className="text-xl font-semibold leading-tight"
+          >
             Editor Panel{cvTitle ? ` (${cvTitle})` : ""}
           </h2>
         </div>

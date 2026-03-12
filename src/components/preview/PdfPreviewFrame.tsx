@@ -11,7 +11,7 @@ type PdfPreviewFrameProps = {
 export function PdfPreviewFrame({ cvData }: PdfPreviewFrameProps) {
   return (
     <PDFViewer
-      className="pdf-preview-frame"
+      className="[color-scheme:light]"
       style={{
         border: "none",
         width: "100%",

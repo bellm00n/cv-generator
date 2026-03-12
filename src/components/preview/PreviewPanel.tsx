@@ -48,8 +48,8 @@ export function PreviewPanel({
         </div>
       </div>
 
-      <div className="mt-6 rounded-lg bg-white">
-        <div className="mx-auto aspect-[595.28/841.89] w-full max-w-[35rem] overflow-hidden rounded-sm border border-slate-300 bg-white shadow-sm">
+      <div className="mt-6">
+        <div className="mx-auto aspect-[210/297] w-full max-w-[35rem] overflow-hidden rounded-sm border border-slate-300 bg-white shadow-sm">
           <PdfPreviewFrame cvData={cvData} />
         </div>
       </div>

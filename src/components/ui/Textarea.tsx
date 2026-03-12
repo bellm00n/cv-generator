@@ -15,15 +15,15 @@ export const Textarea = forwardRef<HTMLTextAreaElement, TextareaProps>(
   ) {
     return (
       <div className="flex flex-col gap-1.5">
-        <label htmlFor={id} className="text-sm font-medium text-app-text">
+        <label htmlFor={id} className="text-sm font-medium text-slate-800">
           {label}
         </label>
         <textarea
           ref={ref}
           id={id}
           className={cn(
-            "placeholder:text-app-muted/90 min-h-[5rem] rounded-md border border-app-border bg-white px-3 py-2 text-sm text-app-text",
-            "focus-visible:ring-app-accent/40 transition-shadow focus-visible:outline-none focus-visible:ring-2",
+            "min-h-[5rem] rounded-md border border-slate-300 bg-white px-3 py-2 text-sm text-gray-800 placeholder:text-slate-500/90",
+            "transition-shadow focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500/40",
             className,
           )}
           {...props}
@@ -32,7 +32,7 @@ export const Textarea = forwardRef<HTMLTextAreaElement, TextareaProps>(
           <p
             className={cn(
               "text-xs",
-              helperTone === "warning" ? "text-amber-700" : "text-app-muted",
+              helperTone === "warning" ? "text-amber-700" : "text-slate-500",
             )}
           >
             {helperText}

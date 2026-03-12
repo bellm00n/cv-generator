@@ -5,13 +5,6 @@
 :root {
   --font-sans: "Segoe UI", "Helvetica Neue", "Arial", sans-serif;
 
-  --color-bg: #f4f6f8;
-  --color-surface: #ffffff;
-  --color-border: #d5dae1;
-  --color-text: #262b33;
-  --color-muted: #6b7483;
-  --color-accent: #2196f3;
-
   --space-tight: 0.75rem;
   --space-base: 1rem;
   --space-rhythm: 1rem;
@@ -30,8 +23,8 @@ body {
 }
 
 body {
-  background: var(--color-bg);
-  color: var(--color-text);
+  background: #f1f5f9;
+  color: #1e293b;
   font-family: var(--font-sans);
   line-height: 1.5;
 }
@@ -40,7 +33,7 @@ h1,
 h2,
 h3 {
   margin: 0;
-  color: var(--color-text);
+  color: #1e293b;
   font-weight: 600;
   line-height: 1.2;
 }
@@ -55,11 +48,11 @@ input {
 }
 
 :focus-visible {
-  outline: 2px solid var(--color-accent);
+  outline: 2px solid #3b82f6;
   outline-offset: 2px;
 }
 
 .pdf-preview-frame {
-  background: var(--color-surface);
+  background: #ffffff;
   color-scheme: light;
 }

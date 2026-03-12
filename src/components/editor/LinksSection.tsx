@@ -21,7 +21,7 @@ export function LinksSection() {
       <div className="flex flex-wrap items-center justify-between gap-2">
         <div className="space-y-0.5">
           <h3 className="text-sm font-semibold">Links</h3>
-          <p className="text-xs text-app-muted">
+          <p className="text-xs text-slate-500">
             Add links to your profiles and portfolio.
           </p>
         </div>
@@ -86,7 +86,7 @@ export function LinksSection() {
         })}
 
         {linksArray.fields.length === 0 ? (
-          <p className="text-xs text-app-muted">No links added yet.</p>
+          <p className="text-xs text-slate-500">No links added yet.</p>
         ) : null}
       </div>
     </section>

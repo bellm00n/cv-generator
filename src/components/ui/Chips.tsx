@@ -49,7 +49,7 @@ export function Chips({
       <label
         htmlFor={id}
         className={cn(
-          "text-sm font-medium text-app-text",
+          "text-sm font-medium text-slate-800",
           hideLabel ? "sr-only" : undefined,
         )}
       >
@@ -75,14 +75,14 @@ export function Chips({
         onChange={(event) => setInputValue(event.target.value)}
         onKeyDown={handleKeyDown}
         placeholder={values.length === 0 ? placeholder : "Add another…"}
-        className="placeholder:text-app-muted/90 focus-visible:ring-app-accent/40 h-9 w-full rounded-md border border-app-border bg-white px-3 text-sm text-app-text outline-none transition-shadow focus-visible:ring-2"
+        className="h-9 w-full rounded-md border border-slate-300 bg-white px-3 text-sm text-slate-800 outline-none transition-shadow placeholder:text-slate-500/90 focus-visible:ring-2 focus-visible:ring-blue-500/40"
       />
 
       {helperText ? (
         <p
           className={cn(
             "text-xs",
-            helperTone === "warning" ? "text-amber-700" : "text-app-muted",
+            helperTone === "warning" ? "text-amber-700" : "text-slate-500",
           )}
         >
           {helperText}

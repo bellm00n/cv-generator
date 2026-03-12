@@ -17,7 +17,7 @@ import {
 import type { CvDocument } from "@/types/cv";
 
 const DOWNLOAD_BUTTON_CLASS =
-  "inline-flex min-h-9 items-center justify-center rounded-md border border-app-accent bg-app-accent px-3.5 py-1.5 text-sm font-semibold text-white shadow-sm transition duration-200 hover:-translate-y-0.5 hover:brightness-95 focus-visible:translate-y-0";
+  "inline-flex min-h-9 items-center justify-center rounded-md border border-blue-500 bg-blue-500 px-3.5 py-1.5 text-sm font-semibold text-white shadow-sm transition duration-200 hover:-translate-y-0.5 hover:brightness-95 focus-visible:translate-y-0";
 
 const DownloadPdfButton = dynamic(
   () =>
@@ -141,7 +141,7 @@ export function CvEditorPage({
   };
 
   return (
-    <main className="min-h-screen bg-app-bg py-6">
+    <main className="min-h-screen bg-slate-100 py-6">
       <div className="mx-auto flex w-full max-w-7xl flex-col gap-rhythm px-4 sm:px-6 lg:px-8">
         <div>
           <Link href="/cv-list">
@@ -149,7 +149,7 @@ export function CvEditorPage({
           </Link>
         </div>
 
-        <section className="sticky top-0 z-10 rounded-lg bg-app-surface px-rhythm py-2 lg:hidden">
+        <section className="sticky top-0 z-10 rounded-lg bg-white px-rhythm py-2 lg:hidden">
           {isMobilePreviewOpen ? (
             <Button
               variant="secondary"

@@ -12,7 +12,7 @@ export const Checkbox = forwardRef<HTMLInputElement, CheckboxProps>(
       <label
         htmlFor={id}
         className={cn(
-          "inline-flex cursor-pointer select-none items-center gap-2 text-sm font-medium text-app-text",
+          "inline-flex cursor-pointer select-none items-center gap-2 text-sm font-medium text-slate-800",
           props.disabled && "cursor-default opacity-50",
           className,
         )}
@@ -21,7 +21,7 @@ export const Checkbox = forwardRef<HTMLInputElement, CheckboxProps>(
           ref={ref}
           id={id}
           type="checkbox"
-          className="focus-visible:ring-app-accent/40 size-4 rounded border-app-border text-app-accent accent-app-accent focus-visible:outline-none focus-visible:ring-2"
+          className="size-4 rounded border-slate-300 text-blue-500 accent-blue-500 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500/40"
           {...props}
         />
         {label}

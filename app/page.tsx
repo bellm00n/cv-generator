@@ -92,42 +92,42 @@ export default function HomePage() {
   return (
     <main className="flex min-h-screen flex-col">
       <section className="flex flex-1 flex-col items-center justify-center px-6 py-24 text-center">
-        <p className="mb-4 text-sm font-medium uppercase tracking-widest text-app-accent">
+        <p className="mb-4 text-sm font-medium uppercase tracking-widest text-blue-500">
           Free &amp; Open Source
         </p>
-        <h1 className="max-w-2xl text-5xl font-bold leading-tight tracking-tight text-app-text">
+        <h1 className="max-w-2xl text-5xl font-bold leading-tight tracking-tight text-slate-800">
           Build a stunning CV
           <br />
-          <span className="text-app-accent">in minutes</span>
+          <span className="text-blue-500">in minutes</span>
         </h1>
-        <p className="mt-6 max-w-lg text-lg leading-relaxed text-app-muted">
+        <p className="mt-6 max-w-lg text-lg leading-relaxed text-slate-500">
           A minimal, distraction-free CV builder with a live PDF preview. Fill
           in your details, see the result instantly, and download a
           professional&nbsp;PDF.
         </p>
         <Link
           href="/cv-list"
-          className="mt-10 inline-flex min-h-11 items-center justify-center rounded-md border border-app-accent bg-app-accent px-8 text-sm font-medium text-white transition-all hover:brightness-95"
+          className="mt-10 inline-flex min-h-11 items-center justify-center rounded-md border border-blue-500 bg-blue-500 px-8 text-sm font-medium text-white transition-all hover:brightness-95"
         >
           Get Started
         </Link>
       </section>
-      <section className="border-t border-app-border bg-app-surface px-6 py-20">
+      <section className="border-t border-slate-300 bg-white px-6 py-20">
         <div className="mx-auto max-w-4xl">
-          <h2 className="mb-12 text-center text-2xl font-bold text-app-text">
+          <h2 className="mb-12 text-center text-2xl font-bold text-slate-800">
             Why CV&nbsp;Generator?
           </h2>
           <div className="grid gap-10 sm:grid-cols-2">
             {FEATURES.map((f) => (
               <div key={f.title} className="flex gap-4">
-                <div className="flex size-10 shrink-0 items-center justify-center rounded-lg bg-blue-50 text-app-accent">
+                <div className="flex size-10 shrink-0 items-center justify-center rounded-lg bg-blue-50 text-blue-500">
                   {f.icon}
                 </div>
                 <div>
-                  <h3 className="text-base font-semibold text-app-text">
+                  <h3 className="text-base font-semibold text-slate-800">
                     {f.title}
                   </h3>
-                  <p className="mt-1 text-sm leading-relaxed text-app-muted">
+                  <p className="mt-1 text-sm leading-relaxed text-slate-500">
                     {f.description}
                   </p>
                 </div>
@@ -136,8 +136,8 @@ export default function HomePage() {
           </div>
         </div>
       </section>
-      <footer className="border-t border-app-border px-6 py-8">
-        <p className="text-center text-xs text-app-muted">
+      <footer className="border-t border-slate-300 px-6 py-8">
+        <p className="text-center text-xs text-slate-500">
           &copy; {new Date().getFullYear()} CV Generator.
         </p>
       </footer>

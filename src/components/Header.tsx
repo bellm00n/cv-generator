@@ -7,10 +7,10 @@ export async function Header() {
   const session = await auth();
 
   return (
-    <header className="flex h-14 items-center justify-between border-b border-app-border bg-app-surface px-6">
+    <header className="flex h-14 items-center justify-between border-b border-slate-300 bg-white px-6">
       <Link
         href="/"
-        className="text-sm font-semibold text-app-text hover:text-app-accent"
+        className="text-sm font-semibold text-slate-800 hover:text-blue-500"
       >
         CV Generator
       </Link>
@@ -27,7 +27,7 @@ export async function Header() {
                 className="rounded-full"
               />
             )}
-            <span className="text-sm text-app-muted">{session.user.name}</span>
+            <span className="text-sm text-slate-500">{session.user.name}</span>
             <form
               action={async () => {
                 "use server";

@@ -7,12 +7,12 @@ type ChipProps = {
 
 export function Chip({ value, onRemove }: ChipProps) {
   return (
-    <span className="bg-app-accent/10 inline-flex items-center gap-1 rounded-md border border-app-border px-2 py-0.5 text-sm text-app-text">
+    <span className="inline-flex items-center gap-1 rounded-md border border-slate-300 bg-blue-500/10 px-2 py-0.5 text-sm text-slate-800">
       {value}
       <button
         type="button"
         aria-label={`Remove ${value}`}
-        className="hover:bg-app-accent/20 ml-0.5 inline-flex size-4 shrink-0 items-center justify-center rounded-full text-app-muted transition-colors hover:text-app-text"
+        className="ml-0.5 inline-flex size-4 shrink-0 items-center justify-center rounded-full text-slate-500 transition-colors hover:bg-blue-500/20 hover:text-slate-800"
         onClick={onRemove}
       >
         <CloseIcon />

@@ -16,7 +16,7 @@ export function PdfPreviewFrame({ cvData }: PdfPreviewFrameProps) {
         border: "none",
         width: "100%",
         height: "100%",
-        backgroundColor: "var(--color-surface)",
+        backgroundColor: "white",
       }}
       showToolbar={false}
     >

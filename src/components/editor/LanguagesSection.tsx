@@ -42,7 +42,7 @@ export function LanguagesSection() {
       <div className="flex flex-wrap items-center justify-between gap-2">
         <div className="space-y-0.5">
           <h3 className="text-sm font-semibold">Languages</h3>
-          <p className="text-xs text-app-muted">
+          <p className="text-xs text-slate-500">
             Add one per row. Press Enter to add a new row.
           </p>
         </div>
@@ -100,7 +100,7 @@ export function LanguagesSection() {
         ) : null}
 
         {languagesArray.fields.length === 0 ? (
-          <p className="text-xs text-app-muted">No languages added yet.</p>
+          <p className="text-xs text-slate-500">No languages added yet.</p>
         ) : null}
       </div>
     </section>

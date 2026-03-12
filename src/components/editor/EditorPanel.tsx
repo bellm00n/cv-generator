@@ -85,7 +85,7 @@ export function EditorPanel({
   return (
     <FormProvider {...methods}>
       <section
-        className={cn("rounded-lg bg-app-surface p-rhythm", className)}
+        className={cn("rounded-lg bg-white p-rhythm", className)}
         aria-labelledby="editor-panel-title"
       >
         <div className="space-y-1">
@@ -95,7 +95,7 @@ export function EditorPanel({
         </div>
 
         <form
-          className="divide-app-border/50 mt-rhythm divide-y"
+          className="mt-rhythm divide-y divide-slate-300/50"
           noValidate
           onSubmit={(event) => event.preventDefault()}
         >

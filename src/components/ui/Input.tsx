@@ -26,7 +26,7 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(function Input(
       <label
         htmlFor={id}
         className={cn(
-          "text-sm font-medium text-app-text",
+          "text-sm font-medium text-slate-800",
           hideLabel ? "sr-only" : undefined,
         )}
       >
@@ -36,8 +36,8 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(function Input(
         ref={ref}
         id={id}
         className={cn(
-          "placeholder:text-app-muted/90 h-9 rounded-md border border-app-border bg-white px-3 text-sm text-app-text",
-          "focus-visible:ring-app-accent/40 transition-shadow focus-visible:outline-none focus-visible:ring-2",
+          "h-9 rounded-md border border-slate-300 bg-white px-3 text-sm text-slate-800 placeholder:text-slate-500/90",
+          "transition-shadow focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500/40",
           className,
         )}
         {...props}
@@ -46,7 +46,7 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(function Input(
         <p
           className={cn(
             "text-xs",
-            helperTone === "warning" ? "text-amber-700" : "text-app-muted",
+            helperTone === "warning" ? "text-amber-700" : "text-slate-500",
           )}
         >
           {helperText}

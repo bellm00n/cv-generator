@@ -96,7 +96,7 @@ export function MonthPicker({
 
   return (
     <div className="flex flex-col gap-1.5">
-      <label htmlFor={id} className="text-sm font-medium text-app-text">
+      <label htmlFor={id} className="text-sm font-medium text-slate-800">
         {label}
       </label>
 
@@ -107,9 +107,9 @@ export function MonthPicker({
           disabled={disabled}
           onClick={() => setOpen((prev) => !prev)}
           className={cn(
-            "flex h-9 w-full items-center rounded-md border border-app-border bg-white px-3 text-left text-sm",
-            "focus-visible:ring-app-accent/40 transition-shadow focus-visible:outline-none focus-visible:ring-2",
-            displayText ? "text-app-text" : "text-app-muted/90",
+            "flex h-9 w-full items-center rounded-md border border-slate-300 bg-white px-3 text-left text-sm",
+            "transition-shadow focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500/40",
+            displayText ? "text-slate-800" : "text-slate-500/90",
             disabled && "cursor-default opacity-50",
             className,
           )}
@@ -118,11 +118,11 @@ export function MonthPicker({
         </button>
 
         {open && (
-          <div className="absolute left-0 top-full z-50 mt-1 w-56 rounded-md border border-app-border bg-white p-3 shadow-lg">
+          <div className="absolute left-0 top-full z-50 mt-1 w-56 rounded-md border border-slate-300 bg-white p-3 shadow-lg">
             <div className="flex items-center justify-between">
               <button
                 type="button"
-                className="flex size-7 items-center justify-center rounded-md text-app-muted hover:bg-gray-100 hover:text-app-text"
+                className="flex size-7 items-center justify-center rounded-md text-slate-500 hover:bg-gray-100 hover:text-slate-800"
                 onClick={() => setViewYear((y) => y - 1)}
                 aria-label="Previous year"
               >
@@ -141,7 +141,7 @@ export function MonthPicker({
               </span>
               <button
                 type="button"
-                className="flex size-7 items-center justify-center rounded-md text-app-muted hover:bg-gray-100 hover:text-app-text"
+                className="flex size-7 items-center justify-center rounded-md text-slate-500 hover:bg-gray-100 hover:text-slate-800"
                 onClick={() => setViewYear((y) => y + 1)}
                 aria-label="Next year"
               >
@@ -170,8 +170,8 @@ export function MonthPicker({
                     className={cn(
                       "rounded-md py-1.5 text-xs font-medium transition-colors",
                       isSelected
-                        ? "bg-app-accent text-white"
-                        : "text-app-text hover:bg-gray-100",
+                        ? "bg-blue-500 text-white"
+                        : "text-slate-800 hover:bg-gray-100",
                     )}
                   >
                     {monthLabel}
@@ -187,7 +187,7 @@ export function MonthPicker({
         <p
           className={cn(
             "text-xs",
-            helperTone === "warning" ? "text-amber-700" : "text-app-muted",
+            helperTone === "warning" ? "text-amber-700" : "text-slate-500",
           )}
         >
           {helperText}

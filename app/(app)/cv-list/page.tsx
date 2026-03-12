@@ -90,10 +90,10 @@ export default function CvListPage() {
   };
 
   return (
-    <main className="min-h-screen bg-app-bg py-10">
+    <main className="min-h-screen bg-slate-100 py-10">
       <div className="mx-auto w-full max-w-2xl px-4 sm:px-6">
         <div className="mb-6 flex items-center justify-between">
-          <h1 className="text-2xl font-semibold text-app-text">My CVs</h1>
+          <h1 className="text-2xl font-semibold text-slate-800">My CVs</h1>
 
           {showCreateInput ? (
             <div className="flex items-end gap-2">
@@ -124,15 +124,15 @@ export default function CvListPage() {
         </div>
 
         {isLoading ? (
-          <p className="text-app-muted">Loading...</p>
+          <p className="text-slate-500">Loading...</p>
         ) : cvs.length === 0 ? (
-          <p className="text-app-muted">No CVs yet. Create your first one!</p>
+          <p className="text-slate-500">No CVs yet. Create your first one!</p>
         ) : (
           <ul className="flex flex-col gap-2">
             {cvs.map((cv) => (
               <li
                 key={cv.id}
-                className="flex items-center justify-between rounded-lg border border-app-border bg-app-surface px-4 py-3"
+                className="flex items-center justify-between rounded-lg border border-slate-300 bg-white px-4 py-3"
               >
                 {editingId === cv.id ? (
                   <Input
@@ -148,7 +148,7 @@ export default function CvListPage() {
                 ) : (
                   <Link
                     href={`/cv/${cv.id}`}
-                    className="text-sm font-medium text-app-text hover:text-app-accent"
+                    className="text-sm font-medium text-slate-800 hover:text-blue-500"
                   >
                     {cv.title}
                   </Link>

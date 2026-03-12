@@ -20,7 +20,7 @@ export function EmploymentHistorySection() {
       <div className="flex flex-wrap items-center justify-between gap-2">
         <div className="space-y-0.5">
           <h3 className="text-sm font-semibold">Employment history</h3>
-          <p className="text-xs text-app-muted">
+          <p className="text-xs text-slate-500">
             Add your roles from most relevant to least relevant.
           </p>
         </div>
@@ -48,7 +48,7 @@ export function EmploymentHistorySection() {
         ) : null}
 
         {employmentArray.fields.length === 0 ? (
-          <p className="text-xs text-app-muted">
+          <p className="text-xs text-slate-500">
             No employment items added yet.
           </p>
         ) : null}

@@ -17,7 +17,7 @@ export function SummarySection() {
     <section className="py-4">
       <div className="space-y-0.5">
         <h3 className="text-sm font-semibold">Summary</h3>
-        <p className="text-xs text-app-muted">
+        <p className="text-xs text-slate-500">
           Briefly describe your profile and key strengths.
         </p>
       </div>
@@ -36,7 +36,7 @@ export function SummarySection() {
           helperTone="warning"
           {...register("summary")}
         />
-        <p className="text-xs text-app-muted">
+        <p className="text-xs text-slate-500">
           {summaryValue.length} characters
         </p>
       </div>

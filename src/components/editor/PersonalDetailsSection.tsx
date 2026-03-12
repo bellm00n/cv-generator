@@ -14,7 +14,7 @@ export function PersonalDetailsSection() {
     <section className="pb-4">
       <div className="space-y-0.5">
         <h3 className="text-sm font-semibold">Personal details</h3>
-        <p className="text-xs text-app-muted">
+        <p className="text-xs text-slate-500">
           Contact and headline information.
         </p>
       </div>

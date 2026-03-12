@@ -15,7 +15,7 @@ export function SkillsSection() {
     <section className="py-4">
       <div className="space-y-0.5">
         <h3 className="text-sm font-semibold">Skills</h3>
-        <p className="text-xs text-app-muted">
+        <p className="text-xs text-slate-500">
           Type a skill and press Enter to add it.
         </p>
       </div>

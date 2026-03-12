@@ -11,7 +11,7 @@ const PdfPreviewFrame = dynamic(
   {
     ssr: false,
     loading: () => (
-      <div className="flex h-full items-center justify-center bg-app-surface text-sm text-app-muted">
+      <div className="flex h-full items-center justify-center bg-white text-sm text-slate-500">
         Loading preview...
       </div>
     ),
@@ -31,7 +31,7 @@ export function PreviewPanel({
 }: PreviewPanelProps) {
   return (
     <section
-      className={cn("rounded-lg bg-app-surface p-rhythm", className)}
+      className={cn("rounded-lg bg-white p-rhythm", className)}
       aria-labelledby="preview-panel-title"
     >
       <div className="flex flex-wrap items-center justify-between gap-3">
@@ -45,8 +45,8 @@ export function PreviewPanel({
         </div>
       </div>
 
-      <div className="mt-rhythm rounded-md bg-app-surface">
-        <div className="mx-auto aspect-[595.28/841.89] w-full max-w-[35rem] overflow-hidden rounded-sm border border-app-border bg-app-surface shadow-sm">
+      <div className="mt-rhythm rounded-md bg-white">
+        <div className="mx-auto aspect-[595.28/841.89] w-full max-w-[35rem] overflow-hidden rounded-sm border border-slate-300 bg-white shadow-sm">
           <PdfPreviewFrame cvData={cvData} />
         </div>
       </div>

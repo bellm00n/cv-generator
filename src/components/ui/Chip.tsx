@@ -7,7 +7,7 @@ type ChipProps = {
 
 export function Chip({ value, onRemove }: ChipProps) {
   return (
-    <span className="inline-flex items-center gap-1 rounded-md border border-slate-300 bg-blue-500/10 px-2 py-0.5 text-sm text-slate-800">
+    <span className="inline-flex items-center gap-1 rounded-lg border border-slate-300 bg-blue-500/10 px-2 py-0.5 text-sm text-slate-800">
       {value}
       <button
         type="button"

@@ -107,7 +107,7 @@ export function MonthPicker({
           disabled={disabled}
           onClick={() => setOpen((prev) => !prev)}
           className={cn(
-            "flex h-9 w-full items-center rounded-md border border-slate-300 bg-white px-3 text-left text-sm",
+            "flex h-9 w-full items-center rounded-lg border border-slate-300 bg-white px-3 text-left text-sm",
             "transition-shadow focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500/40",
             displayText ? "text-slate-800" : "text-slate-500/90",
             disabled && "cursor-default opacity-50",
@@ -118,11 +118,11 @@ export function MonthPicker({
         </button>
 
         {open && (
-          <div className="absolute left-0 top-full z-50 mt-1 w-56 rounded-md border border-slate-300 bg-white p-3 shadow-lg">
+          <div className="absolute left-0 top-full z-50 mt-1 w-56 rounded-lg border border-slate-300 bg-white p-3 shadow-lg">
             <div className="flex items-center justify-between">
               <button
                 type="button"
-                className="flex size-7 items-center justify-center rounded-md text-slate-500 hover:bg-gray-100 hover:text-slate-800"
+                className="flex size-7 items-center justify-center rounded-lg text-slate-500 hover:bg-gray-100 hover:text-slate-800"
                 onClick={() => setViewYear((y) => y - 1)}
                 aria-label="Previous year"
               >
@@ -141,7 +141,7 @@ export function MonthPicker({
               </span>
               <button
                 type="button"
-                className="flex size-7 items-center justify-center rounded-md text-slate-500 hover:bg-gray-100 hover:text-slate-800"
+                className="flex size-7 items-center justify-center rounded-lg text-slate-500 hover:bg-gray-100 hover:text-slate-800"
                 onClick={() => setViewYear((y) => y + 1)}
                 aria-label="Next year"
               >
@@ -168,7 +168,7 @@ export function MonthPicker({
                     type="button"
                     onClick={() => handleSelect(index)}
                     className={cn(
-                      "rounded-md py-1.5 text-xs font-medium transition-colors",
+                      "rounded-lg py-1.5 text-xs font-medium transition-colors",
                       isSelected
                         ? "bg-blue-500 text-white"
                         : "text-slate-800 hover:bg-gray-100",

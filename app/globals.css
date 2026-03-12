@@ -2,14 +2,6 @@
 @tailwind components;
 @tailwind utilities;
 
-:root {
-  --font-sans: "Segoe UI", "Helvetica Neue", "Arial", sans-serif;
-
-  --space-tight: 0.75rem;
-  --space-base: 1rem;
-  --space-rhythm: 1rem;
-  --space-loose: 2rem;
-}
 
 * {
   box-sizing: border-box;
@@ -25,7 +17,7 @@ body {
 body {
   background: #f1f5f9;
   color: #1e293b;
-  font-family: var(--font-sans);
+  font-family: "Segoe UI", "Helvetica Neue", Arial, sans-serif;
   line-height: 1.5;
 }
 

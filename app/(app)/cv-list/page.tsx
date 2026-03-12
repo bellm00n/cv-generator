@@ -132,7 +132,7 @@ export default function CvListPage() {
             {cvs.map((cv) => (
               <li
                 key={cv.id}
-                className="flex items-center justify-between rounded-lg border border-slate-300 bg-white px-4 py-3"
+                className="flex items-center justify-between rounded-xl border border-slate-300 bg-white px-4 py-3"
               >
                 {editingId === cv.id ? (
                   <Input

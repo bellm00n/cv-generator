@@ -107,7 +107,7 @@ export default function HomePage() {
         </p>
         <Link
           href="/cv-list"
-          className="mt-10 inline-flex min-h-11 items-center justify-center rounded-md border border-blue-500 bg-blue-500 px-8 text-sm font-medium text-white transition-all hover:brightness-95"
+          className="mt-10 inline-flex min-h-11 items-center justify-center rounded-lg border border-blue-500 bg-blue-500 px-8 text-sm font-medium text-white transition-all hover:brightness-95"
         >
           Get Started
         </Link>
@@ -120,7 +120,7 @@ export default function HomePage() {
           <div className="grid gap-10 sm:grid-cols-2">
             {FEATURES.map((f) => (
               <div key={f.title} className="flex gap-4">
-                <div className="flex size-10 shrink-0 items-center justify-center rounded-lg bg-blue-50 text-blue-500">
+                <div className="flex size-10 shrink-0 items-center justify-center rounded-xl bg-blue-50 text-blue-500">
                   {f.icon}
                 </div>
                 <div>

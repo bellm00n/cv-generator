@@ -75,7 +75,7 @@ export function Chips({
         onChange={(event) => setInputValue(event.target.value)}
         onKeyDown={handleKeyDown}
         placeholder={values.length === 0 ? placeholder : "Add another…"}
-        className="h-9 w-full rounded-md border border-slate-300 bg-white px-3 text-sm text-slate-800 outline-none transition-shadow placeholder:text-slate-500/90 focus-visible:ring-2 focus-visible:ring-blue-500/40"
+        className="h-9 w-full rounded-lg border border-slate-300 bg-white px-3 text-sm text-slate-800 outline-none transition-shadow placeholder:text-slate-500/90 focus-visible:ring-2 focus-visible:ring-blue-500/40"
       />
 
       {helperText ? (

@@ -31,7 +31,7 @@ export function PreviewPanel({
 }: PreviewPanelProps) {
   return (
     <section
-      className={cn("rounded-lg bg-white p-rhythm", className)}
+      className={cn("rounded-xl bg-white p-6", className)}
       aria-labelledby="preview-panel-title"
     >
       <div className="flex flex-wrap items-center justify-between gap-3">
@@ -45,7 +45,7 @@ export function PreviewPanel({
         </div>
       </div>
 
-      <div className="mt-rhythm rounded-md bg-white">
+      <div className="mt-6 rounded-lg bg-white">
         <div className="mx-auto aspect-[595.28/841.89] w-full max-w-[35rem] overflow-hidden rounded-sm border border-slate-300 bg-white shadow-sm">
           <PdfPreviewFrame cvData={cvData} />
         </div>

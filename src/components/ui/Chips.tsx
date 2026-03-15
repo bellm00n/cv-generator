@@ -56,15 +56,17 @@ export function Chips({
         {label}
       </label>
 
-      {values.length > 0 ? (
+      {values.some((v) => v.trim()) ? (
         <div className="flex flex-wrap items-center gap-1.5">
-          {values.map((value, index) => (
-            <Chip
-              key={`${value}-${index}`}
-              value={value}
-              onRemove={() => onRemove(index)}
-            />
-          ))}
+          {values.map((value, index) =>
+            value.trim() ? (
+              <Chip
+                key={`${value}-${index}`}
+                value={value}
+                onRemove={() => onRemove(index)}
+              />
+            ) : null,
+          )}
         </div>
       ) : null}
 
@@ -74,7 +76,9 @@ export function Chips({
         value={inputValue}
         onChange={(event) => setInputValue(event.target.value)}
         onKeyDown={handleKeyDown}
-        placeholder={values.length === 0 ? placeholder : "Add another…"}
+        placeholder={
+          values.some((v) => v.trim()) ? "Add another…" : placeholder
+        }
         className="h-9 w-full rounded-lg border border-slate-300 bg-white px-3 text-sm text-slate-800 transition-shadow placeholder:text-slate-500/90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500/40"
       />
 

@@ -17,19 +17,11 @@ export function EmploymentHistorySection() {
 
   return (
     <section className="py-4">
-      <div className="flex flex-wrap items-center justify-between gap-2">
-        <div className="space-y-0.5">
-          <h3 className="text-sm font-semibold">Employment history</h3>
-          <p className="text-xs text-slate-500">
-            Add your roles from most relevant to least relevant.
-          </p>
-        </div>
-        <Button
-          variant="secondary"
-          onClick={() => employmentArray.append(createEmptyEmploymentItem())}
-        >
-          Add item
-        </Button>
+      <div className="space-y-0.5">
+        <h3 className="text-sm font-semibold">Employment history</h3>
+        <p className="text-xs text-slate-500">
+          Add your roles from most relevant to least relevant.
+        </p>
       </div>
 
       <div className="mt-3 space-y-3">
@@ -47,11 +39,12 @@ export function EmploymentHistorySection() {
           </p>
         ) : null}
 
-        {employmentArray.fields.length === 0 ? (
-          <p className="text-xs text-slate-500">
-            No employment items added yet.
-          </p>
-        ) : null}
+        <Button
+          variant="secondary"
+          onClick={() => employmentArray.append(createEmptyEmploymentItem())}
+        >
+          Add item
+        </Button>
       </div>
     </section>
   );

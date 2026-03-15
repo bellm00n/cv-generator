@@ -14,11 +14,8 @@ type CvListItem = {
 export default function CvListPage() {
   const [cvs, setCvs] = useState<CvListItem[]>([]);
   const [isLoading, setIsLoading] = useState(true);
-  const [newCvTitle, setNewCvTitle] = useState("");
-  const [showCreateInput, setShowCreateInput] = useState(false);
   const [editingId, setEditingId] = useState<string | null>(null);
   const [editingTitle, setEditingTitle] = useState("");
-  const createInputRef = useRef<HTMLInputElement>(null);
   const editInputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
@@ -29,35 +26,22 @@ export default function CvListPage() {
   }, []);
 
   useEffect(() => {
-    if (showCreateInput) createInputRef.current?.focus();
-  }, [showCreateInput]);
-
-  useEffect(() => {
     if (editingId) editInputRef.current?.focus();
   }, [editingId]);
 
   const handleCreate = async () => {
-    const title = newCvTitle.trim() || "Untitled CV";
     const res = await fetch("/api/cv", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ title, data: {} }),
+      body: JSON.stringify({ title: "Untitled CV", data: {} }),
     });
 
     if (!res.ok) return;
 
     const cv = (await res.json()) as CvListItem;
-    setCvs((prev) => [cv, ...prev]);
-    setNewCvTitle("");
-    setShowCreateInput(false);
-  };
-
-  const handleCreateKeyDown = (e: React.KeyboardEvent) => {
-    if (e.key === "Enter") void handleCreate();
-    if (e.key === "Escape") {
-      setShowCreateInput(false);
-      setNewCvTitle("");
-    }
+    setCvs((prev) => [...prev, cv]);
+    setEditingId(cv.id);
+    setEditingTitle("");
   };
 
   const handleEditStart = (cv: CvListItem) => {
@@ -92,84 +76,60 @@ export default function CvListPage() {
   return (
     <main className="min-h-screen py-10">
       <div className="mx-auto w-full max-w-2xl px-4 sm:px-6">
-        <div className="mb-6 flex items-center justify-between">
-          <h1 className="text-2xl font-semibold text-slate-800">My CVs</h1>
-
-          {showCreateInput ? (
-            <div className="flex items-end gap-2">
-              <Input
-                ref={createInputRef}
-                id="new-cv-title"
-                label="CV name"
-                hideLabel
-                value={newCvTitle}
-                onChange={(e) => setNewCvTitle(e.target.value)}
-                onKeyDown={handleCreateKeyDown}
-                placeholder="CV name"
-              />
-              <Button onClick={handleCreate}>Create</Button>
-              <Button
-                variant="secondary"
-                onClick={() => {
-                  setShowCreateInput(false);
-                  setNewCvTitle("");
-                }}
-              >
-                Cancel
-              </Button>
-            </div>
-          ) : (
-            <Button onClick={() => setShowCreateInput(true)}>Create CV</Button>
-          )}
-        </div>
+        <h1 className="mb-6 text-2xl font-semibold text-slate-800">My CVs</h1>
 
         {isLoading ? (
           <p className="text-slate-500">Loading...</p>
-        ) : cvs.length === 0 ? (
-          <p className="text-slate-500">No CVs yet. Create your first one!</p>
         ) : (
-          <ul className="flex flex-col gap-2">
-            {cvs.map((cv) => (
-              <li
-                key={cv.id}
-                className="flex items-center justify-between rounded-xl border border-slate-300 bg-white px-4 py-3"
-              >
-                {editingId === cv.id ? (
-                  <Input
-                    ref={editInputRef}
-                    id={`edit-cv-title-${cv.id}`}
-                    label="CV name"
-                    hideLabel
-                    value={editingTitle}
-                    onChange={(e) => setEditingTitle(e.target.value)}
-                    onKeyDown={(e) => handleEditKeyDown(e, cv.id)}
-                    onBlur={() => void handleEditSave(cv.id)}
-                  />
-                ) : (
-                  <Link
-                    href={`/cv/${cv.id}`}
-                    className="text-sm font-medium text-slate-800 hover:text-blue-500"
+          <>
+            {cvs.length > 0 && (
+              <ul className="mb-2 flex flex-col gap-2">
+                {cvs.map((cv) => (
+                  <li
+                    key={cv.id}
+                    className="flex items-center justify-between rounded-xl border border-slate-300 bg-white px-4 py-3"
                   >
-                    {cv.title}
-                  </Link>
-                )}
-                <div className="flex shrink-0 gap-2">
-                  <Button
-                    variant="secondary"
-                    onClick={() => handleEditStart(cv)}
-                  >
-                    Edit name
-                  </Button>
-                  <Button
-                    variant="destructive"
-                    onClick={() => handleDelete(cv.id, cv.title)}
-                  >
-                    Delete
-                  </Button>
-                </div>
-              </li>
-            ))}
-          </ul>
+                    {editingId === cv.id ? (
+                      <Input
+                        ref={editInputRef}
+                        id={`edit-cv-title-${cv.id}`}
+                        label="CV name"
+                        hideLabel
+                        value={editingTitle}
+                        placeholder="Type your CV title..."
+                        onChange={(e) => setEditingTitle(e.target.value)}
+                        onKeyDown={(e) => handleEditKeyDown(e, cv.id)}
+                        onBlur={() => void handleEditSave(cv.id)}
+                      />
+                    ) : (
+                      <Link
+                        href={`/cv/${cv.id}`}
+                        className="text-sm font-medium text-slate-800 hover:text-blue-500"
+                      >
+                        {cv.title}
+                      </Link>
+                    )}
+                    <div className="flex shrink-0 gap-2">
+                      <Button
+                        variant="secondary"
+                        onClick={() => handleEditStart(cv)}
+                      >
+                        Edit name
+                      </Button>
+                      <Button
+                        variant="destructive"
+                        onClick={() => handleDelete(cv.id, cv.title)}
+                      >
+                        Delete
+                      </Button>
+                    </div>
+                  </li>
+                ))}
+              </ul>
+            )}
+
+            <Button onClick={() => void handleCreate()}>Create CV</Button>
+          </>
         )}
       </div>
     </main>

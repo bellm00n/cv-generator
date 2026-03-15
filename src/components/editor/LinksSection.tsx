@@ -18,19 +18,11 @@ export function LinksSection() {
 
   return (
     <section className="py-4">
-      <div className="flex flex-wrap items-center justify-between gap-2">
-        <div className="space-y-0.5">
-          <h3 className="text-sm font-semibold">Links</h3>
-          <p className="text-xs text-slate-500">
-            Add links to your profiles and portfolio.
-          </p>
-        </div>
-        <Button
-          variant="secondary"
-          onClick={() => linksArray.append(createEmptyLinkItem())}
-        >
-          Add link
-        </Button>
+      <div className="space-y-0.5">
+        <h3 className="text-sm font-semibold">Links</h3>
+        <p className="text-xs text-slate-500">
+          Add links to your profiles and portfolio.
+        </p>
       </div>
 
       <div className="mt-3 space-y-3">
@@ -85,9 +77,12 @@ export function LinksSection() {
           );
         })}
 
-        {linksArray.fields.length === 0 ? (
-          <p className="text-xs text-slate-500">No links added yet.</p>
-        ) : null}
+        <Button
+          variant="secondary"
+          onClick={() => linksArray.append(createEmptyLinkItem())}
+        >
+          Add link
+        </Button>
       </div>
     </section>
   );

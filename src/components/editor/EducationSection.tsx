@@ -26,17 +26,9 @@ export function EducationSection() {
 
   return (
     <section className="py-4">
-      <div className="flex flex-wrap items-center justify-between gap-2">
-        <div className="space-y-0.5">
-          <h3 className="text-sm font-semibold">Education</h3>
-          <p className="text-xs text-slate-500">Add your education history.</p>
-        </div>
-        <Button
-          variant="secondary"
-          onClick={() => educationArray.append(createEmptyEducationItem())}
-        >
-          Add item
-        </Button>
+      <div className="space-y-0.5">
+        <h3 className="text-sm font-semibold">Education</h3>
+        <p className="text-xs text-slate-500">Add your education history.</p>
       </div>
 
       <div className="mt-3 space-y-3">
@@ -147,11 +139,12 @@ export function EducationSection() {
           </p>
         ) : null}
 
-        {educationArray.fields.length === 0 ? (
-          <p className="text-xs text-slate-500">
-            No education items added yet.
-          </p>
-        ) : null}
+        <Button
+          variant="secondary"
+          onClick={() => educationArray.append(createEmptyEducationItem())}
+        >
+          Add item
+        </Button>
       </div>
     </section>
   );

@@ -5,6 +5,7 @@ import dynamic from "next/dynamic";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { EditorPanel } from "@/components/editor/EditorPanel";
+import { EditableCvTitle } from "@/components/editor/EditableCvTitle";
 import { PreviewPanel } from "@/components/preview/PreviewPanel";
 import { Button } from "@/components/ui/Button";
 import { EMPTY_CV_DOCUMENT } from "@/constants/document";
@@ -60,6 +61,7 @@ export function CvEditorPage({
   const [currentFormValues, setCurrentFormValues] =
     useState<CvFormValues>(initialFormValues);
   const [editorKey, setEditorKey] = useState(0);
+  const [title, setTitle] = useState(cvTitle);
   const fileInputRef = useRef<HTMLInputElement>(null);
   const fileName = getFileName(cvDocument.fullName);
 
@@ -68,6 +70,20 @@ export function CvEditorPage({
       method: "PATCH",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ data: values }),
+    });
+
+    if (res.ok) {
+      router.refresh();
+    }
+  };
+
+  const handleTitleSave = async (newTitle: string) => {
+    const trimmed = newTitle.trim() || "Untitled CV";
+    setTitle(trimmed);
+    const res = await fetch(`/api/cv/${cvId}`, {
+      method: "PATCH",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ title: trimmed }),
     });
 
     if (res.ok) {
@@ -180,7 +196,9 @@ export function CvEditorPage({
           >
             <EditorPanel
               key={editorKey}
-              cvTitle={cvTitle}
+              titleSlot={
+                <EditableCvTitle title={title} onSave={handleTitleSave} />
+              }
               initialFormValues={currentFormValues}
               onCvDataChange={setCvDocument}
               onSave={handleSave}

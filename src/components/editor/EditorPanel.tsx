@@ -21,7 +21,7 @@ import { SummarySection } from "./SummarySection";
 
 type EditorPanelProps = {
   className?: string;
-  cvTitle?: string;
+  titleSlot?: React.ReactNode;
   initialFormValues?: CvFormValues;
   onCvDataChange?: (cvData: CvDocument) => void;
   onSave?: (values: CvFormValues) => Promise<void>;
@@ -31,7 +31,7 @@ const AUTOSAVE_DELAY_MS = 1500;
 
 export function EditorPanel({
   className,
-  cvTitle,
+  titleSlot,
   initialFormValues,
   onCvDataChange,
   onSave,
@@ -84,18 +84,8 @@ export function EditorPanel({
 
   return (
     <FormProvider {...methods}>
-      <section
-        className={cn("rounded-xl bg-white p-6", className)}
-        aria-labelledby="editor-panel-title"
-      >
-        <div className="space-y-1">
-          <h2
-            id="editor-panel-title"
-            className="text-xl font-semibold leading-tight"
-          >
-            Editor Panel{cvTitle ? ` (${cvTitle})` : ""}
-          </h2>
-        </div>
+      <section className={cn("rounded-xl bg-white p-6", className)}>
+        {titleSlot && <div className="mb-2">{titleSlot}</div>}
 
         <form
           className="mt-6 divide-y divide-slate-300/50"

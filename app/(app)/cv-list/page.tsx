@@ -1,9 +1,8 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/Button";
-import { Input } from "@/components/ui/Input";
 
 type CvListItem = {
   id: string;
@@ -15,11 +14,6 @@ export default function CvListPage() {
   const router = useRouter();
   const [cvs, setCvs] = useState<CvListItem[]>([]);
   const [isLoading, setIsLoading] = useState(true);
-  const [editingId, setEditingId] = useState<string | null>(null);
-  const [editingTitle, setEditingTitle] = useState("");
-  const editInputRef = useRef<HTMLInputElement>(null);
-  const newlyCreatedIdRef = useRef<string | null>(null);
-  const shouldRedirectRef = useRef(false);
 
   useEffect(() => {
     fetch("/api/cv")
@@ -27,10 +21,6 @@ export default function CvListPage() {
       .then((data: CvListItem[]) => setCvs(data))
       .finally(() => setIsLoading(false));
   }, []);
-
-  useEffect(() => {
-    if (editingId) editInputRef.current?.focus();
-  }, [editingId]);
 
   const handleCreate = async () => {
     const res = await fetch("/api/cv", {
@@ -42,39 +32,7 @@ export default function CvListPage() {
     if (!res.ok) return;
 
     const cv = (await res.json()) as CvListItem;
-    setCvs((prev) => [cv, ...prev]);
-    newlyCreatedIdRef.current = cv.id;
-    setEditingId(cv.id);
-    setEditingTitle("");
-  };
-
-  const handleEditStart = (cv: CvListItem) => {
-    setEditingId(cv.id);
-    setEditingTitle(cv.title);
-  };
-
-  const handleEditSave = async (id: string) => {
-    const title = editingTitle.trim() || "Untitled CV";
-    await fetch(`/api/cv/${id}`, {
-      method: "PATCH",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ title }),
-    });
-    setCvs((prev) => prev.map((cv) => (cv.id === id ? { ...cv, title } : cv)));
-    setEditingId(null);
-    if (shouldRedirectRef.current && newlyCreatedIdRef.current === id) {
-      shouldRedirectRef.current = false;
-      newlyCreatedIdRef.current = null;
-      router.push(`/cv/${id}`);
-    }
-  };
-
-  const handleEditKeyDown = (e: React.KeyboardEvent, id: string) => {
-    if (e.key === "Enter") {
-      if (newlyCreatedIdRef.current === id) shouldRedirectRef.current = true;
-      void handleEditSave(id);
-    }
-    if (e.key === "Escape") setEditingId(null);
+    router.push(`/cv/${cv.id}`);
   };
 
   const handleDelete = async (id: string, title: string) => {
@@ -105,37 +63,12 @@ export default function CvListPage() {
                   <li
                     key={cv.id}
                     className="group flex cursor-pointer items-center justify-between rounded-xl border border-slate-300 bg-white px-4 py-3 hover:bg-slate-50"
-                    onClick={() => {
-                      if (editingId !== cv.id) router.push(`/cv/${cv.id}`);
-                    }}
+                    onClick={() => router.push(`/cv/${cv.id}`)}
                   >
-                    {editingId === cv.id ? (
-                      <Input
-                        ref={editInputRef}
-                        id={`edit-cv-title-${cv.id}`}
-                        label="CV name"
-                        hideLabel
-                        value={editingTitle}
-                        placeholder="Type your CV title..."
-                        onChange={(e) => setEditingTitle(e.target.value)}
-                        onKeyDown={(e) => handleEditKeyDown(e, cv.id)}
-                        onBlur={() => void handleEditSave(cv.id)}
-                      />
-                    ) : (
-                      <span className="text-sm font-medium text-slate-800 group-hover:text-blue-500">
-                        {cv.title}
-                      </span>
-                    )}
+                    <span className="text-sm font-medium text-slate-800 group-hover:text-blue-500">
+                      {cv.title}
+                    </span>
                     <div className="flex shrink-0 gap-2">
-                      <Button
-                        color="ghost"
-                        onClick={(e) => {
-                          e.stopPropagation();
-                          handleEditStart(cv);
-                        }}
-                      >
-                        Edit name
-                      </Button>
                       <Button
                         color="destructive"
                         onClick={(e) => {

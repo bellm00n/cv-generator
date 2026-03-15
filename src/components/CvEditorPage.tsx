@@ -145,14 +145,15 @@ export function CvEditorPage({
       <div className="mx-auto flex w-full max-w-7xl flex-col gap-6 px-4 sm:px-6 lg:px-8">
         <div>
           <Link href="/cv-list">
-            <Button variant="ghost">← Back to List</Button>
+            <Button color="ghost">← Back to List</Button>
           </Link>
         </div>
 
         <section className="sticky top-0 z-10 rounded-xl bg-white px-6 py-2 lg:hidden">
           {isMobilePreviewOpen ? (
             <Button
-              variant="secondary"
+              color="secondary"
+              variant="outlined"
               className="min-h-7 px-2.5 py-1 text-xs"
               onClick={() => setIsMobilePreviewOpen(false)}
             >
@@ -160,7 +161,8 @@ export function CvEditorPage({
             </Button>
           ) : (
             <Button
-              variant="secondary"
+              color="secondary"
+              variant="outlined"
               className="min-h-7 px-2.5 py-1 text-xs"
               onClick={() => setIsMobilePreviewOpen(true)}
             >
@@ -191,13 +193,25 @@ export function CvEditorPage({
               onChange={handleFileChange}
             />
             <div className="flex gap-3">
-              <Button variant="secondary" onClick={handleUploadData}>
+              <Button
+                color="secondary"
+                variant="outlined"
+                onClick={handleUploadData}
+              >
                 Upload data
               </Button>
-              <Button variant="secondary" onClick={handleDownloadData}>
+              <Button
+                color="secondary"
+                variant="outlined"
+                onClick={handleDownloadData}
+              >
                 Download data
               </Button>
-              <Button variant="destructive" onClick={handleReset}>
+              <Button
+                color="destructive"
+                variant="outlined"
+                onClick={handleReset}
+              >
                 Reset
               </Button>
             </div>

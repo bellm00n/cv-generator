@@ -46,7 +46,8 @@ export function EducationSection() {
                   Education item {index + 1}
                 </h4>
                 <Button
-                  variant="destructive"
+                  color="destructive"
+                  variant="outlined"
                   onClick={() => educationArray.remove(index)}
                 >
                   Remove item
@@ -140,7 +141,8 @@ export function EducationSection() {
         ) : null}
 
         <Button
-          variant="secondary"
+          color="secondary"
+          variant="outlined"
           onClick={() => educationArray.append(createEmptyEducationItem())}
         >
           Add item

@@ -90,7 +90,9 @@ export default function CvListPage() {
       <div className="mx-auto w-full max-w-2xl px-4 sm:px-6">
         <div className="mb-6 flex items-center justify-between">
           <h1 className="text-2xl font-semibold text-slate-800">My CVs</h1>
-          <Button onClick={() => void handleCreate()}>New +</Button>
+          <Button variant="outlined" onClick={() => void handleCreate()}>
+            New +
+          </Button>
         </div>
 
         {isLoading ? (
@@ -126,7 +128,7 @@ export default function CvListPage() {
                     )}
                     <div className="flex shrink-0 gap-2">
                       <Button
-                        variant="secondary"
+                        color="ghost"
                         onClick={(e) => {
                           e.stopPropagation();
                           handleEditStart(cv);
@@ -135,7 +137,7 @@ export default function CvListPage() {
                         Edit name
                       </Button>
                       <Button
-                        variant="destructive"
+                        color="destructive"
                         onClick={(e) => {
                           e.stopPropagation();
                           void handleDelete(cv.id, cv.title);

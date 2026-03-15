@@ -40,7 +40,8 @@ export function EmploymentHistorySection() {
         ) : null}
 
         <Button
-          variant="secondary"
+          color="secondary"
+          variant="outlined"
           onClick={() => employmentArray.append(createEmptyEmploymentItem())}
         >
           Add item

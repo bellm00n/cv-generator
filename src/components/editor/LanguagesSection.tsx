@@ -75,7 +75,8 @@ export function LanguagesSection() {
                 />
               </div>
               <Button
-                variant="destructive"
+                color="destructive"
+                variant="outlined"
                 className="h-9 px-3"
                 onClick={() => languagesArray.remove(index)}
               >
@@ -92,7 +93,8 @@ export function LanguagesSection() {
         ) : null}
 
         <Button
-          variant="secondary"
+          color="secondary"
+          variant="outlined"
           onClick={() => languagesArray.append(createEmptyListItem())}
         >
           Add language

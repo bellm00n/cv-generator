@@ -34,14 +34,16 @@ export async function Header() {
                 await signOut({ redirectTo: "/" });
               }}
             >
-              <Button type="submit" variant="secondary">
+              <Button type="submit" color="secondary" variant="outlined">
                 Log Out
               </Button>
             </form>
           </>
         ) : (
           <Link href="/api/auth/signin?callbackUrl=/cv-list">
-            <Button variant="secondary">Log In</Button>
+            <Button color="secondary" variant="outlined">
+              Log In
+            </Button>
           </Link>
         )}
       </div>

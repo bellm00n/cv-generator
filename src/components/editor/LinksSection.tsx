@@ -38,7 +38,8 @@ export function LinksSection() {
               <div className="flex flex-wrap items-center justify-between gap-2">
                 <h4 className="text-sm font-medium">Link {index + 1}</h4>
                 <Button
-                  variant="destructive"
+                  color="destructive"
+                  variant="outlined"
                   onClick={() => linksArray.remove(index)}
                 >
                   Remove link
@@ -78,7 +79,8 @@ export function LinksSection() {
         })}
 
         <Button
-          variant="secondary"
+          color="secondary"
+          variant="outlined"
           onClick={() => linksArray.append(createEmptyLinkItem())}
         >
           Add link

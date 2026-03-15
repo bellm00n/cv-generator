@@ -41,7 +41,7 @@ export function EmploymentItemCard({
     <Card>
       <div className="flex flex-wrap items-center justify-between gap-2">
         <h4 className="text-sm font-medium">Employment item {index + 1}</h4>
-        <Button variant="destructive" onClick={onRemove}>
+        <Button color="destructive" variant="outlined" onClick={onRemove}>
           Remove item
         </Button>
       </div>

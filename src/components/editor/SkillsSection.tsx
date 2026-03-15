@@ -1,4 +1,4 @@
-import { useFieldArray, useFormContext } from "react-hook-form";
+import { useController, useFormContext } from "react-hook-form";
 import { Chips } from "@/components/ui/Chips";
 import type { CvFormValues } from "@/schemas/formSchema";
 import { getArrayWarning } from "./editorUtils";
@@ -9,7 +9,7 @@ export function SkillsSection() {
     formState: { errors },
   } = useFormContext<CvFormValues>();
 
-  const skillsArray = useFieldArray({ control, name: "skills" });
+  const { field } = useController({ control, name: "skills" });
 
   return (
     <section className="py-4">
@@ -26,9 +26,13 @@ export function SkillsSection() {
           label="Skills"
           hideLabel
           placeholder="Stakeholder management"
-          values={skillsArray.fields.map((field) => field.value)}
-          onAdd={(value) => skillsArray.append({ value })}
-          onRemove={(index) => skillsArray.remove(index)}
+          values={field.value.map((item) => item.value)}
+          onAdd={(value) => {
+            field.onChange([...field.value, { value }]);
+          }}
+          onRemove={(index) => {
+            field.onChange(field.value.filter((_, i) => i !== index));
+          }}
           helperText={getArrayWarning(errors.skills)}
           helperTone="warning"
         />

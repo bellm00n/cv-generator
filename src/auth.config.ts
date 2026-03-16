@@ -4,4 +4,5 @@ import Google from "next-auth/providers/google";
 export const authConfig = {
   providers: [Google],
   session: { strategy: "jwt" },
+  pages: { signIn: "/signin" },
 } satisfies NextAuthConfig;

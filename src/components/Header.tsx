@@ -40,7 +40,7 @@ export async function Header() {
             </form>
           </>
         ) : (
-          <Link href="/api/auth/signin?callbackUrl=/cv-list">
+          <Link href="/signin?callbackUrl=/cv-list">
             <Button color="secondary" variant="outlined">
               Log In
             </Button>

@@ -5,7 +5,7 @@ import { prisma } from "@/lib/prisma";
 
 const updateCvSchema = z.object({
   title: z.string().min(1).optional(),
-  data: z.record(z.unknown()).optional(),
+  data: z.record(z.string(), z.unknown()).optional(),
 });
 
 type RouteParams = { params: Promise<{ id: string }> };

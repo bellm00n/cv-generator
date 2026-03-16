@@ -5,7 +5,7 @@ import { prisma } from "@/lib/prisma";
 
 const createCvSchema = z.object({
   title: z.string().min(1),
-  data: z.record(z.unknown()),
+  data: z.record(z.string(), z.unknown()),
 });
 
 export async function GET() {

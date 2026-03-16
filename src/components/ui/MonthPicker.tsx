@@ -46,6 +46,11 @@ export function MonthPicker({
   const [viewYear, setViewYear] = useState(
     parsed?.year ?? new Date().getFullYear(),
   );
+  const [prevValue, setPrevValue] = useState(value);
+  if (prevValue !== value) {
+    setPrevValue(value);
+    if (parsed) setViewYear(parsed.year);
+  }
   const containerRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -76,11 +81,6 @@ export function MonthPicker({
     };
   }, [open, onBlur]);
 
-  useEffect(() => {
-    const p = parseYearMonth(value);
-    if (p) setViewYear(p.year);
-  }, [value]);
-
   const handleSelect = useCallback(
     (monthIndex: number) => {
       onChange(formatYearMonth(viewYear, monthIndex + 1));
@@ -108,7 +108,7 @@ export function MonthPicker({
           onClick={() => setOpen((prev) => !prev)}
           className={cn(
             "flex h-9 w-full items-center rounded-lg border border-slate-300 bg-white px-3 text-left text-sm",
-            "transition-shadow focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500/40",
+            "transition-shadow focus-visible:ring-2 focus-visible:ring-blue-500/40 focus-visible:outline-none",
             displayText ? "text-slate-800" : "text-slate-500/90",
             disabled && "cursor-default opacity-50",
             className,
@@ -118,7 +118,7 @@ export function MonthPicker({
         </button>
 
         {open && (
-          <div className="absolute left-0 top-full z-50 mt-1 w-56 rounded-lg border border-slate-300 bg-white p-3 shadow-lg">
+          <div className="absolute top-full left-0 z-50 mt-1 w-56 rounded-lg border border-slate-300 bg-white p-3 shadow-lg">
             <div className="flex items-center justify-between">
               <button
                 type="button"

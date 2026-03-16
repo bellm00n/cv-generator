@@ -38,7 +38,7 @@ export function PreviewPanel({
         <div className="space-y-1">
           <h2
             id="preview-panel-title"
-            className="text-xl font-semibold leading-tight"
+            className="text-xl leading-tight font-semibold"
           >
             Preview Panel
           </h2>

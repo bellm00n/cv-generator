@@ -92,10 +92,10 @@ export default function HomePage() {
   return (
     <main className="flex min-h-screen flex-col">
       <section className="flex flex-1 flex-col items-center justify-center px-6 py-24 text-center">
-        <p className="mb-4 text-sm font-medium uppercase tracking-widest text-blue-500">
+        <p className="mb-4 text-sm font-medium tracking-widest text-blue-500 uppercase">
           Free &amp; Open Source
         </p>
-        <h1 className="max-w-2xl text-5xl font-bold leading-tight tracking-tight text-slate-800">
+        <h1 className="max-w-2xl text-5xl leading-tight font-bold tracking-tight text-slate-800">
           Build a stunning CV
           <br />
           <span className="text-blue-500">in minutes</span>

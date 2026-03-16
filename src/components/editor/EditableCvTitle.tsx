@@ -40,7 +40,7 @@ export function EditableCvTitle({ title, onSave }: EditableCvTitleProps) {
     return (
       <input
         ref={inputRef}
-        className="w-full rounded-lg border border-slate-300 px-2 py-1 text-xl font-semibold leading-tight text-slate-800 outline-none focus:border-blue-500"
+        className="w-full rounded-lg border border-slate-300 px-2 py-1 text-xl leading-tight font-semibold text-slate-800 outline-none focus:border-blue-500"
         value={value}
         onChange={(e) => setValue(e.target.value)}
         onBlur={handleFinish}
@@ -55,7 +55,7 @@ export function EditableCvTitle({ title, onSave }: EditableCvTitleProps) {
       className="flex cursor-pointer items-center gap-2 rounded-lg px-2 py-1 hover:bg-slate-100"
       onClick={() => setIsEditing(true)}
     >
-      <h2 className="text-xl font-semibold leading-tight text-slate-800">
+      <h2 className="text-xl leading-tight font-semibold text-slate-800">
         {title}
       </h2>
       <span className="text-slate-400">

@@ -2,7 +2,7 @@
 
 import { useEffect, useRef } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { FormProvider, useForm } from "react-hook-form";
+import { FormProvider, useForm, useWatch } from "react-hook-form";
 import { cn } from "@/lib/cn";
 import {
   createDefaultCvFormValues,
@@ -55,32 +55,32 @@ export function EditorPanel({
     reValidateMode: "onChange",
   });
 
-  const { getValues, watch } = methods;
+  const { getValues, control } = methods;
+  const formValues = useWatch({ control });
+  const isInitialMount = useRef(true);
 
   useEffect(() => {
     onCvDataChangeRef.current?.(cvDocumentSchema.parse(getValues()));
-  }, [getValues]);
 
-  useEffect(() => {
-    const subscription = watch(() => {
-      onCvDataChangeRef.current?.(cvDocumentSchema.parse(getValues()));
+    if (isInitialMount.current) {
+      isInitialMount.current = false;
+      return;
+    }
 
-      if (autosaveTimeoutRef.current) {
-        clearTimeout(autosaveTimeoutRef.current);
-      }
+    if (autosaveTimeoutRef.current) {
+      clearTimeout(autosaveTimeoutRef.current);
+    }
 
-      autosaveTimeoutRef.current = setTimeout(() => {
-        void onSaveRef.current?.(getValues());
-      }, AUTOSAVE_DELAY_MS);
-    });
+    autosaveTimeoutRef.current = setTimeout(() => {
+      void onSaveRef.current?.(getValues());
+    }, AUTOSAVE_DELAY_MS);
 
     return () => {
-      subscription.unsubscribe();
       if (autosaveTimeoutRef.current) {
         clearTimeout(autosaveTimeoutRef.current);
       }
     };
-  }, [getValues, watch]);
+  }, [formValues, getValues]);
 
   return (
     <FormProvider {...methods}>

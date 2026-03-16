@@ -158,7 +158,7 @@ export function CvEditorPage({
 
   return (
     <main className="min-h-screen py-6">
-      <div className="mx-auto flex w-full max-w-7xl flex-col gap-6 px-4 sm:px-6 lg:px-8">
+      <div className="flex w-full flex-col gap-6 px-4 sm:px-6 lg:px-8">
         <div>
           <Link href="/cv-list">
             <Button color="ghost">← Back to List</Button>

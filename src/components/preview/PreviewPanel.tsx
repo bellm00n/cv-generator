@@ -49,7 +49,7 @@ export function PreviewPanel({
       </div>
 
       <div className="mt-6">
-        <div className="mx-auto w-full max-w-140">
+        <div className="w-full">
           <PdfPreviewFrame cvData={cvData} />
         </div>
       </div>

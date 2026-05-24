@@ -3,6 +3,7 @@
 import type { ReactNode } from "react";
 import Image from "next/image";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { FileText, Home, Mail, User } from "lucide-react";
 import type { Session } from "next-auth";
 import { Dropdown } from "@/components/ui/Dropdown";
@@ -30,16 +31,17 @@ type NavRowProps = {
   icon: ReactNode;
   label: string;
   disabled?: boolean;
+  active?: boolean;
 };
 
-function NavRow({ href, icon, label, disabled }: NavRowProps) {
+function NavRow({ href, icon, label, disabled, active }: NavRowProps) {
   const inner = (
     <span
       className={cn(
         "flex items-center gap-3 rounded px-3 py-2 text-sm",
-        disabled
-          ? "cursor-not-allowed text-slate-400"
-          : "text-slate-700 hover:bg-slate-100",
+        disabled && "cursor-not-allowed text-slate-400",
+        !disabled && active && "bg-blue-50 font-medium text-blue-600",
+        !disabled && !active && "text-slate-700 hover:bg-slate-100",
       )}
     >
       {icon}
@@ -56,11 +58,21 @@ function NavRow({ href, icon, label, disabled }: NavRowProps) {
   }
 
   return (
-    <Link href={href} data-testid={`navrow-${label}`}>
+    <Link
+      href={href}
+      aria-current={active ? "page" : undefined}
+      data-testid={`navrow-${label}`}
+    >
       {inner}
     </Link>
   );
 }
+
+const isNavActive = (pathname: string | null, href: string) => {
+  if (!pathname) return false;
+  if (href === "/") return pathname === "/";
+  return pathname === href || pathname.startsWith(`${href}/`);
+};
 
 type SessionUser = Session["user"] | null | undefined;
 
@@ -78,6 +90,7 @@ export function AppSideMenu({
   onClose,
 }: AppSideMenuProps) {
   const displayName = user?.name ?? user?.email ?? "Guest";
+  const pathname = usePathname();
 
   return (
     <SideMenu variant={variant} open={open} onClose={onClose}>
@@ -138,11 +151,17 @@ export function AppSideMenu({
         )}
 
         <nav className="flex flex-col gap-0.5 px-2 py-3">
-          <NavRow href="/" icon={<Home className="size-4" />} label="Main" />
+          <NavRow
+            href="/"
+            icon={<Home className="size-4" />}
+            label="Main"
+            active={isNavActive(pathname, "/")}
+          />
           <NavRow
             href="/cv-list"
             icon={<FileText className="size-4" />}
             label="My Resumes"
+            active={isNavActive(pathname, "/cv-list")}
           />
           <NavRow
             icon={<Mail className="size-4" />}

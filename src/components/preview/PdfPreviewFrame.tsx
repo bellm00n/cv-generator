@@ -48,7 +48,7 @@ export function PdfPreviewFrame({ cvData }: PdfPreviewFrameProps) {
 
   return (
     <div className="relative h-full">
-      <div className="h-full overflow-y-auto px-4 pt-4 pb-20">
+      <div className="h-full overflow-y-auto p-4">
         <div
           ref={containerRef}
           className="mx-auto w-full max-w-3xl overflow-hidden rounded-sm border border-slate-300 bg-white shadow-sm"

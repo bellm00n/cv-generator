@@ -8,20 +8,14 @@ import { CvPageHeader } from "@/components/cv/CvPageHeader";
 import { CvPageMobileBar } from "@/components/cv/CvPageMobileBar";
 import { EditorPanel } from "@/components/editor/EditorPanel";
 import { PreviewPanel } from "@/components/preview/PreviewPanel";
-import { downloadCvPdf } from "@/components/preview/downloadCvPdf";
+import {
+  downloadCvPdf,
+  getCvPdfFileName,
+} from "@/components/preview/downloadCvPdf";
 import { EMPTY_CV_DOCUMENT } from "@/constants/document";
 import { cn } from "@/lib/cn";
 import { type CvFormValues } from "@/schemas/formSchema";
 import type { CvDocument } from "@/types/cv";
-
-const getFileName = (fullName: string) => {
-  const slug = fullName
-    .trim()
-    .toLowerCase()
-    .replace(/[^a-z0-9]+/g, "-")
-    .replace(/(^-|-$)/g, "");
-  return `${slug || "cv"}.pdf`;
-};
 
 type CvEditorPageProps = {
   cvId: string;
@@ -87,7 +81,7 @@ export function CvEditorPage({
   };
 
   const handleDownloadPdf = () => {
-    void downloadCvPdf(cvDocument, getFileName(cvDocument.fullName));
+    void downloadCvPdf(cvDocument, getCvPdfFileName(cvDocument.fullName));
   };
 
   const handleDownloadJson = () => {

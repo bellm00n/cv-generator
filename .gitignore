@@ -38,3 +38,8 @@ next-env.d.ts
 .codex
 
 /src/generated/prisma
+
+#playwright
+.playwright-cli
+.playwright
+

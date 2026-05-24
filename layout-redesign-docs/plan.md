@@ -20,7 +20,7 @@ Install `lucide-react` and build the two new generic UI primitives the rest of t
 - `src/components/ui/Dropdown.tsx`: props `{ trigger, items: { label, onSelect, disabled? }[], align?, variant?: "popover" | "sheet" }`. Closes on outside click, `Escape`, or item select. `sheet` variant: full-screen gray overlay, options as full-width rows, a `Cancel` row at bottom.
 - `src/components/ui/SideMenu.tsx`: props `{ open, onClose, variant: "overlay" | "static", children }`. `overlay` renders a fixed left panel + gray backdrop (click backdrop → `onClose`). `static` renders an in-flow left column (no backdrop, no close). Use Tailwind responsive helpers so a single instance can flip variants by breakpoint.
 - Re-export from `src/components/ui` index if one is added (otherwise import directly).
-- **Add a throwaway demo route** `app/(app)/_ui-demo/page.tsx` (client component) that mounts every variant of both primitives so the task can be verified by hand. Required placements:
+- **Add a throwaway demo route** `app/(app)/ui-demo/page.tsx` (client component) that mounts every variant of both primitives so the task can be verified by hand. Required placements:
   - A `Dropdown` (`popover` variant) with 2–3 sample items + one `disabled` item — anchored to a button labelled "Open popover".
   - A `Dropdown` (`sheet` variant) anchored to a separate button labelled "Open sheet" — items + a `Cancel` row.
   - A `SideMenu` (`overlay` variant) toggled by a hamburger button, with placeholder content + a `lucide-react` icon (e.g. `Github`) inside.
@@ -29,7 +29,7 @@ Install `lucide-react` and build the two new generic UI primitives the rest of t
 - The demo route is deleted in Task 8 — do **not** link to it from any other page.
 
 **Testable outcomes.**
-- Navigate to `/_ui-demo` and the page renders without console errors.
+- Navigate to `/ui-demo` and the page renders without console errors.
 - `Open popover` button: opens under the button, closes on (a) item click, (b) outside click, (c) `Escape`. Disabled item does not fire `onSelect`.
 - `Open sheet` button: opens a full-screen gray overlay with options as list rows; tapping `Cancel` or the backdrop dismisses it.
 - Overlay `SideMenu`: hamburger opens it; clicking the backdrop closes; pressing `Escape` closes; body does not scroll while open.
@@ -197,7 +197,7 @@ At `<lg`, hide the static side menu, add a mobile header containing a hamburger 
 Remove dead code surfaced by the redesign, consolidate duplicate utilities, and walk through both pages on desktop and mobile to catch regressions.
 
 **Todo.**
-- **Delete the Task 1 demo route** `app/(app)/_ui-demo/` and confirm no imports reference it.
+- **Delete the Task 1 demo route** `app/(app)/ui-demo/` and confirm no imports reference it.
 - Delete any unused exports/files left behind from the old editor button row (e.g. `editorKey` if no longer needed, any reset utility).
 - Confirm `EditableCvTitle` styling fits in the header (font size / inline edit affordance still readable).
 - Verify autosave still triggers from the editor pane (task 3 changes shouldn't have touched it, but confirm).
@@ -206,7 +206,7 @@ Remove dead code surfaced by the redesign, consolidate duplicate utilities, and 
 - `npm run lint` passes.
 
 **Testable outcomes.**
-- `/_ui-demo` returns 404 (route is gone).
+- `/ui-demo` returns 404 (route is gone).
 - No console errors on either page (desktop + mobile widths).
 - No dead imports / unused vars (lint clean).
 - Existing autosave still fires on edits.

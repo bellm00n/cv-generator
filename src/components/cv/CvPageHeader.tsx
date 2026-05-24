@@ -11,6 +11,8 @@ type CvPageHeaderProps = {
   onOpenMenu: () => void;
   onDownloadPdf: () => void;
   onDownloadJson: () => void;
+  isMobilePreviewOpen: boolean;
+  onToggleMobilePreview: () => void;
 };
 
 export function CvPageHeader({
@@ -19,6 +21,8 @@ export function CvPageHeader({
   onOpenMenu,
   onDownloadPdf,
   onDownloadJson,
+  isMobilePreviewOpen,
+  onToggleMobilePreview,
 }: CvPageHeaderProps) {
   return (
     <header className="flex h-14 shrink-0 items-center justify-between gap-4 border-b border-slate-200 bg-white px-4">
@@ -36,38 +40,52 @@ export function CvPageHeader({
       </div>
 
       <div className="flex items-center gap-2">
-        <Dropdown
-          align="right"
-          trigger={
-            <Button
-              color="secondary"
-              variant="outlined"
-              data-testid="theme-trigger"
-            >
-              Theme
-              <ChevronDown className="ml-1 size-4" />
-            </Button>
-          }
-          items={[{ label: "Coming soon", disabled: true }]}
-        />
+        <div className="hidden lg:block">
+          <Dropdown
+            align="right"
+            trigger={
+              <Button
+                color="secondary"
+                variant="outlined"
+                data-testid="theme-trigger"
+              >
+                Theme
+                <ChevronDown className="ml-1 size-4" />
+              </Button>
+            }
+            items={[{ label: "Coming soon", disabled: true }]}
+          />
+        </div>
 
-        <Dropdown
-          align="right"
-          trigger={
-            <Button
-              color="secondary"
-              variant="outlined"
-              data-testid="download-trigger"
-            >
-              Download
-              <ChevronDown className="ml-1 size-4" />
-            </Button>
-          }
-          items={[
-            { label: "Download as PDF", onSelect: onDownloadPdf },
-            { label: "Download as JSON", onSelect: onDownloadJson },
-          ]}
-        />
+        <div className="hidden lg:block">
+          <Dropdown
+            align="right"
+            trigger={
+              <Button
+                color="secondary"
+                variant="outlined"
+                data-testid="download-trigger"
+              >
+                Download
+                <ChevronDown className="ml-1 size-4" />
+              </Button>
+            }
+            items={[
+              { label: "Download as PDF", onSelect: onDownloadPdf },
+              { label: "Download as JSON", onSelect: onDownloadJson },
+            ]}
+          />
+        </div>
+
+        <Button
+          color="secondary"
+          variant="outlined"
+          className="lg:hidden"
+          onClick={onToggleMobilePreview}
+          data-testid="preview-toggle"
+        >
+          {isMobilePreviewOpen ? "Edit" : "Preview"}
+        </Button>
       </div>
     </header>
   );

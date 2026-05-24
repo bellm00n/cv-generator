@@ -5,10 +5,12 @@ import { useRouter } from "next/navigation";
 import type { Session } from "next-auth";
 import { AppSideMenu } from "@/components/AppSideMenu";
 import { CvPageHeader } from "@/components/cv/CvPageHeader";
+import { CvPageMobileBar } from "@/components/cv/CvPageMobileBar";
 import { EditorPanel } from "@/components/editor/EditorPanel";
 import { PreviewPanel } from "@/components/preview/PreviewPanel";
 import { downloadCvPdf } from "@/components/preview/downloadCvPdf";
 import { EMPTY_CV_DOCUMENT } from "@/constants/document";
+import { cn } from "@/lib/cn";
 import { type CvFormValues } from "@/schemas/formSchema";
 import type { CvDocument } from "@/types/cv";
 
@@ -40,6 +42,7 @@ export function CvEditorPage({
     useState<CvFormValues>(initialFormValues);
   const [title, setTitle] = useState(cvTitle);
   const [menuOpen, setMenuOpen] = useState(false);
+  const [isMobilePreviewOpen, setIsMobilePreviewOpen] = useState(false);
 
   useEffect(() => {
     const previousBodyOverflow = document.body.style.overflow;
@@ -113,18 +116,35 @@ export function CvEditorPage({
         onOpenMenu={() => setMenuOpen(true)}
         onDownloadPdf={handleDownloadPdf}
         onDownloadJson={handleDownloadJson}
+        isMobilePreviewOpen={isMobilePreviewOpen}
+        onToggleMobilePreview={() => setIsMobilePreviewOpen((v) => !v)}
       />
 
-      <div className="flex min-h-0 flex-1 gap-4 p-4">
+      <div className="flex min-h-0 flex-1 lg:gap-4 lg:p-4">
         <EditorPanel
-          className="min-w-0 flex-1 overflow-y-auto"
+          className={cn(
+            "min-w-0 flex-1 overflow-y-auto",
+            isMobilePreviewOpen && "hidden lg:block",
+          )}
           initialFormValues={currentFormValues}
           onCvDataChange={setCvDocument}
           onSave={handleSave}
         />
 
-        <PreviewPanel className="min-w-0 flex-1" cvData={cvDocument} />
+        <PreviewPanel
+          className={cn(
+            "min-w-0 flex-1",
+            !isMobilePreviewOpen && "hidden lg:block",
+          )}
+          cvData={cvDocument}
+        />
       </div>
+
+      <CvPageMobileBar
+        isPreviewActive={isMobilePreviewOpen}
+        onDownloadPdf={handleDownloadPdf}
+        onDownloadJson={handleDownloadJson}
+      />
 
       <AppSideMenu
         variant="overlay"

@@ -33,7 +33,10 @@ export function PdfPreviewFrame({ cvData }: PdfPreviewFrameProps) {
     const el = containerRef.current;
     if (!el) return;
     const observer = new ResizeObserver((entries) => {
-      setContainerWidth(entries[0].contentRect.width);
+      const nextWidth = entries[0].contentRect.width;
+      if (nextWidth > 0) {
+        setContainerWidth(nextWidth);
+      }
     });
     observer.observe(el);
     return () => observer.disconnect();
@@ -50,30 +53,31 @@ export function PdfPreviewFrame({ cvData }: PdfPreviewFrameProps) {
           ref={containerRef}
           className="mx-auto w-full max-w-3xl overflow-hidden rounded-sm border border-slate-300 bg-white shadow-sm"
         >
-          {instance.loading && (
-            <div className="flex aspect-210/297 items-center justify-center text-sm text-slate-500">
-              Loading preview...
-            </div>
-          )}
           {instance.error && (
             <div className="flex aspect-210/297 items-center justify-center text-sm text-slate-500">
               Failed to load preview
             </div>
           )}
-          {!instance.loading &&
-            !instance.error &&
-            instance.url &&
-            containerWidth > 0 && (
-              <Document
-                file={instance.url}
-                onLoadSuccess={({ numPages: n }) => {
-                  setNumPages(n);
-                  setCurrentPage(1);
-                }}
-              >
-                <Page pageNumber={currentPage} width={containerWidth} />
-              </Document>
-            )}
+          {!instance.error && instance.url && containerWidth > 0 && (
+            <Document
+              file={instance.url}
+              loading=""
+              noData=""
+              onLoadSuccess={({ numPages: n }) => {
+                setNumPages(n);
+                setCurrentPage((p) => Math.min(p, n) || 1);
+              }}
+            >
+              <Page
+                pageNumber={currentPage}
+                width={containerWidth}
+                loading=""
+              />
+            </Document>
+          )}
+          {!instance.error && !instance.url && (
+            <div className="aspect-210/297" />
+          )}
         </div>
       </div>
 

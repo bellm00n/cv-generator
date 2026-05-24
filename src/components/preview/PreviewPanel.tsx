@@ -9,11 +9,7 @@ const PdfPreviewFrame = dynamic(
     ),
   {
     ssr: false,
-    loading: () => (
-      <div className="flex h-full items-center justify-center bg-white text-sm text-slate-500">
-        Loading preview...
-      </div>
-    ),
+    loading: () => <div className="h-full bg-white" />,
   },
 );
 

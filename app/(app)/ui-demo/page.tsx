@@ -1,10 +1,16 @@
 "use client";
 
 import { useState } from "react";
-import { Code2, Menu } from "lucide-react";
+import { Menu } from "lucide-react";
+import { AppSideMenu } from "@/components/AppSideMenu";
 import { Button } from "@/components/ui/Button";
 import { Dropdown } from "@/components/ui/Dropdown";
-import { SideMenu } from "@/components/ui/SideMenu";
+
+const MOCK_USER = {
+  name: "Demo User",
+  email: "demo@example.com",
+  image: null,
+};
 
 export default function UiDemoPage() {
   const [overlayOpen, setOverlayOpen] = useState(false);
@@ -22,24 +28,15 @@ export default function UiDemoPage() {
 
   return (
     <main className="flex h-[calc(100vh-3.5rem)]">
-      <SideMenu variant="static">
-        <div className="p-4 text-sm font-semibold text-slate-800">
-          Static SideMenu
-        </div>
-        <nav className="flex flex-col gap-1 px-2 text-sm text-slate-700">
-          <div className="rounded px-2 py-1.5 hover:bg-slate-100">Item 1</div>
-          <div className="rounded px-2 py-1.5 hover:bg-slate-100">Item 2</div>
-          <div className="rounded px-2 py-1.5 hover:bg-slate-100">Item 3</div>
-        </nav>
-      </SideMenu>
+      <AppSideMenu variant="static" user={MOCK_USER} />
 
       <section className="flex-1 overflow-y-auto p-6">
         <h1 className="text-2xl font-semibold text-slate-800">
           UI primitives demo
         </h1>
         <p className="mt-1 text-sm text-slate-500">
-          Throwaway route for verifying Dropdown and SideMenu primitives.
-          Removed in cleanup task.
+          Throwaway route for verifying Dropdown, SideMenu and AppSideMenu
+          primitives. Removed in cleanup task.
         </p>
 
         <div className="mt-8 flex flex-wrap items-center gap-4">
@@ -82,28 +79,12 @@ export default function UiDemoPage() {
         </p>
       </section>
 
-      <SideMenu
+      <AppSideMenu
         variant="overlay"
         open={overlayOpen}
         onClose={() => setOverlayOpen(false)}
-      >
-        <div className="flex items-center justify-between border-b border-slate-200 p-4">
-          <span className="text-sm font-semibold text-slate-800">
-            Overlay SideMenu
-          </span>
-          <button
-            type="button"
-            onClick={() => setOverlayOpen(false)}
-            className="text-sm text-slate-500 hover:text-slate-800"
-          >
-            Close
-          </button>
-        </div>
-        <div className="mt-auto flex items-center gap-2 border-t border-slate-200 p-4 text-sm text-slate-600">
-          <Code2 className="size-4" aria-hidden />
-          <span data-testid="lucide-icon-label">lucide icon</span>
-        </div>
-      </SideMenu>
+        user={MOCK_USER}
+      />
     </main>
   );
 }

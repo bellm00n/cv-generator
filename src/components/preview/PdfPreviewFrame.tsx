@@ -46,58 +46,79 @@ export function PdfPreviewFrame({ cvData }: PdfPreviewFrameProps) {
   const canPrev = currentPage > 1;
   const canNext = currentPage < numPages;
 
-  return (
-    <div className="h-full overflow-y-auto p-4">
-      <div
-        ref={containerRef}
-        className="mx-auto w-full max-w-3xl overflow-hidden rounded-sm border border-slate-300 bg-white shadow-sm"
+  const paginationControls = (
+    <>
+      <button
+        type="button"
+        onClick={() => setCurrentPage((p) => p - 1)}
+        disabled={!canPrev}
+        className="flex h-7 w-7 items-center justify-center rounded-md hover:bg-slate-100 disabled:cursor-not-allowed disabled:opacity-40"
+        aria-label="Previous page"
       >
-        {instance.error && (
-          <div className="flex aspect-210/297 items-center justify-center text-sm text-slate-500">
-            Failed to load preview
-          </div>
-        )}
-        {!instance.error && instance.url && containerWidth > 0 && (
-          <Document
-            file={instance.url}
-            loading=""
-            noData=""
-            onLoadSuccess={({ numPages: n }) => {
-              setNumPages(n);
-              setCurrentPage((p) => Math.min(p, n) || 1);
-            }}
-          >
-            <Page pageNumber={currentPage} width={containerWidth} loading="" />
-          </Document>
-        )}
-        {!instance.error && !instance.url && <div className="aspect-210/297" />}
+        <ChevronLeft className="size-4" />
+      </button>
+      <span>
+        {currentPage} / {displayTotal}
+      </span>
+      <button
+        type="button"
+        onClick={() => setCurrentPage((p) => p + 1)}
+        disabled={!canNext}
+        className="flex h-7 w-7 items-center justify-center rounded-md hover:bg-slate-100 disabled:cursor-not-allowed disabled:opacity-40"
+        aria-label="Next page"
+      >
+        <ChevronRight className="size-4" />
+      </button>
+    </>
+  );
+
+  return (
+    <div className="relative h-full">
+      <div className="h-full overflow-y-auto p-4">
+        <div
+          ref={containerRef}
+          className="mx-auto w-full max-w-3xl overflow-hidden rounded-sm border border-slate-300 bg-white shadow-sm"
+        >
+          {instance.error && (
+            <div className="flex aspect-210/297 items-center justify-center text-sm text-slate-500">
+              Failed to load preview
+            </div>
+          )}
+          {!instance.error && instance.url && containerWidth > 0 && (
+            <Document
+              file={instance.url}
+              loading=""
+              noData=""
+              onLoadSuccess={({ numPages: n }) => {
+                setNumPages(n);
+                setCurrentPage((p) => Math.min(p, n) || 1);
+              }}
+            >
+              <Page
+                pageNumber={currentPage}
+                width={containerWidth}
+                loading=""
+              />
+            </Document>
+          )}
+          {!instance.error && !instance.url && (
+            <div className="aspect-210/297" />
+          )}
+        </div>
+
+        <div
+          className="mx-auto mt-4 flex w-fit items-center gap-2 rounded-full border border-slate-200 bg-white px-3 py-1.5 text-sm text-slate-700 shadow-md lg:hidden"
+          data-testid="preview-pagination"
+        >
+          {paginationControls}
+        </div>
       </div>
 
       <div
-        className="mx-auto mt-4 flex w-fit items-center gap-2 rounded-full border border-slate-200 bg-white px-3 py-1.5 text-sm text-slate-700 shadow-md"
-        data-testid="preview-pagination"
+        className="absolute bottom-4 left-1/2 z-10 hidden -translate-x-1/2 items-center gap-2 rounded-full border border-slate-200 bg-white px-3 py-1.5 text-sm text-slate-700 shadow-md lg:flex"
+        data-testid="preview-pagination-desktop"
       >
-        <button
-          type="button"
-          onClick={() => setCurrentPage((p) => p - 1)}
-          disabled={!canPrev}
-          className="flex h-7 w-7 items-center justify-center rounded-md hover:bg-slate-100 disabled:cursor-not-allowed disabled:opacity-40"
-          aria-label="Previous page"
-        >
-          <ChevronLeft className="size-4" />
-        </button>
-        <span data-testid="preview-page-chip">
-          {currentPage} / {displayTotal}
-        </span>
-        <button
-          type="button"
-          onClick={() => setCurrentPage((p) => p + 1)}
-          disabled={!canNext}
-          className="flex h-7 w-7 items-center justify-center rounded-md hover:bg-slate-100 disabled:cursor-not-allowed disabled:opacity-40"
-          aria-label="Next page"
-        >
-          <ChevronRight className="size-4" />
-        </button>
+        {paginationControls}
       </div>
     </div>
   );

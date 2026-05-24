@@ -40,7 +40,7 @@ export function NewCvButton({
           className="rounded-r-none"
           data-testid="new-cv-create"
         >
-          New +
+          New
         </Button>
         <Dropdown
           align="right"

@@ -1,5 +1,4 @@
 import dynamic from "next/dynamic";
-import type { ReactNode } from "react";
 import { cn } from "@/lib/cn";
 import type { CvDocument } from "@/types/cv";
 
@@ -21,38 +20,14 @@ const PdfPreviewFrame = dynamic(
 type PreviewPanelProps = {
   className?: string;
   cvData: CvDocument;
-  headerAction?: ReactNode;
 };
 
-export function PreviewPanel({
-  className,
-  cvData,
-  headerAction,
-}: PreviewPanelProps) {
+export function PreviewPanel({ className, cvData }: PreviewPanelProps) {
   return (
     <section
-      className={cn("rounded-xl bg-white p-6", className)}
-      aria-labelledby="preview-panel-title"
+      className={cn("relative overflow-hidden rounded-xl bg-white", className)}
     >
-      <div className="flex flex-wrap items-center justify-between gap-3">
-        <div className="space-y-1">
-          <h2
-            id="preview-panel-title"
-            className="text-xl leading-tight font-semibold"
-          >
-            Preview Panel
-          </h2>
-        </div>
-        <div className="flex flex-wrap items-center justify-end gap-2">
-          {headerAction}
-        </div>
-      </div>
-
-      <div className="mt-6">
-        <div className="w-full">
-          <PdfPreviewFrame cvData={cvData} />
-        </div>
-      </div>
+      <PdfPreviewFrame cvData={cvData} />
     </section>
   );
 }

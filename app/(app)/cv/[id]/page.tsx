@@ -32,6 +32,7 @@ export default async function CvPage({ params }: PageProps) {
       cvId={id}
       cvTitle={cv.title}
       initialFormValues={initialFormValues}
+      user={session.user}
     />
   );
 }

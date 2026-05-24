@@ -1,39 +1,16 @@
 "use client";
 
-import { type ChangeEvent, useRef, useState } from "react";
-import dynamic from "next/dynamic";
-import Link from "next/link";
+import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
+import type { Session } from "next-auth";
+import { AppSideMenu } from "@/components/AppSideMenu";
+import { CvPageHeader } from "@/components/cv/CvPageHeader";
 import { EditorPanel } from "@/components/editor/EditorPanel";
-import { EditableCvTitle } from "@/components/editor/EditableCvTitle";
 import { PreviewPanel } from "@/components/preview/PreviewPanel";
-import { Button } from "@/components/ui/Button";
+import { downloadCvPdf } from "@/components/preview/downloadCvPdf";
 import { EMPTY_CV_DOCUMENT } from "@/constants/document";
-import { cn } from "@/lib/cn";
-import { parseImportedCv } from "@/schemas/cvImportSchema";
-import {
-  createDefaultCvFormValues,
-  type CvFormValues,
-} from "@/schemas/formSchema";
+import { type CvFormValues } from "@/schemas/formSchema";
 import type { CvDocument } from "@/types/cv";
-
-const DOWNLOAD_BUTTON_CLASS =
-  "inline-flex min-h-9 items-center justify-center rounded-lg border border-blue-500 bg-blue-500 px-3.5 py-1.5 text-sm font-semibold text-white shadow-sm transition duration-200 hover:-translate-y-0.5 hover:brightness-95 focus-visible:translate-y-0";
-
-const DownloadPdfButton = dynamic(
-  () =>
-    import("@/components/preview/DownloadPdfButton").then(
-      (module) => module.DownloadPdfButton,
-    ),
-  {
-    ssr: false,
-    loading: () => (
-      <span className={DOWNLOAD_BUTTON_CLASS} aria-live="polite">
-        Preparing PDF...
-      </span>
-    ),
-  },
-);
 
 const getFileName = (fullName: string) => {
   const slug = fullName
@@ -48,22 +25,32 @@ type CvEditorPageProps = {
   cvId: string;
   cvTitle: string;
   initialFormValues: CvFormValues;
+  user: Session["user"] | null;
 };
 
 export function CvEditorPage({
   cvId,
   cvTitle,
   initialFormValues,
+  user,
 }: CvEditorPageProps) {
   const router = useRouter();
-  const [isMobilePreviewOpen, setIsMobilePreviewOpen] = useState(false);
   const [cvDocument, setCvDocument] = useState<CvDocument>(EMPTY_CV_DOCUMENT);
   const [currentFormValues, setCurrentFormValues] =
     useState<CvFormValues>(initialFormValues);
-  const [editorKey, setEditorKey] = useState(0);
   const [title, setTitle] = useState(cvTitle);
-  const fileInputRef = useRef<HTMLInputElement>(null);
-  const fileName = getFileName(cvDocument.fullName);
+  const [menuOpen, setMenuOpen] = useState(false);
+
+  useEffect(() => {
+    const previousBodyOverflow = document.body.style.overflow;
+    const previousHtmlOverflow = document.documentElement.style.overflow;
+    document.body.style.overflow = "hidden";
+    document.documentElement.style.overflow = "hidden";
+    return () => {
+      document.body.style.overflow = previousBodyOverflow;
+      document.documentElement.style.overflow = previousHtmlOverflow;
+    };
+  }, []);
 
   const saveToApi = async (values: CvFormValues) => {
     const res = await fetch(`/api/cv/${cvId}`, {
@@ -96,49 +83,11 @@ export function CvEditorPage({
     await saveToApi(values);
   };
 
-  const handleUploadData = () => {
-    fileInputRef.current?.click();
+  const handleDownloadPdf = () => {
+    void downloadCvPdf(cvDocument, getFileName(cvDocument.fullName));
   };
 
-  const handleFileChange = async (event: ChangeEvent<HTMLInputElement>) => {
-    const file = event.target.files?.[0];
-    if (!file) return;
-    event.target.value = "";
-
-    const reader = new FileReader();
-    reader.onload = async (e) => {
-      try {
-        const json: unknown = JSON.parse(e.target?.result as string);
-        const normalized = parseImportedCv(json);
-
-        if (!normalized) {
-          alert("The uploaded file is not valid");
-          return;
-        }
-
-        await saveToApi(normalized);
-        setCurrentFormValues(normalized);
-        setEditorKey((k) => k + 1);
-      } catch {
-        alert("The uploaded file is not valid");
-      }
-    };
-    reader.readAsText(file);
-  };
-
-  const handleReset = async () => {
-    const confirmed = window.confirm(
-      "DANGER! If you confirm this operation all CV data will be removed!",
-    );
-    if (!confirmed) return;
-
-    const empty = createDefaultCvFormValues();
-    await saveToApi(empty);
-    setCurrentFormValues(empty);
-    setEditorKey((k) => k + 1);
-  };
-
-  const handleDownloadData = () => {
+  const handleDownloadJson = () => {
     const timestamp = new Date()
       .toISOString()
       .slice(0, 19)
@@ -157,103 +106,32 @@ export function CvEditorPage({
   };
 
   return (
-    <main className="min-h-screen py-6">
-      <div className="flex w-full flex-col gap-6 px-4 sm:px-6 lg:px-8">
-        <div>
-          <Link href="/cv-list">
-            <Button color="ghost">← Back to List</Button>
-          </Link>
-        </div>
+    <div className="flex h-screen flex-col overflow-hidden">
+      <CvPageHeader
+        title={title}
+        onTitleSave={handleTitleSave}
+        onOpenMenu={() => setMenuOpen(true)}
+        onDownloadPdf={handleDownloadPdf}
+        onDownloadJson={handleDownloadJson}
+      />
 
-        <section className="sticky top-0 z-10 rounded-xl bg-white px-6 py-2 lg:hidden">
-          {isMobilePreviewOpen ? (
-            <Button
-              color="secondary"
-              variant="outlined"
-              className="min-h-7 px-2.5 py-1 text-xs"
-              onClick={() => setIsMobilePreviewOpen(false)}
-            >
-              Back to editor
-            </Button>
-          ) : (
-            <Button
-              color="secondary"
-              variant="outlined"
-              className="min-h-7 px-2.5 py-1 text-xs"
-              onClick={() => setIsMobilePreviewOpen(true)}
-            >
-              Open Preview
-            </Button>
-          )}
-        </section>
+      <div className="flex min-h-0 flex-1 gap-4 p-4">
+        <EditorPanel
+          className="min-w-0 flex-1 overflow-y-auto"
+          initialFormValues={currentFormValues}
+          onCvDataChange={setCvDocument}
+          onSave={handleSave}
+        />
 
-        <section className="grid grid-cols-1 gap-6 lg:grid-cols-2">
-          <div
-            className={cn(
-              "flex flex-col gap-3",
-              isMobilePreviewOpen && "hidden lg:flex",
-            )}
-          >
-            <EditorPanel
-              key={editorKey}
-              titleSlot={
-                <EditableCvTitle title={title} onSave={handleTitleSave} />
-              }
-              initialFormValues={currentFormValues}
-              onCvDataChange={setCvDocument}
-              onSave={handleSave}
-            />
-            <input
-              ref={fileInputRef}
-              type="file"
-              accept=".json"
-              className="hidden"
-              onChange={handleFileChange}
-            />
-            <div className="flex gap-3">
-              <Button
-                color="secondary"
-                variant="outlined"
-                onClick={handleUploadData}
-              >
-                Upload data
-              </Button>
-              <Button
-                color="secondary"
-                variant="outlined"
-                onClick={handleDownloadData}
-              >
-                Download data
-              </Button>
-              <Button
-                color="destructive"
-                variant="outlined"
-                onClick={handleReset}
-              >
-                Reset
-              </Button>
-            </div>
-          </div>
-
-          <div
-            className={cn(
-              "flex flex-col gap-6",
-              !isMobilePreviewOpen && "hidden lg:flex",
-            )}
-          >
-            <PreviewPanel
-              cvData={cvDocument}
-              headerAction={
-                <DownloadPdfButton
-                  cvData={cvDocument}
-                  fileName={fileName}
-                  className={DOWNLOAD_BUTTON_CLASS}
-                />
-              }
-            />
-          </div>
-        </section>
+        <PreviewPanel className="min-w-0 flex-1" cvData={cvDocument} />
       </div>
-    </main>
+
+      <AppSideMenu
+        variant="overlay"
+        open={menuOpen}
+        onClose={() => setMenuOpen(false)}
+        user={user}
+      />
+    </div>
   );
 }

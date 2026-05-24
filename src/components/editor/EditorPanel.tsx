@@ -21,7 +21,6 @@ import { SummarySection } from "./SummarySection";
 
 type EditorPanelProps = {
   className?: string;
-  titleSlot?: React.ReactNode;
   initialFormValues?: CvFormValues;
   onCvDataChange?: (cvData: CvDocument) => void;
   onSave?: (values: CvFormValues) => Promise<void>;
@@ -31,7 +30,6 @@ const AUTOSAVE_DELAY_MS = 1500;
 
 export function EditorPanel({
   className,
-  titleSlot,
   initialFormValues,
   onCvDataChange,
   onSave,
@@ -85,10 +83,8 @@ export function EditorPanel({
   return (
     <FormProvider {...methods}>
       <section className={cn("rounded-xl bg-white p-6", className)}>
-        {titleSlot && <div className="mb-2">{titleSlot}</div>}
-
         <form
-          className="mt-6 divide-y divide-slate-300/50"
+          className="divide-y divide-slate-300/50"
           noValidate
           onSubmit={(event) => event.preventDefault()}
         >

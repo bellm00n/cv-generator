@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
+import { Grid3x3 } from "lucide-react";
 import type { Session } from "next-auth";
 import { AppSideMenu } from "@/components/AppSideMenu";
 import { CvListCard } from "@/components/cv-list/CvListCard";
@@ -27,6 +28,7 @@ export function CvListPage({ user }: CvListPageProps) {
   const [cvs, setCvs] = useState<CvListItem[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [busyId, setBusyId] = useState<string | null>(null);
+  const [menuOpen, setMenuOpen] = useState(false);
 
   useEffect(() => {
     let cancelled = false;
@@ -133,43 +135,69 @@ export function CvListPage({ user }: CvListPageProps) {
         <AppSideMenu variant="static" user={user} />
       </div>
 
-      <main className="flex-1 overflow-y-auto px-6 py-8 lg:px-10">
-        <div className="mx-auto w-full max-w-6xl">
-          <div className="mb-8 flex items-center justify-between gap-4">
-            <h1 className="text-2xl font-semibold text-slate-800">
-              My resumes
-            </h1>
-            <NewCvButton
-              onCreate={() => void handleCreate()}
-              onUpload={(file) => void handleUpload(file)}
-            />
-          </div>
+      <main className="flex min-w-0 flex-1 flex-col">
+        <header className="flex h-14 shrink-0 items-center justify-between gap-4 border-b border-slate-200 bg-white px-4 lg:hidden">
+          <button
+            type="button"
+            onClick={() => setMenuOpen(true)}
+            aria-label="Open menu"
+            data-testid="cv-list-open-menu"
+            className="rounded p-1.5 text-slate-600 hover:bg-slate-100"
+          >
+            <Grid3x3 className="size-5" />
+          </button>
+          <NewCvButton
+            onCreate={() => void handleCreate()}
+            onUpload={(file) => void handleUpload(file)}
+          />
+        </header>
 
-          {isLoading ? (
-            <p className="text-slate-500">Loading...</p>
-          ) : cvs.length === 0 ? (
-            <p className="text-slate-500">
-              No resumes yet — click{" "}
-              <span className="font-medium text-slate-700">New +</span> to
-              create one.
-            </p>
-          ) : (
-            <ul className="grid grid-cols-1 gap-4 md:grid-cols-2 xl:grid-cols-3">
-              {cvs.map((cv) => (
-                <li key={cv.id}>
-                  <CvListCard
-                    cv={cv}
-                    isBusy={busyId === cv.id}
-                    onDownloadPdf={() => void handleDownloadPdf(cv.id)}
-                    onCopy={() => void handleCopy(cv.id)}
-                    onRemove={() => void handleDelete(cv.id, cv.title)}
-                  />
-                </li>
-              ))}
-            </ul>
-          )}
+        <div className="flex-1 overflow-y-auto px-6 py-8 lg:px-10">
+          <div className="mx-auto w-full max-w-6xl">
+            <div className="mb-8 flex items-center justify-between gap-4">
+              <h1 className="text-2xl font-semibold text-slate-800">
+                My resumes
+              </h1>
+              <NewCvButton
+                className="hidden lg:block"
+                onCreate={() => void handleCreate()}
+                onUpload={(file) => void handleUpload(file)}
+              />
+            </div>
+
+            {isLoading ? (
+              <p className="text-slate-500">Loading...</p>
+            ) : cvs.length === 0 ? (
+              <p className="text-slate-500">
+                No resumes yet — click{" "}
+                <span className="font-medium text-slate-700">New +</span> to
+                create one.
+              </p>
+            ) : (
+              <ul className="grid grid-cols-1 gap-4 md:grid-cols-2 xl:grid-cols-3">
+                {cvs.map((cv) => (
+                  <li key={cv.id}>
+                    <CvListCard
+                      cv={cv}
+                      isBusy={busyId === cv.id}
+                      onDownloadPdf={() => void handleDownloadPdf(cv.id)}
+                      onCopy={() => void handleCopy(cv.id)}
+                      onRemove={() => void handleDelete(cv.id, cv.title)}
+                    />
+                  </li>
+                ))}
+              </ul>
+            )}
+          </div>
         </div>
       </main>
+
+      <AppSideMenu
+        variant="overlay"
+        open={menuOpen}
+        onClose={() => setMenuOpen(false)}
+        user={user}
+      />
     </div>
   );
 }

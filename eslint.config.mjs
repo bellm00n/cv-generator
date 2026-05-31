@@ -5,7 +5,15 @@ import eslintConfigPrettier from "eslint-config-prettier";
 
 const eslintConfig = [
   {
-    ignores: ["src/generated/**"],
+    ignores: [
+      "src/generated/**",
+      ".next/**",
+      "test-results/**",
+      "playwright-report/**",
+      "playwright/.cache/**",
+      "node_modules/**",
+      "**/*.tsbuildinfo",
+    ],
   },
   ...nextConfig,
   {

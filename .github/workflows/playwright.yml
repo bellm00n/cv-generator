@@ -14,9 +14,9 @@ jobs:
     timeout-minutes: 15
     runs-on: ubuntu-latest
     env:
-      # TODO: add it to github secrets
       DATABASE_URL: ${{ secrets.DATABASE_URL_TEST }}
       AUTH_SECRET: ${{ secrets.AUTH_SECRET }}
+      AUTH_TRUST_HOST: true
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4

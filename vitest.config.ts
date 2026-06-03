@@ -9,8 +9,5 @@ export default defineConfig({
   },
   test: {
     include: ["src/**/*.test.{ts,tsx}"],
-    reporters: process.env.GITHUB_ACTIONS
-      ? ["default", "github-actions"]
-      : ["default"],
   },
 });

@@ -1,4 +1,4 @@
-name: Playwright Tests
+name: CI
 on:
   push:
     branches: [main]
@@ -39,10 +39,12 @@ jobs:
         run: npx playwright install-deps
       - name: Lint
         run: npm run lint
+      - name: Run unit tests
+        run: npm run test:unit
       - name: Apply Prisma migrations
         run: npx prisma migrate deploy
       - name: Run Playwright tests
-        run: npx playwright test
+        run: npm run test:e2e
       - uses: actions/upload-artifact@v4
         if: ${{ !cancelled() }}
         with:

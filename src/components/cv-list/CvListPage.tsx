@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { Grid3x3 } from "lucide-react";
 import type { Session } from "next-auth";
@@ -19,31 +19,16 @@ type CvListItem = {
 
 type CvListPageProps = {
   user: Session["user"] | null;
+  initialCvs: CvListItem[];
 };
 
 const stripJsonExtension = (name: string) => name.replace(/\.json$/i, "");
 
-export function CvListPage({ user }: CvListPageProps) {
+export function CvListPage({ user, initialCvs }: CvListPageProps) {
   const router = useRouter();
-  const [cvs, setCvs] = useState<CvListItem[]>([]);
-  const [isLoading, setIsLoading] = useState(true);
+  const [cvs, setCvs] = useState<CvListItem[]>(initialCvs);
   const [busyId, setBusyId] = useState<string | null>(null);
   const [menuOpen, setMenuOpen] = useState(false);
-
-  useEffect(() => {
-    let cancelled = false;
-    fetch("/api/cv")
-      .then((res) => (res.ok ? (res.json() as Promise<CvListItem[]>) : []))
-      .then((data) => {
-        if (!cancelled) setCvs(data);
-      })
-      .finally(() => {
-        if (!cancelled) setIsLoading(false);
-      });
-    return () => {
-      cancelled = true;
-    };
-  }, []);
 
   const handleCreate = async () => {
     const res = await fetch("/api/cv", {
@@ -165,9 +150,7 @@ export function CvListPage({ user }: CvListPageProps) {
               />
             </div>
 
-            {isLoading ? (
-              <p className="text-slate-500">Loading...</p>
-            ) : cvs.length === 0 ? (
+            {cvs.length === 0 ? (
               <p className="text-slate-500">
                 No resumes yet — click{" "}
                 <span className="font-medium text-slate-700">New +</span> to

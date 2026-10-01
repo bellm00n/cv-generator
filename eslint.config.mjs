@@ -13,6 +13,8 @@ const eslintConfig = [
       "playwright/.cache/**",
       "node_modules/**",
       "**/*.tsbuildinfo",
+      ".stryker-tmp/**",
+      "stryker-reports/**",
     ],
   },
   ...nextConfig,

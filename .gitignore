@@ -52,3 +52,9 @@ next-env.d.ts
 /playwright/.auth/
 /tests/.auth/
 .env*.local
+
+# stryker temp files
+.stryker-tmp
+
+# stryker reports
+/stryker-reports/

@@ -1,0 +1,51 @@
+{
+  "$schema": "https://docs.renovatebot.com/renovate-schema.json",
+  "extends": ["config:recommended", ":semanticCommits", "schedule:weekly"],
+  "minimumReleaseAge": "3 days",
+  "lockFileMaintenance": {
+    "enabled": true,
+    "schedule": ["before 4am on the first day of the month"],
+    "automerge": true
+  },
+  "packageRules": [
+    {
+      "description": "Minor/patch of stable packages: one grouped PR, merged automatically when CI is green",
+      "matchUpdateTypes": ["minor", "patch"],
+      "matchCurrentVersion": "!/^0/",
+      "groupName": "non-major dependencies",
+      "groupSlug": "non-major",
+      "automerge": true
+    },
+    {
+      "description": "ESLint ecosystem moves together because of peer dependencies",
+      "matchPackageNames": [
+        "eslint",
+        "@eslint/**",
+        "@typescript-eslint/**",
+        "eslint-config-next",
+        "eslint-config-prettier",
+        "eslint-plugin-prettier"
+      ],
+      "matchUpdateTypes": ["major"],
+      "groupName": "eslint"
+    },
+    {
+      "description": "GitHub Actions in one PR",
+      "matchManagers": ["github-actions"],
+      "groupName": "github actions",
+      "groupSlug": "github-actions"
+    },
+    {
+      "description": "Majors are created only after ticking the checkbox in the Dependency Dashboard",
+      "matchUpdateTypes": ["major"],
+      "dependencyDashboardApproval": true
+    },
+    {
+      "description": "next-auth is on a beta channel: separate PR, never merged automatically",
+      "matchPackageNames": ["next-auth", "@auth/**"],
+      "groupName": "auth",
+      "groupSlug": "auth",
+      "automerge": false
+    }
+  ]
+}

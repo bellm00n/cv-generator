@@ -58,3 +58,7 @@ next-env.d.ts
 
 # stryker reports
 /stryker-reports/
+
+# vitest browser mode failure screenshots
+.vitest-attachments/
+__screenshots__/

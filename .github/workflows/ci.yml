@@ -41,6 +41,15 @@ jobs:
         run: npm run lint
       - name: Run unit tests
         run: npm run test:unit
+      - uses: actions/upload-artifact@v4
+        if: failure()
+        with:
+          name: vitest-browser-screenshots
+          path: |
+            .vitest-attachments/
+            src/**/__screenshots__/
+          retention-days: 30
+          if-no-files-found: ignore
       - name: Apply Prisma migrations
         run: npx prisma migrate deploy
       - name: Run Playwright tests

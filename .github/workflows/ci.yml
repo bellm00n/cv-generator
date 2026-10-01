@@ -51,7 +51,8 @@ jobs:
           retention-days: 30
           if-no-files-found: ignore
       - name: Apply Prisma migrations
-        run: npx prisma migrate deploy
+        # Neon may autosuspend the compute; retry to let it wake up from a cold start
+        run: npx prisma migrate deploy || (sleep 10 && npx prisma migrate deploy)
       - name: Run Playwright tests
         run: npm run test:e2e
       - uses: actions/upload-artifact@v4

@@ -17,7 +17,7 @@ export const formatDateRange = (
   emptyEndLabel = "",
 ) => {
   const start = startDate.trim();
-  const end = endDate.trim() || emptyEndLabel;
+  const end = endDate.trim() || emptyEndLabel.trim();
 
   const formattedStart = formatMonthYear(start);
   const formattedEnd = formatMonthYear(end);
@@ -34,5 +34,5 @@ export const formatDateRange = (
     return formattedStart;
   }
 
-  return `${formattedStart} \u2014 ${formattedEnd}`;
+  return `${formattedStart} — ${formattedEnd}`;
 };

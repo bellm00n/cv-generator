@@ -38,6 +38,7 @@
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3.3.5",
+    "@fast-check/vitest": "^0.5.0",
     "@playwright/test": "^1.60.0",
     "@stryker-mutator/core": "^10.0.0",
     "@stryker-mutator/typescript-checker": "^10.0.0",
@@ -52,6 +53,7 @@
     "eslint-config-next": "^16.1.6",
     "eslint-config-prettier": "^10.1.8",
     "eslint-plugin-prettier": "^5.5.5",
+    "fast-check": "^4.10.2",
     "playwright": "^1.60.0",
     "postcss": "^8.5.8",
     "prettier": "^3.8.1",
